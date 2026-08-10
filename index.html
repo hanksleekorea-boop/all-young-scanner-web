@@ -111,6 +111,10 @@ p { line-height: 1.6; }
 .market-availability dl div { min-width:0; padding:8px; border:1px solid #f2dfb7; border-radius:8px; background:rgba(255,255,255,.7); }
 .market-availability dt { margin-bottom:2px; color:#806b36; font-size:10px; }
 .market-availability dd,.market-availability p { margin:0; font-size:11px; font-weight:750; line-height:1.4; overflow-wrap:anywhere; }
+.regional-safety-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.regional-safety-actions .ghost-btn { min-height:34px; padding:6px 9px; font-size:11px; }
+.release-update-notice { position:sticky; top:0; z-index:70; display:flex; align-items:center; justify-content:space-between; gap:12px; width:min(calc(100% - 40px),1280px); margin:10px auto -8px; padding:10px 12px; border:1px solid #a8d8bd; border-radius:11px; color:#164f34; background:#edfaf1; box-shadow:0 8px 20px rgba(18,63,52,.1); font-size:13px; font-weight:800; }
+.release-update-notice button { min-height:34px; padding:6px 10px; border:1px solid #117047; border-radius:8px; color:#fff; background:#117047; font-weight:850; }
 .product-truth-inline { margin: 0 0 12px; color: var(--muted); font-size: 10px; line-height: 1.4; }
 .product-truth-inline strong { color: var(--primary-2); }
 .market-context select { min-height: 34px; max-width: 112px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--primary); padding: 5px 8px; font-size: 11px; font-weight: 800; }
@@ -1014,6 +1018,7 @@ body::selection { color: #fff; background: var(--primary-2); }
   .recovery-steps { grid-template-columns:1fr; }
 }
 @media (max-width:760px) {
+  .release-update-notice { width:calc(100% - 20px); margin-top:8px; font-size:12px; }
   .service-status-strip { font-size: 9px; }
   .service-status-strip button { font-size: 9px; }
   .brand-copy small,.install-btn,.header-actions .mode { display: none; }
@@ -1784,6 +1789,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
+  const RELEASE_VERSION = '2026-08-10-regional-safety-v1';
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const memory = new Map();
@@ -1841,7 +1847,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     usageQuery:'', usageFilter:'all', selectedUsage:null, usageBack:'usage', usageContextProductId:null,
     guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product', libraryQuery:'', libraryFilter:'all', syncConsent:false,
     online:navigator.onLine, offlineSince:null, connectionRecovered:false, migrationNotice:null,
-    accessibility:{textSize:'default',contrast:'default',motion:'system'},
+    accessibility:{textSize:'default',contrast:'default',motion:'system'}, releaseUpdateReady:false,
   };
 
   const won = (n) => `${n.toLocaleString('ko-KR')}원`;
@@ -1882,7 +1888,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     const local = state.market === 'KR';
     const sellerCopy = local ? '공식 판매처 연결 전' : `${market.label} 현지 판매처 연결 전`;
     const deliveryCopy = local ? '국내 배송 여부는 상품별 확인 전' : '국제 배송·통관 조건 확인 전';
-    return `<section class="market-availability" data-market-availability="${state.market}" data-seller-status="unverified" data-delivery-status="unverified" aria-label="${escapeHtml(market.label)} 판매처와 배송 상태"><header><div><strong>${escapeHtml(market.label)} 판매처·배송</strong><span>주의 · 미확인</span></div><small>${market.currency} 기준</small></header><dl><div><dt>판매처</dt><dd>${sellerCopy}</dd></div><div><dt>배송</dt><dd>${deliveryCopy}</dd></div></dl><p>연결된 자료가 생기기 전에는 현지 가격·재고·구매 가능 여부를 추정하지 않아요.</p></section>`;
+    return `<section class="market-availability" data-market-availability="${state.market}" data-regional-safety="true" data-catalog-market="${state.market}" data-seller-status="unverified" data-delivery-status="unverified" aria-label="${escapeHtml(market.label)} 판매처와 배송 상태"><header><div><strong>${escapeHtml(market.label)} 판매처·배송</strong><span>주의 · 미확인</span></div><small>${market.currency} 기준</small></header><dl><div><dt>판매처</dt><dd>${sellerCopy}</dd></div><div><dt>배송</dt><dd>${deliveryCopy}</dd></div><div><dt>기준 국가</dt><dd>사용자가 직접 고른 ${escapeHtml(market.label)}</dd></div><div><dt>위치·VPN</dt><dd>읽거나 저장하지 않음</dd></div></dl><p data-regional-safety-note="true">VPN을 쓰거나 여행 중이어도 실제 위치를 추정하지 않아요. 이 기준 국가는 화면을 읽는 기준일 뿐, 배송·통관·구매 가능을 보장하지 않아요.</p><div class="regional-safety-actions"><button class="ghost-btn" data-action="regional-market-focus" data-regional-market-focus="true">기준 국가 바꾸기</button><button class="ghost-btn" data-action="method" data-regional-privacy-link="true">지역·개인정보 기준 보기</button></div></section>`;
   }
 
   function mobileEvidenceDrawer(product) {
@@ -2751,7 +2757,8 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   function layout(body) {
     const pcDock = `<aside class="pc-handoff-dock" data-pc-handoff="true" aria-label="폰으로 이어서 보기"><img data-pc-qr="true" src="${PUBLIC_QR_DATA}" alt="올영스캐너 공개 앱 QR 코드"><div><strong>폰으로 이어보기</strong><span>기존 공개판 주소를 열어요.</span><a data-pc-canonical-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">QR 주소 열기</a><button class="ghost-btn" data-action="pc-shortcuts-open" aria-expanded="${state.pcHelpOpen}">키보드 도움말</button></div></aside>`;
     const pcHelp = state.pcHelpOpen ? `<section class="pc-shortcut-panel" data-pc-shortcut-panel="true" role="dialog" aria-modal="true" aria-labelledby="pc-shortcut-title"><div><span class="pc-area-label">KEYBOARD</span><h2 id="pc-shortcut-title">키보드로 더 빠르게</h2><dl><div><dt>/</dt><dd>검색창으로 이동해요.</dd></div><div><dt>← / →</dt><dd>후보 사이를 이동해요.</dd></div><div><dt>Space / Enter</dt><dd>현재 후보를 결정으로 저장해요.</dd></div><div><dt>Esc</dt><dd>도움말을 닫아요.</dd></div></dl><button class="primary-btn" data-action="pc-shortcuts-close">확인</button></div></section>` : '';
-    return `<div class="shell service-shell">${header()}${connectionBar()}<main id="main" class="content service-content" tabindex="-1">${body}</main>${serviceFooter()}${pcDock}${pcHelp}${storageBar()}</div>`;
+    const releaseNotice = state.releaseUpdateReady ? `<aside class="release-update-notice" data-release-update-notice="true" role="status"><span>새 버전이 준비됐어요. 기록은 이 기기에 그대로 있습니다.</span><button data-action="reload-release" data-release-reload="true">새로고침</button></aside>` : '';
+    return `<div class="shell service-shell">${header()}${connectionBar()}${releaseNotice}<main id="main" class="content service-content" tabindex="-1">${body}</main>${serviceFooter()}${pcDock}${pcHelp}${storageBar()}</div>`;
   }
 
   function serviceHomePreviewCard(product, index) {
@@ -2889,7 +2896,16 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     const manifest={name:'올영스캐너',short_name:'올영스캐너',description:'고르기 전에 이유부터 확인하는 뷰티 결정 서비스',start_url:'./',display:'standalone',background_color:'#f8f6ef',theme_color:'#123f34',icons:[{src:makeIcon(192),sizes:'192x192',type:'image/png'},{src:makeIcon(512),sizes:'512x512',type:'image/png'}]};
     const link=document.createElement('link'); link.rel='manifest'; link.href='data:application/manifest+json;base64,'+btoa(unescape(encodeURIComponent(JSON.stringify(manifest)))); document.head.appendChild(link);
     const trustedLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-    if ((location.protocol === 'https:' || trustedLocal) && 'serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => toast('오프라인 설치 준비에 실패했어요. 앱은 계속 사용할 수 있어요.'));
+    if ((location.protocol === 'https:' || trustedLocal) && 'serviceWorker' in navigator) {
+      const hadController = Boolean(navigator.serviceWorker.controller);
+      const announceRelease = (message) => {
+        if (message?.type !== 'AYS_RELEASE_READY' || message.version !== RELEASE_VERSION || sessionStorage.getItem(`ays-alpha-release-refresh-${RELEASE_VERSION}`)) return;
+        state.releaseUpdateReady=true; render();
+      };
+      navigator.serviceWorker.addEventListener('message',(event)=>{ if (hadController) announceRelease(event.data); });
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{ if (hadController) announceRelease({type:'AYS_RELEASE_READY',version:RELEASE_VERSION}); });
+      navigator.serviceWorker.register('./sw.js').catch(() => toast('오프라인 설치 준비에 실패했어요. 앱은 계속 사용할 수 있어요.'));
+    }
   }
 
   async function shareCurrent() {
@@ -3050,6 +3066,8 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
       toast('보기 설정을 기본값으로 되돌렸어요.');
     }
     else if(action==='offline-help'){state.route='offline-help';render();}
+    else if(action==='regional-market-focus'){document.querySelector('#market-context')?.focus();toast('기준 국가는 이 기기의 화면 설정입니다. 실제 위치나 VPN은 읽지 않아요.');}
+    else if(action==='reload-release'){sessionStorage.setItem(`ays-alpha-release-refresh-${RELEASE_VERSION}`,'done');location.reload();}
     else if(action==='connection-notice-close'){state.connectionRecovered=false;render();}
     else if(action==='privacy-sync-toggle'){state.syncConsent=!state.syncConsent;safeWrite(SYNC_CONSENT_KEY,state.syncConsent);render();toast(state.syncConsent ? '선택 동기화를 켰어요. 서버가 연결된 경우에만 이후 기록을 보낼 수 있어요.' : '선택 동기화를 껐어요. 이후 기록은 이 기기에만 저장해요.');}
     else if(action==='pc-shortcuts'||action==='pc-shortcuts-open'){state.pcHelpOpen=true;render();document.querySelector('[data-pc-shortcut-panel] button')?.focus();}
