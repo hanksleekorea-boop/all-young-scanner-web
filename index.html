@@ -101,6 +101,16 @@ p { line-height: 1.6; }
 .data-truth dt { margin-bottom: 2px; color: var(--muted); font-size: 10px; }
 .data-truth dd { margin: 0; color: var(--text); font-size: 11px; font-weight: 750; line-height: 1.35; overflow-wrap: anywhere; }
 .data-truth dd small { display: block; color: var(--muted); font-size: 10px; font-weight: 600; }
+.market-availability { display:grid; gap:10px; margin:0 0 16px; padding:14px; border:1px solid #efd39c; border-radius:12px; color:#5e4918; background:#fffaf0; }
+.market-availability header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.market-availability header strong,.market-availability header span { display:block; }
+.market-availability header strong { color:#6a4a00; font-size:13px; }
+.market-availability header span { margin-top:2px; color:#8b6100; font-size:10px; font-weight:850; }
+.market-availability header small { color:#806b36; font-size:10px; font-weight:800; }
+.market-availability dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:0; }
+.market-availability dl div { min-width:0; padding:8px; border:1px solid #f2dfb7; border-radius:8px; background:rgba(255,255,255,.7); }
+.market-availability dt { margin-bottom:2px; color:#806b36; font-size:10px; }
+.market-availability dd,.market-availability p { margin:0; font-size:11px; font-weight:750; line-height:1.4; overflow-wrap:anywhere; }
 .product-truth-inline { margin: 0 0 12px; color: var(--muted); font-size: 10px; line-height: 1.4; }
 .product-truth-inline strong { color: var(--primary-2); }
 .market-context select { min-height: 34px; max-width: 112px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--primary); padding: 5px 8px; font-size: 11px; font-weight: 800; }
@@ -338,6 +348,7 @@ input[type="search"], input[type="text"] { width: 100%; min-height: 48px; border
   .decision { align-items: stretch; flex-direction: column; }
   .decision-actions { justify-content: flex-start; }
   .review-reasons { grid-template-columns: 1fr; }
+  .market-availability dl { grid-template-columns: 1fr; }
   .card { padding: 17px; }
   .data-truth dl { grid-template-columns: 1fr; gap: 7px; }
   .entry.usage-entry { grid-column: auto; }
@@ -1351,7 +1362,7 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .development-dashboard-toggle b { color: #0d8552; font-size: 15px; white-space: nowrap; }
 .development-dashboard-chevron { color: #6c756f; font-size: 10px; white-space: nowrap; }
 .development-dashboard-track { height: 4px; margin: 0 11px 10px; overflow: hidden; border-radius: 999px; background: #e4ebe7; }
-.development-dashboard-track i { display: block; width: 45%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
+.development-dashboard-track i { display: block; width: 50%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
 .development-dashboard-access { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 11px 10px; }
 .development-dashboard-access a { display:inline-flex; align-items:center; gap:5px; color:#0f6b45; font-size:10px; font-weight:850; text-decoration:none; }
 .development-dashboard-access a:first-child { min-height:28px; padding:0 8px; border:1px solid #bcd8ca; border-radius:8px; background:#f5fbf7; }
@@ -1696,6 +1707,13 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     KR:{ label:'한국', currency:'KRW', searchHint:'예: 수분크림, 민감 진정, 테스트 GTIN' },
     US:{ label:'United States', currency:'USD', searchHint:'e.g. moisturizer, calming gel, test GTIN' },
     JP:{ label:'日本', currency:'JPY', searchHint:'例: moisturizer, calming gel, test GTIN' },
+    TH:{ label:'ประเทศไทย', currency:'THB', searchHint:'เช่น moisturizer, calming gel' },
+    SG:{ label:'Singapore', currency:'SGD', searchHint:'e.g. moisturizer, calming gel' },
+    AU:{ label:'Australia', currency:'AUD', searchHint:'e.g. moisturizer, calming gel' },
+    GB:{ label:'United Kingdom', currency:'GBP', searchHint:'e.g. moisturizer, calming gel' },
+    DE:{ label:'Deutschland', currency:'EUR', searchHint:'z. B. moisturizer, calming gel' },
+    FR:{ label:'France', currency:'EUR', searchHint:'ex. moisturizer, calming gel' },
+    CA:{ label:'Canada', currency:'CAD', searchHint:'e.g. moisturizer, calming gel' },
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}#progress`;
@@ -1789,6 +1807,14 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     const truth = productTruth(product);
     if (compact) return `<p class="product-truth-inline" data-data-truth="true" data-truth-price="${truth.priceKnown ? 'known' : 'unknown'}" data-truth-source="${truth.hasProvenance ? 'known' : 'unknown'}"><strong>${truth.status}</strong> · ${truth.purchaseNote}</p>`;
     return `<section class="data-truth" data-data-truth="true" data-truth-price="${truth.priceKnown ? 'known' : 'unknown'}" data-truth-source="${truth.hasProvenance ? 'known' : 'unknown'}" aria-label="상품 자료 상태"><div class="data-truth-heading"><strong>상품 자료 상태</strong><span>${truth.status}</span></div><dl><div><dt>가격</dt><dd>${truth.price} <small>${truth.unit}</small></dd></div><div><dt>출처</dt><dd>${escapeHtml(truth.source)}</dd></div><div><dt>확인 시각</dt><dd>${truth.observed}</dd></div><div><dt>구매 가능 여부</dt><dd>${truth.purchase} <small>${truth.purchaseNote}</small></dd></div></dl></section>`;
+  }
+
+  function marketAvailabilityCard() {
+    const market = MARKET_CONTEXTS[state.market];
+    const local = state.market === 'KR';
+    const sellerCopy = local ? '공식 판매처 연결 전' : `${market.label} 현지 판매처 연결 전`;
+    const deliveryCopy = local ? '국내 배송 여부는 상품별 확인 전' : '국제 배송·통관 조건 확인 전';
+    return `<section class="market-availability" data-market-availability="${state.market}" data-seller-status="unverified" data-delivery-status="unverified" aria-label="${escapeHtml(market.label)} 판매처와 배송 상태"><header><div><strong>${escapeHtml(market.label)} 판매처·배송</strong><span>주의 · 미확인</span></div><small>${market.currency} 기준</small></header><dl><div><dt>판매처</dt><dd>${sellerCopy}</dd></div><div><dt>배송</dt><dd>${deliveryCopy}</dd></div></dl><p>연결된 자료가 생기기 전에는 현지 가격·재고·구매 가능 여부를 추정하지 않아요.</p></section>`;
   }
 
   function mobileEvidenceDrawer(product) {
@@ -2229,7 +2255,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     const visibleCandidates = filteredCandidates();
     const filtered = visibleCandidates.length !== state.candidates.length;
     const zero = !visibleCandidates.length;
-    return layout(`${sectionHead(C.candidateTitle,C.candidateSub,'home')}<div class="candidate-entry-status" data-candidate-entry="${state.entryPath||'unknown'}"><strong>${entryCopy}에서 시작했어요</strong><span>후보 ${visibleCandidates.length}개마다 맞는 이유와 확인할 점을 함께 봅니다.</span></div><div class="mobile-candidate-summary" data-mobile-candidate-summary="true"><span>후보 <strong>${visibleCandidates.length}</strong>개</span><span>단계 완료 <strong>5 / 5</strong></span><span>단가 기준 <strong>ml</strong></span></div>${candidateFiltersView()}${filtered ? `<div class="notice warning" data-avoid-filter="${escapeHtml(state.answers.avoid)}"><strong>회피 조건 적용</strong><span>${state.answers.avoid === 'fragrance' ? '향 설정' : '리치한 마무리'}과 겹치는 후보는 숨겼어요.</span></div>` : ''}<div class="notice" data-api-source="${state.apiSource}"><strong>${visibleCandidates.length}개 후보 · ${sourceCopy}</strong><span>같은 테스트 데이터에서 같은 입력은 같은 결과를 반환합니다.${fingerprint.sample_count?` 지난 선택형 회고 ${fingerprint.sample_count}건의 취향 지문도 설명 가능한 보조 점수로 반영했습니다.`:''}</span></div>${zero ? `<section class="empty filter-zero" data-filter-zero="true"><strong>이 조건에서는 후보가 없어요</strong><p>회피 조건은 유지하고, 제형·고민·예산 필터만 초기화해 다시 볼 수 있어요.</p><button class="primary-btn" data-action="reset-candidate-filters" data-filter-recovery="true">필터 초기화</button></section>` : `<div class="pc-shortcut-hint" data-pc-keyboard-hint="true" aria-label="PC 키보드 사용법"><strong>키보드</strong><kbd>←</kbd><kbd>→</kbd><span>후보 이동</span><kbd>Space</kbd><kbd>Enter</kbd><span>현재 후보 결정 +1</span></div><section id="candidate-list" class="cards">${visibleCandidates.map(candidateCard).join('')}</section><div class="toolbar"><button class="primary-btn" data-action="compare">${C.compare}</button><button class="ghost-btn" data-action="restart">조건 다시 고르기</button></div>`}`);
+    return layout(`${sectionHead(C.candidateTitle,C.candidateSub,'home')}<div class="candidate-entry-status" data-candidate-entry="${state.entryPath||'unknown'}"><strong>${entryCopy}에서 시작했어요</strong><span>후보 ${visibleCandidates.length}개마다 맞는 이유와 확인할 점을 함께 봅니다.</span></div>${marketAvailabilityCard()}<div class="mobile-candidate-summary" data-mobile-candidate-summary="true"><span>후보 <strong>${visibleCandidates.length}</strong>개</span><span>단계 완료 <strong>5 / 5</strong></span><span>단가 기준 <strong>ml</strong></span></div>${candidateFiltersView()}${filtered ? `<div class="notice warning" data-avoid-filter="${escapeHtml(state.answers.avoid)}"><strong>회피 조건 적용</strong><span>${state.answers.avoid === 'fragrance' ? '향 설정' : '리치한 마무리'}과 겹치는 후보는 숨겼어요.</span></div>` : ''}<div class="notice" data-api-source="${state.apiSource}"><strong>${visibleCandidates.length}개 후보 · ${sourceCopy}</strong><span>같은 테스트 데이터에서 같은 입력은 같은 결과를 반환합니다.${fingerprint.sample_count?` 지난 선택형 회고 ${fingerprint.sample_count}건의 취향 지문도 설명 가능한 보조 점수로 반영했습니다.`:''}</span></div>${zero ? `<section class="empty filter-zero" data-filter-zero="true"><strong>이 조건에서는 후보가 없어요</strong><p>회피 조건은 유지하고, 제형·고민·예산 필터만 초기화해 다시 볼 수 있어요.</p><button class="primary-btn" data-action="reset-candidate-filters" data-filter-recovery="true">필터 초기화</button></section>` : `<div class="pc-shortcut-hint" data-pc-keyboard-hint="true" aria-label="PC 키보드 사용법"><strong>키보드</strong><kbd>←</kbd><kbd>→</kbd><span>후보 이동</span><kbd>Space</kbd><kbd>Enter</kbd><span>현재 후보 결정 +1</span></div><section id="candidate-list" class="cards">${visibleCandidates.map(candidateCard).join('')}</section><div class="toolbar"><button class="primary-btn" data-action="compare">${C.compare}</button><button class="ghost-btn" data-action="restart">조건 다시 고르기</button></div>`}`);
   }
 
   function compareView() {
@@ -2538,7 +2564,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
             <button type="submit" aria-label="검색">검색</button>
           </form>
           <div class="header-actions">
-            <label class="market-context"><span class="visually-hidden">기준 국가와 통화</span><select id="market-context" aria-label="기준 국가와 통화"><option value="KR"${state.market === 'KR' ? ' selected' : ''}>한국 · KRW</option><option value="US"${state.market === 'US' ? ' selected' : ''}>US · USD</option><option value="JP"${state.market === 'JP' ? ' selected' : ''}>日本 · JPY</option></select></label>
+            <label class="market-context"><span class="visually-hidden">기준 국가와 통화</span><select id="market-context" aria-label="기준 국가와 통화">${Object.entries(MARKET_CONTEXTS).map(([code,item]) => `<option value="${code}"${state.market === code ? ' selected' : ''}>${escapeHtml(item.label)} · ${item.currency}</option>`).join('')}</select></label>
             <span class="mode" data-data-mode="${DATA_MODE}">테스트 자료</span>
             ${standalone ? '' : '<button class="icon-btn install-btn" data-action="install">앱 설치</button>'}
             <button class="icon-btn saved-btn" data-action="library"><span>내 결정</span><strong>${state.decisions.length}</strong></button>
@@ -2578,24 +2604,24 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   // 상품 화면의 합성 자료와 혼동되지 않도록 "준비"와 "운영 반영"을 분리해 적는다.
   function developmentDashboard() {
     const expanded = state.devDashboardOpen;
-    const next20 = ['40 국가별 판매처','41 배송 국가','42 VPN·위치 비저장','43 지역 안내','44 구매 가능 과장 차단','45 규제 안내','46 성분 별칭','47 단위 표준화','48 환율 기준일','49 미지원 국가 안내','50 글자 크기','51 대비 선택','52 동작 줄이기','53 읽기 도구 지원','54 비교표 의미 구조','55 내보내기 복원 안내','56 실제 자료 연결 준비','57 설치·업데이트 점검','58 가상 페르소나 재점검','59 실사용자 동의 검사'];
+    const next20 = ['41 배송 국가','42 VPN·위치 비저장','43 지역 안내','44 구매 가능 과장 차단','45 규제 안내','46 성분 별칭','47 단위 표준화','48 환율 기준일','49 미지원 국가 안내','50 글자 크기','51 대비 선택','52 동작 줄이기','53 읽기 도구 지원','54 비교표 의미 구조','55 내보내기 복원 안내','56 실제 자료 연결 준비','57 설치·업데이트 점검','58 가상 페르소나 재점검','59 실사용자 동의 검사','60 고객지원 경로'];
     const autonomous20 = next20.map((item) => `자동 · ${item}`);
     return `<aside class="development-dashboard${expanded ? ' is-open' : ''}" data-development-dashboard="true" aria-label="개발 진행 상황">
       <button class="development-dashboard-toggle" data-action="toggle-development-dashboard" aria-expanded="${expanded}" aria-controls="development-dashboard-detail">
         <span class="development-dashboard-label"><i aria-hidden="true"></i>개발 현황</span>
-        <strong>9 / 20</strong><b>45%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
+        <strong>10 / 20</strong><b>50%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
       </button>
-      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45"><i></i></div>
+      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><i></i></div>
       <div class="development-dashboard-access" data-development-access="true"><a data-dashboard-pc-url="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">PC 주소 열기 ↗</a><a data-dashboard-progress-url="true" href="${PUBLIC_DASHBOARD_URL}" target="_blank" rel="noopener">진척 대시보드 ↗</a><a data-dashboard-qr-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener"><img data-dashboard-qr="true" src="${PUBLIC_QR_DATA}" alt="현재 앱 주소 QR 코드"><span>QR</span></a></div><p class="development-dashboard-url" data-dashboard-pc-url-text="true">${PUBLIC_APP_URL}</p>
       <div id="development-dashboard-detail" class="development-dashboard-detail"${expanded ? '' : ' hidden'}>
-        <p class="development-dashboard-summary">새 실행 묶음 <strong>9 / 20 · 45%</strong></p>
-        <section class="development-dashboard-readiness" data-dashboard-readiness="true" aria-label="상용 완성도"><div><strong>45%</strong><span>개발 진척</span><small>9/20 완료 조건</small></div><div><strong>34%</strong><span>모바일앱</span><small>핵심 흐름·개인정보 일부 확인</small></div><div><strong>44%</strong><span>PC 웹</span><small>핵심 흐름·접근성 일부 확인</small></div></section>
+        <p class="development-dashboard-summary">새 실행 묶음 <strong>10 / 20 · 50%</strong></p>
+        <section class="development-dashboard-readiness" data-dashboard-readiness="true" aria-label="상용 완성도"><div><strong>50%</strong><span>개발 진척</span><small>10/20 완료 조건</small></div><div><strong>35%</strong><span>모바일앱</span><small>국가·오프라인 핵심 흐름 확인</small></div><div><strong>46%</strong><span>PC 웹</span><small>국가·배송 안내와 접근성 일부 확인</small></div></section>
         <dl>
-          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터 · UX100-07 내 결정 · UX100-08 기기 우선 개인정보 · UX100-09 오프라인 복구</dd></div>
-          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가, 잘못된 가져오기와 이유 없는 기록 차단, 암호 오류 때 원본 보존, 오프라인 원격 요청 차단·기기 안 비교 지속</dd></div>
-          <div><dt>자료</dt><dd>합성 화면 자료 · 국가별 판매처 연결 전</dd></div>
+          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터 · UX100-07 내 결정 · UX100-08 기기 우선 개인정보 · UX100-09 오프라인 복구 · UX100-10 국가별 판매처</dd></div>
+          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가, 잘못된 가져오기와 이유 없는 기록 차단, 암호 오류 때 원본 보존, 오프라인 원격 요청 차단·기기 안 비교 지속, 10개 국가 판매처·배송 미확인 표시</dd></div>
+          <div><dt>자료</dt><dd>합성 화면 자료 · 10개 국가 판매처·배송 상태는 모두 미확인으로 명시</dd></div>
         </dl>
-        <p class="development-dashboard-blocker"><strong>다음 관문</strong>국가별 판매처와 실제 자료 연결 전에도 현지 가격·구매 가능 여부를 꾸미지 않기</p>
+        <p class="development-dashboard-blocker"><strong>다음 관문</strong>배송 국가·통관 조건과 실제 자료 연결 전에도 현지 가격·재고·구매 가능 여부를 꾸미지 않기</p>
         <details class="development-dashboard-priorities" data-dashboard-next-20="true"><summary>다음 실행 우선순위 20</summary><ol>${next20.map((item) => `<li>${item}</li>`).join('')}</ol></details>
         <details class="development-dashboard-priorities" data-dashboard-autonomous-20="true"><summary>사용자 없이 실행 가능한 20</summary><ol>${autonomous20.map((item) => `<li>${item}</li>`).join('')}</ol></details>
         <p class="development-dashboard-note">기준 2026-08-10 → 기능 묶음 예상 2026-08-20(±4일) · 화면용 상품 자료와 개발 정본은 서로 다릅니다.</p>
