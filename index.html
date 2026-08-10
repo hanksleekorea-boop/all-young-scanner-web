@@ -1381,7 +1381,7 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .development-dashboard-toggle b { color: #0d8552; font-size: 15px; white-space: nowrap; }
 .development-dashboard-chevron { color: #6c756f; font-size: 10px; white-space: nowrap; }
 .development-dashboard-track { height: 4px; margin: 0 11px 10px; overflow: hidden; border-radius: 999px; background: #e4ebe7; }
-.development-dashboard-track i { display: block; width: 50%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
+.development-dashboard-track i { display: block; width: 60%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
 .development-dashboard-access { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 11px 10px; }
 .development-dashboard-access a { display:inline-flex; align-items:center; gap:5px; color:#0f6b45; font-size:10px; font-weight:850; text-decoration:none; }
 .development-dashboard-access a:first-child { min-height:28px; padding:0 8px; border:1px solid #bcd8ca; border-radius:8px; background:#f5fbf7; }
@@ -2754,21 +2754,21 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   // 상품 화면의 합성 자료와 혼동되지 않도록 "준비"와 "운영 반영"을 분리해 적는다.
   function developmentDashboard() {
     const expanded = state.devDashboardOpen;
-    const next20 = ['41 배송 국가','42 VPN·위치 비저장','43 지역 안내','44 구매 가능 과장 차단','45 규제 안내','46 성분 별칭','47 단위 표준화','48 환율 기준일','49 미지원 국가 안내','50 화면 읽기 도구 점검','51 비교표 의미 구조','52 내보내기 복원 안내','53 실제 자료 연결 준비','54 설치·업데이트 점검','55 200명 가상 페르소나 재점검','56 실사용자 동의 검사','57 고객지원 경로','58 Android/iOS 교차검사','59 장애 대응 연습','60 판매처 자료 갱신 기준'];
+    const next20 = ['41 배송 국가','42 VPN·위치 비저장','43 지역 안내','44 구매 가능 과장 차단','45 규제 안내','46 성분 별칭','47 단위 표준화','48 환율 기준일','49 미지원 국가 안내','50 화면 읽기 도구 점검','51 비교표 의미 구조','52 백업 파일 복원 재점검','53 실제 자료 연결 준비','54 설치·업데이트 점검','55 200명 가상 페르소나 재점검','56 실사용자 동의 검사','57 고객지원 경로','58 Android/iOS 교차검사','59 장애 대응 연습','60 판매처 자료 갱신 기준'];
     const autonomous20 = next20.map((item) => `자동 · ${item}`);
     return `<aside class="development-dashboard${expanded ? ' is-open' : ''}" data-development-dashboard="true" aria-label="개발 진행 상황">
       <button class="development-dashboard-toggle" data-action="toggle-development-dashboard" aria-expanded="${expanded}" aria-controls="development-dashboard-detail">
         <span class="development-dashboard-label"><i aria-hidden="true"></i>개발 현황</span>
-        <strong>11 / 20</strong><b>55%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
+        <strong>12 / 20</strong><b>60%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
       </button>
-      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55"><i></i></div>
+      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60"><i></i></div>
       <div class="development-dashboard-access" data-development-access="true"><a data-dashboard-pc-url="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">PC 주소 열기 ↗</a><a data-dashboard-progress-url="true" href="${PUBLIC_DASHBOARD_URL}" target="_blank" rel="noopener">진척 대시보드 ↗</a><a data-dashboard-qr-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener"><img data-dashboard-qr="true" src="${PUBLIC_QR_DATA}" alt="현재 앱 주소 QR 코드"><span>QR</span></a></div><p class="development-dashboard-url" data-dashboard-pc-url-text="true">${PUBLIC_APP_URL}</p>
       <div id="development-dashboard-detail" class="development-dashboard-detail"${expanded ? '' : ' hidden'}>
-        <p class="development-dashboard-summary">새 실행 묶음 <strong>11 / 20 · 55%</strong></p>
-        <section class="development-dashboard-readiness" data-dashboard-readiness="true" aria-label="상용 완성도"><div><strong>55%</strong><span>개발 진척</span><small>11/20 완료 조건</small></div><div><strong>37%</strong><span>모바일앱</span><small>국가·오프라인·접근성 핵심 흐름 확인</small></div><div><strong>48%</strong><span>PC 웹</span><small>국가·배송·접근성 선택 확인</small></div></section>
+        <p class="development-dashboard-summary">새 실행 묶음 <strong>12 / 20 · 60%</strong></p>
+        <section class="development-dashboard-readiness" data-dashboard-readiness="true" aria-label="상용 완성도"><div><strong>60%</strong><span>개발 진척</span><small>12/20 완료 조건</small></div><div><strong>39%</strong><span>모바일앱</span><small>국가·오프라인·접근성·복원 흐름 확인</small></div><div><strong>50%</strong><span>PC 웹</span><small>국가·배송·접근성·복원 안내 확인</small></div></section>
         <dl>
-          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터 · UX100-07 내 결정 · UX100-08 기기 우선 개인정보 · UX100-09 오프라인 복구 · UX100-10 국가별 판매처 · UX100-12 보기 설정</dd></div>
-          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가, 잘못된 가져오기와 이유 없는 기록 차단, 암호 오류 때 원본 보존, 오프라인 원격 요청 차단·기기 안 비교 지속, 10개 국가 판매처·배송 미확인 표시</dd></div>
+          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터 · UX100-07 내 결정 · UX100-08 기기 우선 개인정보 · UX100-09 오프라인 복구 · UX100-10 국가별 판매처 · UX100-12 보기 설정 · UX100-13 기록 복원 안내</dd></div>
+          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가, 잘못된 가져오기와 이유 없는 기록 차단, 암호 오류 때 원본 보존, 오프라인 원격 요청 차단·기기 안 비교 지속, 10개 국가 판매처·배송 미확인 표시, 기존 기록·백업·오프라인 복원 안내</dd></div>
           <div><dt>자료</dt><dd>합성 화면 자료 · 10개 국가 판매처·배송 상태는 모두 미확인으로 명시</dd></div>
         </dl>
         <p class="development-dashboard-blocker"><strong>다음 관문</strong>배송 국가·통관 조건과 실제 자료 연결 전에도 현지 가격·재고·구매 가능 여부를 꾸미지 않기</p>
