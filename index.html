@@ -38,6 +38,9 @@ body { margin: 0; min-width: 320px; background: var(--bg); }
 button, input, select { font: inherit; }
 button { min-height: 44px; cursor: pointer; }
 button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid #5b8d00; outline-offset: 3px; }
+main:focus { outline: 0; }
+
+.decision-metadata { scroll-margin-top: 160px; scroll-margin-bottom: 260px; }
 .skip { position: fixed; left: 12px; top: -80px; z-index: 100; background: #fff; color: var(--primary); padding: 12px; border-radius: 10px; }
 .skip:focus { top: 12px; }
 .shell { min-height: 100vh; }
@@ -1052,6 +1055,14 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .service-status-strip span:first-child { color: #2f3438; }
 .service-status-strip i { width: 6px; height: 6px; background: #f59f00; box-shadow: none; }
 .service-status-strip button { margin-left: auto; color: var(--primary-2); font-size: 10px; text-decoration: none; }
+.connection-bar { display:flex; align-items:center; gap:10px; padding:11px clamp(16px,4vw,54px); border-bottom:1px solid var(--line); font-size:12px; line-height:1.45; }
+.connection-bar strong { flex:0 0 auto; }
+.connection-bar span { flex:1; }
+.connection-bar button { flex:0 0 auto; border:0; border-radius:999px; padding:7px 10px; font:inherit; font-weight:850; cursor:pointer; }
+.connection-bar.offline { background:#fff4d9; color:#714b00; border-color:#f0ce83; }
+.connection-bar.offline button { background:#714b00; color:#fff; }
+.connection-bar.restored { background:#e8f6ec; color:#1d613d; border-color:#b6dfc1; }
+.connection-bar.restored button { background:#1d613d; color:#fff; }
 
 .service-header {
   position: sticky;
@@ -1340,7 +1351,7 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .development-dashboard-toggle b { color: #0d8552; font-size: 15px; white-space: nowrap; }
 .development-dashboard-chevron { color: #6c756f; font-size: 10px; white-space: nowrap; }
 .development-dashboard-track { height: 4px; margin: 0 11px 10px; overflow: hidden; border-radius: 999px; background: #e4ebe7; }
-.development-dashboard-track i { display: block; width: 30%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
+.development-dashboard-track i { display: block; width: 45%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
 .development-dashboard-access { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 11px 10px; }
 .development-dashboard-access a { display:inline-flex; align-items:center; gap:5px; color:#0f6b45; font-size:10px; font-weight:850; text-decoration:none; }
 .development-dashboard-access a:first-child { min-height:28px; padding:0 8px; border:1px solid #bcd8ca; border-radius:8px; background:#f5fbf7; }
@@ -1351,6 +1362,12 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .development-dashboard-detail[hidden] { display: none; }
 .development-dashboard-summary { margin: 10px 0 0; color: #444d48; font-size: 12px; }
 .development-dashboard-summary strong { color: #0f7b4e; }
+.development-dashboard-readiness { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; }
+.development-dashboard-readiness div { min-width:0; padding:7px; border:1px solid #dce8e1; border-radius:7px; background:#fbfdfb; }
+.development-dashboard-readiness strong,.development-dashboard-readiness span,.development-dashboard-readiness small { display:block; }
+.development-dashboard-readiness strong { color:#0f7b4e; font-size:14px; }
+.development-dashboard-readiness span { color:#3c4942; font-size:9px; font-weight:850; }
+.development-dashboard-readiness small { margin-top:2px; color:#7b827e; font-size:8px; line-height:1.3; }
 .development-dashboard-detail dl { display: grid; gap: 5px; margin: 0; }
 .development-dashboard-detail dl div { display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 8px; }
 .development-dashboard-detail dt { color: #727a75; font-size: 10px; }
@@ -1408,7 +1425,9 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   .mobile-unit-price strong { font-size:11px; }
   .mobile-unit-price span { color:#0f754b; font-size:14px; font-weight:900; }
   .mobile-unit-price small { grid-column:1/-1; margin-top:3px; color:#708078; font-size:10px; }
-  .service-content:has(#candidate-list) { padding-bottom:118px; }
+  .service-content { padding-bottom:calc(196px + env(safe-area-inset-bottom)); }
+  .service-content:has(#candidate-list) { padding-bottom:calc(196px + env(safe-area-inset-bottom)); }
+  .service-content :is(button,input,select,textarea) { scroll-margin-bottom:176px; }
   .service-status-strip { padding-inline: 14px; }
   .service-header-main,.service-header-nav { width: min(calc(100% - 24px),900px); }
   .service-header-main { padding: 9px 0; }
@@ -1433,11 +1452,14 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   .mobile-curated button { border-radius: 12px; }
   .mobile-curated i { color: #fff; background: var(--primary); }
   .service-footer { width: min(calc(100% - 24px),900px); }
-  .development-dashboard { right: 12px; bottom: 12px; width: min(330px,calc(100vw - 24px)); }
+  .development-dashboard { right: 12px; bottom: 12px; width: min(330px,calc(100vw - 24px)); max-height:min(64dvh,560px); overflow:auto; }
 }
 
 @media (max-width:760px) {
   .service-status-strip span:nth-child(2) { display: none; }
+  .connection-bar { align-items:flex-start; flex-wrap:wrap; padding:10px 14px; font-size:11px; }
+  .connection-bar span { flex-basis:calc(100% - 84px); }
+  .connection-bar button { margin-left:auto; }
   .service-header-main { gap: 8px; }
   .brand-seal { width: 34px; height: 34px; border-radius: 10px; }
   .brand-copy strong { font-size: 17px; }
@@ -1666,6 +1688,9 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   const STORAGE_KEY = 'ays-alpha-decisions-v01';
   const EVENT_KEY = 'ays-alpha-events-v01';
   const SHARE_VOTE_KEY = 'ays-alpha-share-votes-v01';
+  const SYNC_CONSENT_KEY = 'ays-alpha-sync-consent-v01';
+  const ENCRYPTED_BACKUP_FORMAT = 'allyoung-encrypted-decision-backup';
+  const BACKUP_KDF_ITERATIONS = 210000;
   const DATA_MODE = 'synthetic';
   const MARKET_CONTEXTS = Object.freeze({
     KR:{ label:'한국', currency:'KRW', searchHint:'예: 수분크림, 민감 진정, 테스트 GTIN' },
@@ -1673,6 +1698,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     JP:{ label:'日本', currency:'JPY', searchHint:'例: moisturizer, calming gel, test GTIN' },
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
+  const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}#progress`;
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const memory = new Map();
@@ -1728,7 +1754,8 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     sessionId:null, apiSource:API_BASE ? 'remote' : 'local', loadingLabel:'',
     sharePayload:null, shareLink:'', friendVote:null, recalculateNotice:false,
     usageQuery:'', usageFilter:'all', selectedUsage:null, usageBack:'usage', usageContextProductId:null,
-    guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, devDashboardOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product',
+    guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, devDashboardOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product', libraryQuery:'', libraryFilter:'all', syncConsent:false,
+    online:navigator.onLine, offlineSince:null, connectionRecovered:false,
   };
 
   const won = (n) => `${n.toLocaleString('ko-KR')}원`;
@@ -1808,6 +1835,20 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     toast.timer = setTimeout(() => node.classList.remove('show'), 2400);
   }
 
+  function connectionBar() {
+    if (state.online && !state.connectionRecovered) return '';
+    if (!state.online) return `<section class="connection-bar offline" data-connection-status="offline" aria-live="polite"><strong>지금 오프라인이에요</strong><span>이 기기에 저장된 후보·결정·암호화 백업은 계속 쓸 수 있어요. 실제 판매처 정보와 선택 동기화는 연결 뒤에만 확인합니다.</span><button data-action="offline-help">오프라인에서 되는 일</button></section>`;
+    return `<section class="connection-bar restored" data-connection-status="restored" aria-live="polite"><strong>연결이 돌아왔어요</strong><span>기록은 자동으로 밖으로 보내지지 않아요. 동기화는 직접 켠 경우에만 다시 사용할 수 있어요.</span><button data-action="connection-notice-close">확인</button></section>`;
+  }
+
+  function setConnectionState(online) {
+    const wasOffline=!state.online;
+    state.online=online;
+    if (!online) { state.offlineSince=new Date().toISOString();state.connectionRecovered=false;toast('오프라인으로 바뀌었어요. 기기 안의 비교와 기록으로 계속할 수 있어요.'); }
+    else if (wasOffline) { state.offlineSince=null;state.connectionRecovered=true;toast('연결이 돌아왔어요. 기록은 자동으로 밖으로 보내지지 않아요.'); }
+    render();
+  }
+
   function safeRead(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
@@ -1857,6 +1898,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     else state.events = storedEvents;
     const storedMarket = safeRead('ays-alpha-market-v01', 'KR');
     state.market = MARKET_CONTEXTS[storedMarket] ? storedMarket : 'KR';
+    state.syncConsent = safeRead(SYNC_CONSENT_KEY, false) === true;
   }
 
   function textureMatches(p, pref) {
@@ -1938,6 +1980,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   }
 
   async function remoteRequest(path, options = {}) {
+    if (!state.online) throw new Error('offline');
     const response = await fetch(`${API_BASE}${path}`, {
       ...options,
       headers:{ 'content-type':'application/json', 'x-anon-key':getAnonKey(), ...(options.headers || {}) },
@@ -1958,7 +2001,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   }
 
   async function withApiFallback(remote, local) {
-    if (!API_BASE) { state.apiSource='local'; return local(); }
+    if (!API_BASE || !state.syncConsent || !state.online) { state.apiSource='local'; return local(); }
     try { const result=await remote(); state.apiSource='remote'; return result; }
     catch { state.apiSource='fallback'; toast('서버 연결이 어려워 기기 안의 테스트 계산으로 계속했어요.'); return local(); }
   }
@@ -2239,11 +2282,13 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
 
   function hydrateDecisionRetention(decision) {
     if (!decision || typeof decision !== 'object') return decision;
-    if (decision.follow_up) return { ...decision, follow_up:retentionCore.presentFollowUp(decision.follow_up) };
+    const metadata = { concern:decision.metadata?.concern || decision.concern || '', usage_period:decision.metadata?.usage_period || 'not_started', repurchase:decision.metadata?.repurchase || 'undecided' };
+    if (decision.follow_up) return { ...decision, metadata, follow_up:retentionCore.presentFollowUp(decision.follow_up) };
     const product = products.find((item) => item.id === decision.product_id);
-    if (!product) return decision;
+    if (!product) return { ...decision, metadata };
     return {
       ...decision,
+      metadata,
       follow_up:retentionCore.createLocalFollowUp(decision, product, syntheticObservations[product.id] || {}),
       follow_up_source:'local',
     };
@@ -2255,7 +2300,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   }
 
   async function syncDecisionRetention(record, product) {
-    if (!API_BASE || !state.sessionId) return record;
+    if (!API_BASE || !state.syncConsent || !state.online || !state.sessionId) return record;
     try {
       const completed = await decisionApi.complete(state.sessionId,product,record);
       if (!completed?.ok) return record;
@@ -2274,7 +2319,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   }
 
   async function loadLibrary() {
-    if (API_BASE) {
+    if (API_BASE && state.syncConsent && state.online) {
       try {
         const response = await retentionApi.list();
         const byId = new Map((response.items || []).map((item) => [item.decision_id,item]));
@@ -2293,7 +2338,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
 
   async function saveDecision(product) {
     const usage = usageCardForProduct(product);
-    const record = { id:`d-${Date.now()}`, product_id:product.id, name:product.name, brand:product.brand, role:product.role || '대안 선택', reasons:(product.reasons || ['직접 비교 후 선택했어요.']).slice(0,2), selected_at:new Date().toISOString(), data_mode:DATA_MODE, usage_slug:usage?.slug || null, usage_title:usage?.title || null, usage_version:usage ? 1 : null };
+    const record = { id:`d-${Date.now()}`, product_id:product.id, name:product.name, brand:product.brand, role:product.role || '대안 선택', reasons:(product.reasons || ['직접 비교 후 선택했어요.']).slice(0,2), selected_at:new Date().toISOString(), data_observed_at:product.observed_at || null, data_source:product.source_label || null, data_mode:DATA_MODE, usage_slug:usage?.slug || null, usage_title:usage?.title || null, usage_version:usage ? 1 : null, metadata:{concern:state.answers.concern || '',usage_period:'not_started',repurchase:'undecided'} };
     record.follow_up = retentionCore.createLocalFollowUp(record,product,syntheticObservations[product.id] || {});
     record.follow_up_source = 'local';
     state.decisions = [record,...state.decisions.filter((d) => d.product_id !== product.id)].slice(0,20);
@@ -2358,6 +2403,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   }
 
   function loadSharedCardFromHash() {
+    if(location.hash==='#progress'){state.devDashboardOpen=true;return false;}
     if(!location.hash.startsWith('#share='))return false;
     try{
       const payload=safeSharedPayload(decodeShare(location.hash.slice(7)));
@@ -2376,7 +2422,8 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   function decisionRow(d) {
     const usage = decisionUsage(d);
     const followUp = d.follow_up ? retentionCore.presentFollowUp(d.follow_up) : null;
-    return `<article class="decision" data-decision="${escapeHtml(d.id)}"><div class="decision-main"><h3>${escapeHtml(d.name)}</h3><p class="muted">${escapeHtml(d.brand)} · ${new Date(d.selected_at).toLocaleDateString('ko-KR')} · ${d.data_mode === 'synthetic' ? '테스트 데이터' : '제한 데이터'}</p>${usage ? `<small>저장 당시 사용법 v${escapeHtml(d.usage_version || 1)} · ${escapeHtml(usage.title)}</small>` : ''}${followUp ? retentionSummary(d,followUp) : ''}</div><div class="decision-actions">${usage ? `<button class="secondary-btn" data-action="decision-usage" data-decision="${escapeHtml(d.id)}">사용법 다시 보기</button><button class="secondary-btn" data-action="decision-guide" data-decision="${escapeHtml(d.id)}">첫 7일</button>` : ''}${followUp && ['due','late'].includes(followUp.timing) ? `<button class="primary-btn" data-action="retention-review" data-decision="${escapeHtml(d.id)}">${followUp.timing==='late'?'늦은 회고 남기기':'7~21일 회고'}</button>` : ''}${followUp && followUp.timing!=='completed' ? `<button class="ghost-btn" data-action="retention-preference" data-decision="${escapeHtml(d.id)}" data-preference="${followUp.preference_state==='muted'?'active':'muted'}">${followUp.preference_state==='muted'?'회고 알림 켜기':'회고 알림 끄기'}</button>` : ''}</div></article>`;
+    const observed = d.data_observed_at && !Number.isNaN(Date.parse(d.data_observed_at)) ? new Date(d.data_observed_at).toLocaleString('ko-KR',{dateStyle:'medium',timeStyle:'short'}) : '자료 확인 시각 없음';
+    return `<article class="decision" data-decision="${escapeHtml(d.id)}"><div class="decision-main"><h3>${escapeHtml(d.name)}</h3><p class="muted">${escapeHtml(d.brand)} · ${new Date(d.selected_at).toLocaleDateString('ko-KR')} · ${d.data_mode === 'synthetic' ? '테스트 데이터' : '제한 데이터'}</p><small class="decision-observed" data-decision-observed="true">자료 확인 시각 · ${escapeHtml(observed)}${d.data_source ? ` · ${escapeHtml(d.data_source)}` : ''}</small>${usage ? `<small>저장 당시 사용법 v${escapeHtml(d.usage_version || 1)} · ${escapeHtml(usage.title)}</small>` : ''}${followUp ? retentionSummary(d,followUp) : ''}</div><div class="decision-actions">${usage ? `<button class="secondary-btn" data-action="decision-usage" data-decision="${escapeHtml(d.id)}">사용법 다시 보기</button><button class="secondary-btn" data-action="decision-guide" data-decision="${escapeHtml(d.id)}">첫 7일</button>` : ''}${followUp && ['due','late'].includes(followUp.timing) ? `<button class="primary-btn" data-action="retention-review" data-decision="${escapeHtml(d.id)}">${followUp.timing==='late'?'늦은 회고 남기기':'7~21일 회고'}</button>` : ''}${followUp && followUp.timing!=='completed' ? `<button class="ghost-btn" data-action="retention-preference" data-decision="${escapeHtml(d.id)}" data-preference="${followUp.preference_state==='muted'?'active':'muted'}">${followUp.preference_state==='muted'?'회고 알림 켜기':'회고 알림 끄기'}</button>` : ''}</div></article>`;
   }
 
   function retentionSummary(decision, followUp) {
@@ -2426,8 +2473,38 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     return layout(`${sectionHead(C.firstSevenDays,`${decision.name} · 합성 테스트 상품`,'library')}<div class="notice warning usage-review"><strong>${C.usageReviewNotice}</strong><span>효과를 판정하는 일정이 아니라, 하나씩 안전하게 써 보고 불편을 기록하는 가이드입니다.</span></div><article class="seven-day-guide" data-first-seven-guide="${escapeHtml(decision.id)}"><div class="guide-product"><span class="role">저장 당시 사용법 v${escapeHtml(decision.usage_version || 1)}</span><h3>${escapeHtml(card.title)}</h3><p>${escapeHtml(card.body.routine_position)}</p></div><ol class="guide-timeline"><li class="guide-phase"><strong>1일</strong><div><h3>표시사항과 중단 기준부터</h3><p>${escapeHtml(card.body.label_priority)} 기존 루틴에 이 제품 하나만 추가해 보세요.</p></div></li><li class="guide-phase"><strong>2~3일</strong><div><h3>같은 방식으로 단순하게</h3><p>${escapeHtml(amount)} 불편 신호가 생기면 참지 말고 사용을 멈춥니다.</p></div></li><li class="guide-phase"><strong>4~7일</strong><div><h3>효과 단정 없이 사용 경험 회고</h3><p>편했음 · 복잡했음 · 사용감 불편 · 변화 판단 어려움 중 가까운 경험을 기록해 두세요.</p></div></li></ol><div class="notice warning"><strong>불편 신호</strong><span>${escapeHtml(card.body.safety_note)}</span></div><div class="toolbar"><button class="secondary-btn" data-action="decision-usage" data-decision="${escapeHtml(decision.id)}">전체 사용법과 근거</button><button class="ghost-btn" data-action="library">내 결정으로 돌아가기</button></div></article>`);
   }
 
+  function libraryDecisions() {
+    const query = normalizeSearchQuery(state.libraryQuery || '');
+    return state.decisions.filter((decision) => {
+      const haystack = normalizeSearchQuery([decision.name,decision.brand,decision.metadata?.concern,...(decision.reasons || [])].join(' '));
+      if (query && !haystack.includes(query)) return false;
+      if (state.libraryFilter === 'repurchase') return decision.metadata?.repurchase === 'yes';
+      if (state.libraryFilter === 'in_use') return ['testing','using'].includes(decision.metadata?.usage_period);
+      if (state.libraryFilter === 'recent') return Date.now() - Date.parse(decision.selected_at) < 30*24*60*60*1000;
+      return true;
+    });
+  }
+
+  function decisionMetadataForm(decision) {
+    const metadata = decision.metadata || { usage_period:'not_started', repurchase:'undecided' };
+    return `<details class="decision-metadata" data-decision-metadata="${escapeHtml(decision.id)}"><summary>사용·재구매 기록</summary><form data-decision-metadata-form="${escapeHtml(decision.id)}"><label>사용 상태<select name="usage_period"><option value="not_started"${metadata.usage_period==='not_started'?' selected':''}>아직 시작 전</option><option value="testing"${metadata.usage_period==='testing'?' selected':''}>테스트 중</option><option value="using"${metadata.usage_period==='using'?' selected':''}>사용 중</option><option value="stopped"${metadata.usage_period==='stopped'?' selected':''}>사용 중단</option></select></label><label>재구매 의향<select name="repurchase"><option value="undecided"${metadata.repurchase==='undecided'?' selected':''}>아직 모르겠어요</option><option value="yes"${metadata.repurchase==='yes'?' selected':''}>다시 고를래요</option><option value="no"${metadata.repurchase==='no'?' selected':''}>다른 선택을 볼래요</option></select></label><button class="secondary-btn" type="submit">기기에 저장</button></form></details>`;
+  }
+
   function libraryView() {
-    return layout(`${sectionHead('내 결정','저장 상태를 확인하고 언제든 내보낼 수 있어요.','home')}<div class="toolbar"><button class="secondary-btn" data-action="export">JSON 내보내기</button><label class="secondary-btn" for="import-file" role="button">JSON 가져오기</label><input id="import-file" class="visually-hidden" type="file" accept="application/json"></div>${preferenceFingerprintView()}${state.decisions.length ? `<div class="decision-list">${state.decisions.map(decisionRow).join('')}</div>` : '<div class="empty">아직 저장한 결정이 없어요.</div>'}`);
+    const records = libraryDecisions();
+    const filterLabel = {all:'전체',recent:'최근 30일',in_use:'사용 중',repurchase:'재구매 의향'};
+    return layout(`${sectionHead('내 결정','이 브라우저에 저장한 선택을 다시 찾고, 사용 경험을 짧게 남겨요.','home')}<div class="toolbar"><button class="secondary-btn" data-action="export">JSON 내보내기</button><label class="secondary-btn" for="import-file" role="button">JSON 가져오기</label><input id="import-file" class="visually-hidden" type="file" accept="application/json"><button class="ghost-btn" data-action="privacy">암호화 백업</button></div><form id="library-search-form" class="form-card" role="search"><label for="library-query">제품·브랜드·고민으로 찾기</label><div class="toolbar"><input id="library-query" name="query" value="${escapeHtml(state.libraryQuery)}" placeholder="예: 수분, 민감, 브랜드"><button class="secondary-btn" type="submit">찾기</button></div></form><div class="filter-row" aria-label="결정 기록 필터">${Object.entries(filterLabel).map(([value,labelText])=>`<button class="filter-chip${state.libraryFilter===value?' active':''}" data-action="library-filter" data-library-filter="${value}" aria-pressed="${state.libraryFilter===value}">${labelText}</button>`).join('')}</div>${preferenceFingerprintView()}${state.decisions.length ? `<p class="muted" data-library-result-count="true">${records.length}개 기록</p>${records.length ? `<div class="decision-list">${records.map((decision)=>`${decisionRow(decision)}${decisionMetadataForm(decision)}`).join('')}</div>` : '<div class="empty">조건에 맞는 기록이 없어요. 필터를 전체로 돌려보세요.</div>'}` : '<div class="empty">아직 저장한 결정이 없어요.</div>'}`);
+  }
+
+  function privacyView() {
+    const online = state.online ? '연결됨' : '오프라인';
+    const syncAvailable = Boolean(API_BASE);
+    return layout(`${sectionHead('개인정보 선택권','기본값은 기기 안 저장입니다. 밖으로 보내는 일은 직접 켠 경우에만 가능해요.','method')}<section class="method-grid privacy-grid"><article><span>01</span><h3>기본 저장</h3><p>결정·회고·사용 기록은 로그인 없이 이 브라우저에 저장됩니다.</p></article><article><span>02</span><h3>동기화 선택</h3><p>${state.syncConsent ? '사용자가 선택한 동기화가 켜져 있습니다.' : '동기화는 꺼져 있습니다. 현재 어떤 기록도 서버로 보내지 않습니다.'}</p></article><article><span>03</span><h3>암호화 백업</h3><p>내가 정한 암호로 잠근 파일만 직접 내려받거나 가져올 수 있습니다. 암호는 저장하지 않습니다.</p></article><article><span>04</span><h3>오프라인</h3><p>현재 ${online} · ${state.online ? '연결이 없어져도 기기 안 추천과 기록은 계속됩니다.' : '원격 요청 없이 기기 안 비교·기록으로 계속하고 있습니다.'}</p></article></section><section class="form-card privacy-choice"><h2>선택 동기화</h2><p>서버 주소가 연결된 경우에도, 이 버튼을 직접 누르기 전에는 전송하지 않습니다.</p><button class="${state.syncConsent ? 'secondary-btn' : 'primary-btn'}" data-action="privacy-sync-toggle" aria-pressed="${state.syncConsent}">${state.syncConsent ? '선택 동기화 끄기' : '선택 동기화 켜기'}</button><p class="muted">${syncAvailable ? (state.online ? '켜면 새 결정·회고를 서버와 맞출 수 있습니다. 언제든 다시 끌 수 있습니다.' : '오프라인 중에는 동기화를 켜도 전송하지 않습니다. 연결이 돌아와도 사용자가 새 행동을 하기 전 자동 전송하지 않습니다.') : '현재 공개 알파에는 동기화 서버가 연결되어 있지 않아, 버튼을 켜도 외부 전송은 발생하지 않습니다.'}</p></section><section class="form-card encrypted-backup" data-encrypted-backup="true"><h2>암호화 백업</h2><p>백업 파일만 다른 기기로 옮기고, 암호는 파일·브라우저·서버 어디에도 저장하지 마세요.</p><div class="backup-fields"><label>새 백업 암호 <input id="backup-passphrase" type="password" autocomplete="new-password" minlength="12" placeholder="12자 이상"></label><label>암호 다시 입력 <input id="backup-passphrase-confirmation" type="password" autocomplete="new-password" minlength="12" placeholder="같은 암호"></label></div><button class="secondary-btn" data-action="encrypted-export">암호화 파일 만들기</button><hr><div class="backup-fields"><label>암호화 백업 파일 <input id="encrypted-import-file" type="file" accept="application/json,.aysbackup"></label><label>백업 암호 <input id="encrypted-import-passphrase" type="password" autocomplete="current-password" placeholder="백업을 만든 암호"></label></div><button class="ghost-btn" data-action="encrypted-import">암호화 파일 가져오기</button><p class="muted">암호 또는 파일이 틀리면 기존 기록을 바꾸지 않습니다. 선택 당시의 자료 확인 시각도 함께 보존됩니다.</p></section><section class="method-actions"><h2>기기 안 기록 관리</h2><div><button class="secondary-btn" data-action="pc-library">내 결정 열기</button><button class="ghost-btn" data-action="offline-help">오프라인에서 되는 일</button><button class="ghost-btn" data-action="method">자료 기준 보기</button></div></section>`);
+  }
+
+  function offlineView() {
+    const status=state.online ? '연결됨' : '오프라인';
+    return layout(`${sectionHead('오프라인에서도 이어가기','연결 상태가 바뀌어도 선택을 잃지 않도록, 되는 일과 기다려야 할 일을 나눠 보여드립니다.','privacy')}<section class="method-grid offline-guide" data-offline-guide="true"><article><span>01</span><h3>계속 되는 일</h3><p>기기에 저장된 후보 비교, 내 결정, 사용·재구매 기록, 암호화 백업은 ${status} 상태에서도 계속됩니다.</p></article><article><span>02</span><h3>기다리는 일</h3><p>실제 판매처 가격·재고 확인과 사용자가 켠 선택 동기화는 연결된 뒤에만 시도합니다.</p></article><article><span>03</span><h3>자동 전송 없음</h3><p>연결이 돌아와도 오프라인 동안 만든 기록을 자동으로 밖으로 보내지 않습니다.</p></article><article><span>04</span><h3>지금 상태</h3><p><strong data-offline-status-text="true">${status}</strong>${state.offlineSince ? ` · ${new Date(state.offlineSince).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}부터 기기 안 모드` : ''}</p></article></section><section class="method-actions"><h2>바로 이어가기</h2><div><button class="primary-btn" data-action="pc-start-quiz">기기 안 비교 시작</button><button class="secondary-btn" data-action="pc-library">내 결정 보기</button><button class="ghost-btn" data-action="privacy">개인정보 선택권</button></div></section>`);
   }
 
   function serviceRouteGroup() {
@@ -2436,7 +2513,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     if (['bridge','barcode'].includes(state.route)) return 'find';
     if (['usage','usage-detail','decision-guide'].includes(state.route)) return 'usage';
     if (['library','retention-review'].includes(state.route)) return 'library';
-    if (state.route === 'method') return 'method';
+    if (['method','privacy','offline-help'].includes(state.route)) return 'method';
     return 'home';
   }
 
@@ -2476,6 +2553,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
             ${serviceNavButton('pc-usage','사용법','usage')}
             ${serviceNavButton('pc-library','내 결정','library')}
             ${serviceNavButton('method','기준과 출처','method')}
+            ${serviceNavButton('privacy','개인정보','method')}
           </nav>
           <button class="handoff-header-btn" data-action="pc-shortcuts" aria-expanded="${state.pcHelpOpen}">단축키 <kbd>?</kbd></button>
         </div>
@@ -2500,26 +2578,27 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   // 상품 화면의 합성 자료와 혼동되지 않도록 "준비"와 "운영 반영"을 분리해 적는다.
   function developmentDashboard() {
     const expanded = state.devDashboardOpen;
-    const next30 = ['26 제형 필터','27 예산 필터','28 고민 필터','29 회피 조건 필터','30 빈 결과 복구','31 대체 이유','32 사용·재구매 기록','33 날짜·고민 찾기','34 내보내기·가져오기','35 교체 근거','36 기기 백업 암호화','37 선택 동기화 설계','38 오프라인 복구','39 자료 시각 표시','40 동의 없는 전송 차단','41 국가별 판매처','42 배송 국가','43 VPN·위치 비저장','44 지역 안내','45 구매 가능 과장 차단','46 규제 안내','47 성분 별칭','48 단위 표준화','49 환율 기준일','50 미지원 국가 안내','51 글자 크기','52 대비 선택','53 동작 줄이기','54 읽기 도구 지원','55 비교표 의미 구조'];
-    const autonomous30 = next30.map((item) => `자동 · ${item}`);
+    const next20 = ['40 국가별 판매처','41 배송 국가','42 VPN·위치 비저장','43 지역 안내','44 구매 가능 과장 차단','45 규제 안내','46 성분 별칭','47 단위 표준화','48 환율 기준일','49 미지원 국가 안내','50 글자 크기','51 대비 선택','52 동작 줄이기','53 읽기 도구 지원','54 비교표 의미 구조','55 내보내기 복원 안내','56 실제 자료 연결 준비','57 설치·업데이트 점검','58 가상 페르소나 재점검','59 실사용자 동의 검사'];
+    const autonomous20 = next20.map((item) => `자동 · ${item}`);
     return `<aside class="development-dashboard${expanded ? ' is-open' : ''}" data-development-dashboard="true" aria-label="개발 진행 상황">
       <button class="development-dashboard-toggle" data-action="toggle-development-dashboard" aria-expanded="${expanded}" aria-controls="development-dashboard-detail">
         <span class="development-dashboard-label"><i aria-hidden="true"></i>개발 현황</span>
-        <strong>6 / 20</strong><b>30%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
+        <strong>9 / 20</strong><b>45%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
       </button>
-      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"><i></i></div>
-      <div class="development-dashboard-access" data-development-access="true"><a data-dashboard-pc-url="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">PC 주소 열기 ↗</a><a data-dashboard-qr-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener"><img data-dashboard-qr="true" src="${PUBLIC_QR_DATA}" alt="현재 앱 주소 QR 코드"><span>QR</span></a></div><p class="development-dashboard-url" data-dashboard-pc-url-text="true">${PUBLIC_APP_URL}</p>
+      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45"><i></i></div>
+      <div class="development-dashboard-access" data-development-access="true"><a data-dashboard-pc-url="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">PC 주소 열기 ↗</a><a data-dashboard-progress-url="true" href="${PUBLIC_DASHBOARD_URL}" target="_blank" rel="noopener">진척 대시보드 ↗</a><a data-dashboard-qr-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener"><img data-dashboard-qr="true" src="${PUBLIC_QR_DATA}" alt="현재 앱 주소 QR 코드"><span>QR</span></a></div><p class="development-dashboard-url" data-dashboard-pc-url-text="true">${PUBLIC_APP_URL}</p>
       <div id="development-dashboard-detail" class="development-dashboard-detail"${expanded ? '' : ' hidden'}>
-        <p class="development-dashboard-summary">새 실행 묶음 <strong>6 / 20 · 30%</strong></p>
+        <p class="development-dashboard-summary">새 실행 묶음 <strong>9 / 20 · 45%</strong></p>
+        <section class="development-dashboard-readiness" data-dashboard-readiness="true" aria-label="상용 완성도"><div><strong>45%</strong><span>개발 진척</span><small>9/20 완료 조건</small></div><div><strong>34%</strong><span>모바일앱</span><small>핵심 흐름·개인정보 일부 확인</small></div><div><strong>44%</strong><span>PC 웹</span><small>핵심 흐름·접근성 일부 확인</small></div></section>
         <dl>
-          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터</dd></div>
-          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가 누락 차단</dd></div>
+          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터 · UX100-07 내 결정 · UX100-08 기기 우선 개인정보 · UX100-09 오프라인 복구</dd></div>
+          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가, 잘못된 가져오기와 이유 없는 기록 차단, 암호 오류 때 원본 보존, 오프라인 원격 요청 차단·기기 안 비교 지속</dd></div>
           <div><dt>자료</dt><dd>합성 화면 자료 · 국가별 판매처 연결 전</dd></div>
         </dl>
-        <p class="development-dashboard-blocker"><strong>다음 관문</strong>대체 이유와 개인 결정 기록을 날짜·고민별로 다시 찾고 안전하게 옮기기</p>
-        <details class="development-dashboard-priorities" data-dashboard-next-30="true"><summary>다음 실행 우선순위 30</summary><ol>${next30.map((item) => `<li>${item}</li>`).join('')}</ol></details>
-        <details class="development-dashboard-priorities" data-dashboard-autonomous-30="true"><summary>사용자 없이 실행 가능한 30</summary><ol>${autonomous30.map((item) => `<li>${item}</li>`).join('')}</ol></details>
-        <p class="development-dashboard-note">기준일 2026-08-05 · 화면용 상품 자료와 개발 정본은 서로 다릅니다.</p>
+        <p class="development-dashboard-blocker"><strong>다음 관문</strong>국가별 판매처와 실제 자료 연결 전에도 현지 가격·구매 가능 여부를 꾸미지 않기</p>
+        <details class="development-dashboard-priorities" data-dashboard-next-20="true"><summary>다음 실행 우선순위 20</summary><ol>${next20.map((item) => `<li>${item}</li>`).join('')}</ol></details>
+        <details class="development-dashboard-priorities" data-dashboard-autonomous-20="true"><summary>사용자 없이 실행 가능한 20</summary><ol>${autonomous20.map((item) => `<li>${item}</li>`).join('')}</ol></details>
+        <p class="development-dashboard-note">기준 2026-08-10 → 기능 묶음 예상 2026-08-20(±4일) · 화면용 상품 자료와 개발 정본은 서로 다릅니다.</p>
       </div>
     </aside>`;
   }
@@ -2527,7 +2606,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   function layout(body) {
     const pcDock = `<aside class="pc-handoff-dock" data-pc-handoff="true" aria-label="폰으로 이어서 보기"><img data-pc-qr="true" src="${PUBLIC_QR_DATA}" alt="올영스캐너 공개 앱 QR 코드"><div><strong>폰으로 이어보기</strong><span>기존 공개판 주소를 열어요.</span><a data-pc-canonical-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">QR 주소 열기</a><button class="ghost-btn" data-action="pc-shortcuts-open" aria-expanded="${state.pcHelpOpen}">키보드 도움말</button></div></aside>`;
     const pcHelp = state.pcHelpOpen ? `<section class="pc-shortcut-panel" data-pc-shortcut-panel="true" role="dialog" aria-modal="true" aria-labelledby="pc-shortcut-title"><div><span class="pc-area-label">KEYBOARD</span><h2 id="pc-shortcut-title">키보드로 더 빠르게</h2><dl><div><dt>/</dt><dd>검색창으로 이동해요.</dd></div><div><dt>← / →</dt><dd>후보 사이를 이동해요.</dd></div><div><dt>Space / Enter</dt><dd>현재 후보를 결정으로 저장해요.</dd></div><div><dt>Esc</dt><dd>도움말을 닫아요.</dd></div></dl><button class="primary-btn" data-action="pc-shortcuts-close">확인</button></div></section>` : '';
-    return `<div class="shell service-shell">${header()}<main id="main" class="content service-content" tabindex="-1">${body}</main>${serviceFooter()}${developmentDashboard()}${pcDock}${pcHelp}${storageBar()}</div>`;
+    return `<div class="shell service-shell">${header()}${connectionBar()}<main id="main" class="content service-content" tabindex="-1">${body}</main>${serviceFooter()}${developmentDashboard()}${pcDock}${pcHelp}${storageBar()}</div>`;
   }
 
   function serviceHomePreviewCard(product, index) {
@@ -2622,6 +2701,8 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     else if (state.route === 'decision-guide') view = firstSevenDayView();
     else if (state.route === 'retention-review') view = retentionReviewView();
     else if (state.route === 'method') view = methodView();
+    else if (state.route === 'privacy') view = privacyView();
+    else if (state.route === 'offline-help') view = offlineView();
     else if (state.route === 'loading') view = loadingView();
     app.innerHTML = view;
     const mobileShopHome = document.querySelector('.service-mobile-home');
@@ -2689,8 +2770,76 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   }
 
   function exportJson() {
-    const blob=new Blob([JSON.stringify({version:1,data_mode:DATA_MODE,decisions:state.decisions},null,2)],{type:'application/json'});
+    const payload={version:3,format:'allyoung-decision-library',data_mode:DATA_MODE,exported_at:new Date().toISOString(),decisions:state.decisions};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='allyoung-decisions-alpha.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  }
+
+  const bytesToBase64 = (bytes) => {
+    let text='';
+    for (let i=0;i<bytes.length;i+=0x8000) text += String.fromCharCode(...bytes.subarray(i,i+0x8000));
+    return btoa(text);
+  };
+  const base64ToBytes = (text) => Uint8Array.from(atob(text), (character) => character.charCodeAt(0));
+
+  async function backupKey(passphrase, salt, usages) {
+    const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(passphrase),'PBKDF2',false,['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:BACKUP_KDF_ITERATIONS,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,usages);
+  }
+
+  function decisionBackupPayload() {
+    return {version:3,format:'allyoung-decision-library',data_mode:DATA_MODE,exported_at:new Date().toISOString(),decisions:state.decisions};
+  }
+
+  async function exportEncryptedBackup() {
+    const passphrase=String(document.querySelector('#backup-passphrase')?.value || '');
+    const confirmation=String(document.querySelector('#backup-passphrase-confirmation')?.value || '');
+    if (passphrase.length < 12) { toast('암호는 12자 이상으로 만들어 주세요.'); return; }
+    if (passphrase !== confirmation) { toast('두 암호가 같지 않아요. 기존 기록은 그대로예요.'); return; }
+    if (!crypto?.subtle) { toast('이 브라우저에서는 암호화 백업을 만들 수 없어요. JSON 내보내기를 이용해 주세요.'); return; }
+    const salt=crypto.getRandomValues(new Uint8Array(16));
+    const iv=crypto.getRandomValues(new Uint8Array(12));
+    const key=await backupKey(passphrase,salt,['encrypt']);
+    const clear=new TextEncoder().encode(JSON.stringify(decisionBackupPayload()));
+    const encrypted=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,clear);
+    const payload={version:1,format:ENCRYPTED_BACKUP_FORMAT,created_at:new Date().toISOString(),kdf:{name:'PBKDF2',hash:'SHA-256',iterations:BACKUP_KDF_ITERATIONS,salt:bytesToBase64(salt)},cipher:{name:'AES-GCM',iv:bytesToBase64(iv)},payload:bytesToBase64(new Uint8Array(encrypted))};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='allyoung-decisions-encrypted.aysbackup'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    document.querySelector('#backup-passphrase').value='';document.querySelector('#backup-passphrase-confirmation').value='';
+    toast('암호화 백업 파일을 만들었어요. 암호는 이 기기에 저장하지 않으니 따로 안전하게 보관해 주세요.');
+  }
+
+  function validDecisionImport(payload) {
+    if (!payload || ![1,2,3].includes(Number(payload.version)) || !Array.isArray(payload.decisions)) return false;
+    return payload.decisions.every((decision) => decision && typeof decision === 'object' && typeof decision.id === 'string' && typeof decision.product_id === 'string' && typeof decision.name === 'string' && typeof decision.brand === 'string' && Array.isArray(decision.reasons) && decision.reasons.length > 0);
+  }
+
+  function validEncryptedBackup(payload) {
+    return Boolean(payload && payload.version===1 && payload.format===ENCRYPTED_BACKUP_FORMAT && payload.kdf?.name==='PBKDF2' && payload.kdf?.hash==='SHA-256' && Number(payload.kdf?.iterations)===BACKUP_KDF_ITERATIONS && typeof payload.kdf?.salt==='string' && payload.cipher?.name==='AES-GCM' && typeof payload.cipher?.iv==='string' && typeof payload.payload==='string');
+  }
+
+  function applyImportedDecisions(payload) {
+    if (!validDecisionImport(payload)) throw new Error('invalid-import');
+    const imported=payload.decisions.slice(0,20).map(hydrateDecisionRetention);
+    state.decisions=imported;storageReadOnly=false;storageIssue='';safeWrite(STORAGE_KEY,state.decisions);render();
+  }
+
+  async function importEncryptedBackup() {
+    const file=document.querySelector('#encrypted-import-file')?.files?.[0];
+    const passphrase=String(document.querySelector('#encrypted-import-passphrase')?.value || '');
+    if (!file) { toast('먼저 암호화 백업 파일을 골라 주세요.'); return; }
+    if (!passphrase) { toast('백업을 만든 암호를 입력해 주세요.'); return; }
+    if (!crypto?.subtle) { toast('이 브라우저에서는 암호화 백업을 읽을 수 없어요.'); return; }
+    try {
+      const backup=JSON.parse(await file.text());
+      if (!validEncryptedBackup(backup)) throw new Error('invalid-backup');
+      const key=await backupKey(passphrase,base64ToBytes(backup.kdf.salt),['decrypt']);
+      const clear=await crypto.subtle.decrypt({name:'AES-GCM',iv:base64ToBytes(backup.cipher.iv)},key,base64ToBytes(backup.payload));
+      const imported=JSON.parse(new TextDecoder().decode(clear));
+      applyImportedDecisions(imported);
+      toast('암호화 백업을 가져왔어요. 이 기기의 기존 기록은 새 파일이 검증된 뒤에만 바뀝니다.');
+    } catch { toast('암호 또는 백업 파일이 맞지 않아 기존 기록을 그대로 유지했어요.'); }
+    const passphraseInput=document.querySelector('#encrypted-import-passphrase'); if (passphraseInput) passphraseInput.value='';
   }
 
   function isPcKeyboardViewport() {
@@ -2729,6 +2878,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     if(button.dataset.purpose){state.purpose=button.dataset.purpose;track('alternative_select',{purpose:state.purpose,rank:0});await loadAlternatives();return;}
     if(button.dataset.homeConcern){state.answers={concern:button.dataset.homeConcern,skin:button.dataset.homeSkin||'unknown',avoid:'none',budget:'999999',texture:'unknown'};track('decision_start',{entry_path:'home_concern'});await loadCandidates('home_concern');return;}
     if(button.dataset.usageFilter){state.usageFilter=button.dataset.usageFilter;track('usage_search',{kind:'filter',value:state.usageFilter});render();return;}
+    if(button.dataset.libraryFilter){state.libraryFilter=button.dataset.libraryFilter;render();return;}
     if(button.dataset.usageStart){
       const start=button.dataset.usageStart; state.usageQuery=''; state.usageFilter='all';
       if(start==='discomfort'){state.selectedUsage='do-not-endure-stinging';state.route='usage-detail';track('usage_card_open',{source:'start',slug:state.selectedUsage});}
@@ -2737,6 +2887,10 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     }
     if(action==='home'||action==='service-home'){state.route='home';render();}
     else if(action==='method'){state.route='method';render();}
+    else if(action==='privacy'){state.route='privacy';render();}
+    else if(action==='offline-help'){state.route='offline-help';render();}
+    else if(action==='connection-notice-close'){state.connectionRecovered=false;render();}
+    else if(action==='privacy-sync-toggle'){state.syncConsent=!state.syncConsent;safeWrite(SYNC_CONSENT_KEY,state.syncConsent);render();toast(state.syncConsent ? '선택 동기화를 켰어요. 서버가 연결된 경우에만 이후 기록을 보낼 수 있어요.' : '선택 동기화를 껐어요. 이후 기록은 이 기기에만 저장해요.');}
     else if(action==='toggle-development-dashboard'){state.devDashboardOpen=!state.devDashboardOpen;render();document.querySelector('[data-action="toggle-development-dashboard"]')?.focus();}
     else if(action==='pc-shortcuts'||action==='pc-shortcuts-open'){state.pcHelpOpen=true;render();document.querySelector('[data-pc-shortcut-panel] button')?.focus();}
     else if(action==='pc-shortcuts-close'){state.pcHelpOpen=false;render();document.querySelector('[data-action="pc-shortcuts"]')?.focus();}
@@ -2747,7 +2901,18 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     else if(action==='reset-candidate-filters'){state.candidateFilters={concern:'all',texture:'all',budget:'all'};render();}
     else if(action==='bridge'||action==='pc-bridge'||action==='service-bridge'){state.bridgeMode='existing_product';state.route='bridge';track('decision_start',{entry_path:'existing_product'});render();}
     else if(action==='barcode'){state.bridgeMode='barcode';state.route='barcode';track('decision_start',{entry_path:'barcode'});render();}
-    else if(action==='ranking'||action==='pc-ranking'){state.answers={concern:'moisture',skin:'unknown',avoid:'none',budget:'999999',texture:'unknown'};track('decision_start',{entry_path:'ranking'});await loadCandidates('ranking');}
+    else if(action==='ranking'||action==='pc-ranking'){
+      if(state.candidates.length){
+        state.candidateFilters={concern:'all',texture:'all',budget:'all'};
+        state.route='compare';
+        track('compare_open',{candidate_count:state.candidates.length,source:'existing_candidates'});
+        render();
+      } else {
+        state.answers={concern:'moisture',skin:'unknown',avoid:'none',budget:'999999',texture:'unknown'};
+        track('decision_start',{entry_path:'ranking'});
+        await loadCandidates('ranking');
+      }
+    }
     else if(action==='usage'||action==='pc-usage'){state.route='usage';state.selectedUsage=null;state.usageBack='usage';state.usageContextProductId=null;track('usage_open',{source:'home'});render();}
     else if(action==='usage-open'){state.selectedUsage=button.dataset.usageSlug;state.usageBack='usage';state.usageContextProductId=null;state.route='usage-detail';track('usage_card_open',{source:'hub',slug:state.selectedUsage});render();}
     else if(action==='usage-back'){state.route=state.usageBack||'usage';state.usageContextProductId=null;render();}
@@ -2772,7 +2937,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     else if(action==='retention-preference'){
       const decision=state.decisions.find((item)=>item.id===button.dataset.decision);if(!decision?.follow_up)return;
       const next={...decision,follow_up:retentionCore.setPreference(decision.follow_up,button.dataset.preference)};replaceDecision(next);render();
-      if(API_BASE){try{await retentionApi.preference(next.id,button.dataset.preference);}catch{toast('서버 알림 설정을 바꾸지 못했지만 기기 설정은 유지돼요.');}}
+      if(API_BASE && state.syncConsent && state.online){try{await retentionApi.preference(next.id,button.dataset.preference);}catch{toast('서버 알림 설정을 바꾸지 못했지만 기기 설정은 유지돼요.');}}
     }
     else if(action==='card'){state.route='card';render();}
     else if(action==='create-vote-card') createVoteShare();
@@ -2783,10 +2948,20 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     else if(action==='share') shareCurrent();
     else if(action==='download-card') downloadCard();
     else if(action==='export') exportJson();
+    else if(action==='encrypted-export') await exportEncryptedBackup();
+    else if(action==='encrypted-import') await importEncryptedBackup();
     else if(action==='install'){if(deferredInstall){deferredInstall.prompt();}else toast(C.installHttps);}
   });
 
   document.addEventListener('submit',async(event) => {
+    if(event.target.id==='library-search-form'){
+      event.preventDefault();state.libraryQuery=String(new FormData(event.target).get('query')||'').trim();render();return;
+    }
+    if(event.target.dataset.decisionMetadataForm){
+      event.preventDefault();const decision=state.decisions.find((item)=>item.id===event.target.dataset.decisionMetadataForm);if(!decision)return;
+      const form=new FormData(event.target);const metadata={...decision.metadata,usage_period:String(form.get('usage_period')||'not_started'),repurchase:String(form.get('repurchase')||'undecided')};
+      replaceDecision({...decision,metadata});render();toast('사용·재구매 기록을 이 기기에 저장했어요.');return;
+    }
     if(event.target.id==='retention-form'){
       event.preventDefault();
       const form=new FormData(event.target);const reasons=form.getAll('reason').map(String);
@@ -2796,7 +2971,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
       const local=retentionCore.submitFeedback(decision.follow_up,input);
       if(!local.ok){toast(local.reason==='too_early'?'7일 뒤부터 회고할 수 있어요.':'선택 항목을 다시 확인해 주세요.');return;}
       replaceDecision({...decision,follow_up:local.follow_up});state.route='library';render();toast(local.timing==='late'?'늦은 회고를 구분해 보존했어요.':'회고를 저장했어요.');
-      if(API_BASE){try{await retentionApi.feedback(input);}catch{toast('서버 회고 연결은 실패했지만 기기 회고는 유지돼요.');}}
+      if(API_BASE && state.syncConsent && state.online){try{await retentionApi.feedback(input);}catch{toast('서버 회고 연결은 실패했지만 기기 회고는 유지돼요.');}}
       return;
     }
     if(event.target.id==='usage-search-form'){
@@ -2823,7 +2998,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
       return;
     }
     if(event.target.id!=='import-file'||!event.target.files?.[0])return;
-    try { const parsed=JSON.parse(await event.target.files[0].text()); if(!Array.isArray(parsed.decisions))throw new Error('invalid'); state.decisions=parsed.decisions.slice(0,20).map(hydrateDecisionRetention);storageReadOnly=false;storageIssue='';safeWrite(STORAGE_KEY,state.decisions);render();toast('결정 기록을 가져왔어요.'); }
+    try { const parsed=JSON.parse(await event.target.files[0].text()); applyImportedDecisions(parsed);toast('결정 기록을 가져왔어요.'); }
     catch { toast(C.importFailed); }
   });
 
@@ -2833,9 +3008,11 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     else if(event.key==='Escape'&&state.devDashboardOpen){state.devDashboardOpen=false;render();document.querySelector('[data-action="toggle-development-dashboard"]')?.focus();}
   });
 
+  window.addEventListener('online',()=>setConnectionState(true));
+  window.addEventListener('offline',()=>setConnectionState(false));
   window.addEventListener('beforeinstallprompt',(event)=>{event.preventDefault();deferredInstall=event;render();});
   window.addEventListener('appinstalled',()=>{deferredInstall=null;toast('올영스캐너를 설치했어요.');render();});
-  window.addEventListener('hashchange',()=>{if(loadSharedCardFromHash())render();});
+  window.addEventListener('hashchange',()=>{if(location.hash==='#progress'){state.devDashboardOpen=true;render();return;}if(loadSharedCardFromHash())render();});
 
   initStorage(); loadSharedCardFromHash(); setupManifest(); render();
 })();
