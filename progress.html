@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="robots" content="noindex">
+  <title>올영스캐너 개발 진척 대시보드</title>
+  <style>:root { color-scheme:light; --ink:#202522; --muted:#66716b; --line:#dfe7e2; --surface:#fff; --soft:#f4f8f5; --green:#147348; --mint:#19c37d; --yellow:#bd7800; --red:#c33d3d; font-family:Inter,"Noto Sans KR",system-ui,sans-serif; }
+* { box-sizing:border-box; }
+body { margin:0; color:var(--ink); background:#f5f7f6; }
+a { color:inherit; }
+.progress-topbar { display:flex; align-items:center; justify-content:space-between; width:min(1180px,calc(100% - 48px)); min-height:74px; margin:auto; }
+.progress-brand { display:inline-flex; align-items:center; gap:9px; color:#172d22; font-size:18px; font-weight:900; text-decoration:none; }.progress-brand span { display:grid; place-items:center; width:31px; height:31px; border-radius:9px; color:#fff; background:var(--green); }
+.progress-service-button { padding:10px 14px; border:1px solid #a6d6bc; border-radius:10px; color:#10653f; background:#fff; font-size:14px; font-weight:850; text-decoration:none; }
+.progress-page { display:grid; gap:20px; width:min(1180px,calc(100% - 48px)); margin:8px auto 56px; }
+.progress-hero,.progress-card,.detail-card,.priority-card { border:1px solid var(--line); border-radius:18px; background:var(--surface); box-shadow:0 6px 20px rgba(17,51,35,.04); }
+.progress-hero { padding:42px; background:linear-gradient(135deg,#eaf8f0,#fff 64%); }.eyebrow { margin:0 0 8px; color:var(--green); font-size:11px; font-weight:900; letter-spacing:.09em; }.progress-hero h1 { margin:0; font-size:clamp(32px,5vw,52px); letter-spacing:-.045em; }.progress-hero > p:not(.eyebrow) { max-width:720px; margin:15px 0 22px; color:var(--muted); font-size:16px; line-height:1.65; }.status-line { display:flex; flex-wrap:wrap; gap:12px; align-items:center; color:var(--muted); font-size:14px; }.status-line strong { padding:7px 10px; border-radius:999px; color:#6e4a00; background:#fff3d8; }
+.progress-overview,.progress-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }.progress-card,.detail-card { padding:22px; }.progress-card p { margin:0 0 9px; color:var(--muted); font-size:13px; font-weight:800; }.progress-card strong { display:block; color:#153d2b; font-size:37px; letter-spacing:-.04em; }.progress-card span { color:var(--green); font-size:12px; font-weight:800; }.progress-card small { display:block; margin-top:11px; color:var(--muted); font-size:11px; line-height:1.55; }.progress-meter { height:9px; margin:14px 0 0; overflow:hidden; border-radius:999px; background:#e6eee9; }.progress-meter i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#147348,#19c37d); }.progress-meter.mobile i { background:linear-gradient(90deg,#ca8c10,#f0bc42); }.progress-meter.web i { background:linear-gradient(90deg,#1675a4,#42acd2); }
+.detail-card h2,.priority-card h2 { margin:0 0 13px; font-size:20px; letter-spacing:-.03em; }.detail-card ul,.detail-card ol { display:grid; gap:9px; margin:0; padding-left:19px; color:#3d4942; font-size:14px; line-height:1.5; }.detail-card dl { display:grid; gap:9px; margin:0; }.detail-card dl div { display:grid; gap:2px; }.detail-card dt { color:var(--green); font-size:12px; font-weight:900; }.detail-card dd { margin:0; color:#4d5852; font-size:13px; line-height:1.45; }.callout,.warning { margin:16px 0 0; padding:11px; border-radius:10px; color:#365447; background:#edf7f0; font-size:12px; line-height:1.5; }.warning { color:#805500; background:#fff6e3; }
+.progress-secondary { grid-template-columns:2fr 1fr; }.train { display:flex; flex-wrap:wrap; gap:8px; }.train span { padding:8px 10px; border:1px solid var(--line); border-radius:999px; color:#66716b; background:#fafcfb; font-size:12px; font-weight:800; }.train .done { border-color:#a8ddbe; color:#0d6a3d; background:#edf9f0; }.train .current { border-color:#efcf83; color:#755000; background:#fff6df; }.detail-card > p:last-child { margin:15px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
+.progress-qr-card { display:grid; grid-template-columns:72px 1fr; column-gap:13px; align-items:center; }.progress-qr-card .eyebrow,.progress-qr-card h2,.progress-qr-card small { grid-column:1/-1; }.progress-qr-card img { width:72px; height:72px; border:1px solid var(--line); border-radius:9px; }.progress-qr-card a { overflow:hidden; color:#126a42; font-size:12px; font-weight:800; line-height:1.5; overflow-wrap:anywhere; }.progress-qr-card small { margin-top:12px; color:var(--muted); font-size:11px; line-height:1.5; }
+.priority-card { padding:24px; }.priority-card > div { display:flex; justify-content:space-between; align-items:end; }.priority-card ol { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px 22px; margin:0; padding:0 0 0 20px; color:#46524b; font-size:13px; line-height:1.45; }.priority-card details { margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }.priority-card summary { color:#176b46; font-weight:900; cursor:pointer; }.priority-card details ol { margin-top:14px; }
+@media (max-width:800px) { .progress-topbar,.progress-page { width:min(100% - 28px,580px); }.progress-topbar { min-height:64px; }.progress-page { gap:14px; margin-top:2px; }.progress-hero { padding:26px 22px; }.progress-hero > p:not(.eyebrow) { font-size:14px; }.progress-overview,.progress-grid,.progress-secondary { grid-template-columns:1fr; gap:12px; }.progress-card,.detail-card,.priority-card { padding:18px; border-radius:14px; }.progress-card strong { font-size:33px; }.priority-card ol { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 18px; font-size:12px; }.progress-service-button { padding:8px 10px; font-size:12px; } }
+@media (max-width:380px) { .progress-topbar,.progress-page { width:calc(100% - 20px); }.progress-brand { font-size:16px; }.priority-card ol { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+  <header class="progress-topbar">
+    <a class="progress-brand" href="./" data-progress-service-link="true"><span aria-hidden="true">올</span>올영스캐너</a>
+    <a class="progress-service-button" href="./" data-progress-service-link="true">서비스 열기 <span aria-hidden="true">→</span></a>
+  </header>
+  <main class="progress-page" data-progress-dashboard="true">
+    <section class="progress-hero" aria-labelledby="progress-title">
+      <p class="eyebrow">DEVELOPMENT STATUS · 2026-08-10</p>
+      <h1 id="progress-title">개발 진척 대시보드</h1>
+      <p>서비스에서 분리된 운영 현황입니다. 상품 비교와 개인 기록은 서비스 화면에서만 처리하며, 이 페이지는 개발 상태와 검사 근거만 보여줍니다.</p>
+      <div class="status-line"><strong>🟡 내부 사용 가능</strong><span>목표일 2026-08-20 · 예상일 2026-08-20</span></div>
+    </section>
+
+    <section class="progress-overview" aria-label="세 가지 진척률">
+      <article class="progress-card"><p>개발 진척률</p><strong>60%</strong><span>12 / 20 완료 · 내부 사용 가능</span><div class="progress-meter" role="progressbar" aria-label="개발 진척률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60"><i style="width:60%"></i></div><small>→ 이 그림의 뜻: 실제 완료 조건 12개를 구현·검사했습니다.</small></article>
+      <article class="progress-card"><p>모바일앱 상용 완성도</p><strong>39%</strong><span>핵심 개발</span><div class="progress-meter mobile" role="progressbar" aria-label="모바일앱 상용 완성도" aria-valuemin="0" aria-valuemax="100" aria-valuenow="39"><i style="width:39%"></i></div><small>→ 이 그림의 뜻: 실제 Android 공개 탭 검사는 일부 통과, 설치·마켓 검증은 미확인입니다.</small></article>
+      <article class="progress-card"><p>PC 웹 상용 완성도</p><strong>50%</strong><span>내부 사용 가능</span><div class="progress-meter web" role="progressbar" aria-label="PC 웹 상용 완성도" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><i style="width:50%"></i></div><small>→ 이 그림의 뜻: 핵심 흐름·접근성 검사는 통과, 실자료·운영 감시는 미확인입니다.</small></article>
+    </section>
+
+    <section class="progress-grid">
+      <article class="detail-card"><p class="eyebrow">TODAY</p><h2>오늘 한 일 · 지금 상태</h2><ul><li>UX100-01~10·12·13 완료</li><li>국가·배송 미확인 고지와 기기 안 기록·복원 안내 제공</li><li>실판매처·가격·재고 자료는 아직 연결하지 않음</li></ul><p class="callout">다음 핵심: 지역별 안전 안내에서 위치·VPN 정보를 저장하지 않고, 판매처 자료가 없을 때도 다음 행동을 알려주기.</p></article>
+      <article class="detail-card"><p class="eyebrow">EVIDENCE</p><h2>검사 증거</h2><dl><div><dt>자동 검사</dt><dd>Alpha 전체·복원 안내·대시보드 분리 검사</dd></div><div><dt>실제 PC 웹</dt><dd>공개 URL 응답·QR 목적지 대조</dd></div><div><dt>실제 Android</dt><dd>A56 공개 Chrome 탭: 일부 흐름 통과</dd></div><div><dt>가상 페르소나</dt><dd>40명 회전 표본 · 실제 사용자 조사가 아님</dd></div></dl></article>
+      <article class="detail-card"><p class="eyebrow">BLOCKERS</p><h2>상용화 전 남은 관문</h2><ol><li>실판매처·가격·재고·배송 자료 연결</li><li>Android/iOS 설치·업데이트와 여러 기기 검사</li><li>고객지원·장애 대응·개인정보 운영 절차</li></ol><p class="warning">⚠ 가격·재고·구매 가능 여부를 추정해 표시하지 않습니다.</p></article>
+    </section>
+
+    <section class="progress-grid progress-secondary">
+      <article class="detail-card"><p class="eyebrow">ROADMAP</p><h2>진행 열차</h2><div class="train"><span class="done">완료 · UX100-01~10</span><span class="done">완료 · UX100-12~13</span><span class="current">진행 · UX100-11 지역 안전</span><span>다음 · 실자료·운영 준비</span></div><p>→ 이 그림의 뜻: 구현과 검사 완료 칸만 완료로 표시합니다.</p></article>
+      <article class="detail-card progress-qr-card"><p class="eyebrow">HANDOFF</p><h2>공개 서비스로 이어보기</h2><img data-progress-qr="true" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=" alt="올영스캐너 공개 서비스 QR 코드"><a data-progress-service-url="true" href="https://hanksleekorea-boop.github.io/all-young-scanner-web/">https://hanksleekorea-boop.github.io/all-young-scanner-web/</a><small>QR 목적지와 버튼은 현재 공개 서비스 주소입니다.</small></article>
+    </section>
+
+    <section class="priority-card"><div><p class="eyebrow">NEXT 20</p><h2>다음 실행 우선순위</h2></div><ol data-progress-next-20="true"><li>배송 국가</li><li>VPN·위치 비저장</li><li>지역 안내</li><li>구매 가능 과장 차단</li><li>규제 안내</li><li>성분 별칭</li><li>단위 표준화</li><li>환율 기준일</li><li>미지원 국가 안내</li><li>화면 읽기 도구 점검</li><li>비교표 의미 구조</li><li>백업 파일 복원 재점검</li><li>실제 자료 연결 준비</li><li>설치·업데이트 점검</li><li>200명 가상 페르소나 재점검</li><li>실사용자 동의 검사</li><li>고객지원 경로</li><li>Android/iOS 교차검사</li><li>장애 대응 연습</li><li>판매처 자료 갱신 기준</li></ol><details><summary>사용자 없이 실행 가능한 우선순위 20</summary><ol data-progress-autonomous-20="true"><li>배송 국가</li><li>VPN·위치 비저장</li><li>지역 안내</li><li>구매 가능 과장 차단</li><li>규제 안내</li><li>성분 별칭</li><li>단위 표준화</li><li>환율 기준일</li><li>미지원 국가 안내</li><li>화면 읽기 도구 점검</li><li>비교표 의미 구조</li><li>백업 파일 복원 재점검</li><li>실제 자료 연결 준비</li><li>설치·업데이트 점검</li><li>200명 가상 페르소나 재점검</li><li>실사용자 동의 검사</li><li>고객지원 경로</li><li>Android/iOS 교차검사</li><li>장애 대응 연습</li><li>판매처 자료 갱신 기준</li></ol></details>
+    </section>
+  </main>
+</body>
+</html>

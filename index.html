@@ -1322,6 +1322,8 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .footer-brand .brand-seal { color: #fff; background: var(--primary); }
 .footer-brand strong,.service-footer nav strong { color: #25292d; }
 .footer-brand p,.service-footer nav button,.footer-legal p,.footer-legal span { color: #5d6268; }
+.service-footer nav .footer-progress-link { display:block; margin-top:8px; color:#176b47; font-size:13px; font-weight:850; text-decoration:none; }
+.service-footer nav .footer-progress-link:hover { color:var(--primary-2); text-decoration:underline; }
 .footer-principles span { color: #5a6066; border-color: var(--line); background: #f7f8f9; }
 .service-footer > nav { padding: 20px 28px; }
 .service-footer nav button:hover { color: var(--primary-2); }
@@ -1784,7 +1786,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     CA:{ label:'Canada', currency:'CAD', searchHint:'e.g. moisturizer, calming gel' },
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
-  const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}#progress`;
+  const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const memory = new Map();
@@ -1840,7 +1842,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     sessionId:null, apiSource:API_BASE ? 'remote' : 'local', loadingLabel:'',
     sharePayload:null, shareLink:'', friendVote:null, recalculateNotice:false,
     usageQuery:'', usageFilter:'all', selectedUsage:null, usageBack:'usage', usageContextProductId:null,
-    guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, devDashboardOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product', libraryQuery:'', libraryFilter:'all', syncConsent:false,
+    guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product', libraryQuery:'', libraryFilter:'all', syncConsent:false,
     online:navigator.onLine, offlineSince:null, connectionRecovered:false, migrationNotice:null,
     accessibility:{textSize:'default',contrast:'default',motion:'system'},
   };
@@ -2560,7 +2562,6 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   }
 
   function loadSharedCardFromHash() {
-    if(location.hash==='#progress'){state.devDashboardOpen=true;return false;}
     if(!location.hash.startsWith('#share='))return false;
     try{
       const payload=safeSharedPayload(decodeShare(location.hash.slice(7)));
@@ -2744,7 +2745,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
       </section>
       <nav aria-label="하단 길찾기">
         <div><strong>결정하기</strong><button data-action="pc-start-quiz">고민으로 시작</button><button data-action="service-bridge">쓰던 제품 찾기</button><button data-action="pc-ranking">후보 비교</button></div>
-        <div><strong>이어서 보기</strong><button data-action="pc-usage">K-뷰티 사용법</button><button data-action="pc-library">내 결정</button><button data-action="recovery-guide">기록 복원 안내</button><button data-action="method">추천 기준과 출처</button></div>
+        <div><strong>이어서 보기</strong><button data-action="pc-usage">K-뷰티 사용법</button><button data-action="pc-library">내 결정</button><button data-action="recovery-guide">기록 복원 안내</button><button data-action="method">추천 기준과 출처</button><a class="footer-progress-link" data-service-progress-link="true" href="${PUBLIC_DASHBOARD_URL}">개발 현황</a></div>
       </nav>
       <div class="footer-legal"><p>${C.medicalDisclaimer}</p><p>${C.testPriceNotice}</p><span>서비스 UI v0.12 · 2026-08-06</span></div>
     </footer>`;
@@ -2782,7 +2783,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   function layout(body) {
     const pcDock = `<aside class="pc-handoff-dock" data-pc-handoff="true" aria-label="폰으로 이어서 보기"><img data-pc-qr="true" src="${PUBLIC_QR_DATA}" alt="올영스캐너 공개 앱 QR 코드"><div><strong>폰으로 이어보기</strong><span>기존 공개판 주소를 열어요.</span><a data-pc-canonical-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">QR 주소 열기</a><button class="ghost-btn" data-action="pc-shortcuts-open" aria-expanded="${state.pcHelpOpen}">키보드 도움말</button></div></aside>`;
     const pcHelp = state.pcHelpOpen ? `<section class="pc-shortcut-panel" data-pc-shortcut-panel="true" role="dialog" aria-modal="true" aria-labelledby="pc-shortcut-title"><div><span class="pc-area-label">KEYBOARD</span><h2 id="pc-shortcut-title">키보드로 더 빠르게</h2><dl><div><dt>/</dt><dd>검색창으로 이동해요.</dd></div><div><dt>← / →</dt><dd>후보 사이를 이동해요.</dd></div><div><dt>Space / Enter</dt><dd>현재 후보를 결정으로 저장해요.</dd></div><div><dt>Esc</dt><dd>도움말을 닫아요.</dd></div></dl><button class="primary-btn" data-action="pc-shortcuts-close">확인</button></div></section>` : '';
-    return `<div class="shell service-shell">${header()}${connectionBar()}<main id="main" class="content service-content" tabindex="-1">${body}</main>${serviceFooter()}${developmentDashboard()}${pcDock}${pcHelp}${storageBar()}</div>`;
+    return `<div class="shell service-shell">${header()}${connectionBar()}<main id="main" class="content service-content" tabindex="-1">${body}</main>${serviceFooter()}${pcDock}${pcHelp}${storageBar()}</div>`;
   }
 
   function serviceHomePreviewCard(product, index) {
@@ -3083,7 +3084,6 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     else if(action==='offline-help'){state.route='offline-help';render();}
     else if(action==='connection-notice-close'){state.connectionRecovered=false;render();}
     else if(action==='privacy-sync-toggle'){state.syncConsent=!state.syncConsent;safeWrite(SYNC_CONSENT_KEY,state.syncConsent);render();toast(state.syncConsent ? '선택 동기화를 켰어요. 서버가 연결된 경우에만 이후 기록을 보낼 수 있어요.' : '선택 동기화를 껐어요. 이후 기록은 이 기기에만 저장해요.');}
-    else if(action==='toggle-development-dashboard'){state.devDashboardOpen=!state.devDashboardOpen;render();document.querySelector('[data-action="toggle-development-dashboard"]')?.focus();}
     else if(action==='pc-shortcuts'||action==='pc-shortcuts-open'){state.pcHelpOpen=true;render();document.querySelector('[data-pc-shortcut-panel] button')?.focus();}
     else if(action==='pc-shortcuts-close'){state.pcHelpOpen=false;render();document.querySelector('[data-action="pc-shortcuts"]')?.focus();}
     else if(action==='start-quiz'||action==='pc-start-quiz'||action==='restart'){state.route='quiz';state.quizStep=0;state.answers={};state.recalculateNotice=false;track('decision_start',{entry_path:'concern'});render();}
@@ -3197,14 +3197,13 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   document.addEventListener('keydown',(event)=>{
     if(event.key==='/'&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!event.target.closest('input,textarea,select')){event.preventDefault();document.querySelector('#global-search-input')?.focus();}
     if(event.key==='Escape'&&state.pcHelpOpen){state.pcHelpOpen=false;render();}
-    else if(event.key==='Escape'&&state.devDashboardOpen){state.devDashboardOpen=false;render();document.querySelector('[data-action="toggle-development-dashboard"]')?.focus();}
   });
 
   window.addEventListener('online',()=>setConnectionState(true));
   window.addEventListener('offline',()=>setConnectionState(false));
   window.addEventListener('beforeinstallprompt',(event)=>{event.preventDefault();deferredInstall=event;render();});
   window.addEventListener('appinstalled',()=>{deferredInstall=null;toast('올영스캐너를 설치했어요.');render();});
-  window.addEventListener('hashchange',()=>{if(location.hash==='#progress'){state.devDashboardOpen=true;render();return;}if(loadSharedCardFromHash())render();});
+  window.addEventListener('hashchange',()=>{if(loadSharedCardFromHash())render();});
 
   initStorage(); loadSharedCardFromHash(); setupManifest(); render();
 })();
