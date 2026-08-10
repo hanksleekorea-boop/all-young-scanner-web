@@ -1448,6 +1448,9 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
 }
 
 @media (max-width:1023px) {
+  /* 모바일 선택 버튼이 브라우저 하단 조작 영역에 붙지 않도록 서비스 자체의 여백만 남긴다. */
+  .service-content { padding-bottom:max(110px,calc(76px + env(safe-area-inset-bottom))); }
+  .service-content :is(button,input,select,textarea) { scroll-margin-bottom:96px; }
   .mobile-step-chip { display:inline-flex; align-items:center; gap:5px; margin:-2px 0 12px; padding:6px 9px; border:1px solid #d8e5de; border-radius:999px; color:#557065; background:#f6faf7; font-size:11px; }
   .mobile-step-chip strong { color:var(--primary); font-size:13px; }
   .mobile-candidate-summary { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin:0 0 10px; overflow:hidden; border:1px solid #dce7e1; border-radius:11px; background:#dce7e1; }
@@ -1457,9 +1460,6 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   .mobile-unit-price strong { font-size:11px; }
   .mobile-unit-price span { color:#0f754b; font-size:14px; font-weight:900; }
   .mobile-unit-price small { grid-column:1/-1; margin-top:3px; color:#708078; font-size:10px; }
-  .service-content { padding-bottom:calc(196px + env(safe-area-inset-bottom)); }
-  .service-content:has(#candidate-list) { padding-bottom:calc(196px + env(safe-area-inset-bottom)); }
-  .service-content :is(button,input,select,textarea) { scroll-margin-bottom:176px; }
   .service-status-strip { padding-inline: 14px; }
   .service-header-main,.service-header-nav { width: min(calc(100% - 24px),900px); }
   .service-header-main { padding: 9px 0; }
@@ -1484,7 +1484,6 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   .mobile-curated button { border-radius: 12px; }
   .mobile-curated i { color: #fff; background: var(--primary); }
   .service-footer { width: min(calc(100% - 24px),900px); }
-  .development-dashboard { right: 12px; bottom: 12px; width: min(330px,calc(100vw - 24px)); max-height:min(64dvh,560px); overflow:auto; }
 }
 
 @media (max-width:760px) {
@@ -1500,8 +1499,6 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   .service-content { width: calc(100% - 20px); }
   .service-section-head h1 { font-size: 34px; }
   .service-footer { width: calc(100% - 20px); border-radius: 12px; }
-  .development-dashboard { bottom: calc(10px + env(safe-area-inset-bottom)); }
-  .development-dashboard-toggle { min-height: 40px; }
 }
 
 /* UX100-12 — user-controlled reading preferences stay on this device only. */
@@ -2749,35 +2746,6 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
       </nav>
       <div class="footer-legal"><p>${C.medicalDisclaimer}</p><p>${C.testPriceNotice}</p><span>서비스 UI v0.12 · 2026-08-06</span></div>
     </footer>`;
-  }
-
-  // 개발 프롬프트의 고정 마일스톤과 실측 검증을 모든 화면에 같은 값으로 노출한다.
-  // 상품 화면의 합성 자료와 혼동되지 않도록 "준비"와 "운영 반영"을 분리해 적는다.
-  function developmentDashboard() {
-    const expanded = state.devDashboardOpen;
-    const next20 = ['41 배송 국가','42 VPN·위치 비저장','43 지역 안내','44 구매 가능 과장 차단','45 규제 안내','46 성분 별칭','47 단위 표준화','48 환율 기준일','49 미지원 국가 안내','50 화면 읽기 도구 점검','51 비교표 의미 구조','52 백업 파일 복원 재점검','53 실제 자료 연결 준비','54 설치·업데이트 점검','55 200명 가상 페르소나 재점검','56 실사용자 동의 검사','57 고객지원 경로','58 Android/iOS 교차검사','59 장애 대응 연습','60 판매처 자료 갱신 기준'];
-    const autonomous20 = next20.map((item) => `자동 · ${item}`);
-    return `<aside class="development-dashboard${expanded ? ' is-open' : ''}" data-development-dashboard="true" aria-label="개발 진행 상황">
-      <button class="development-dashboard-toggle" data-action="toggle-development-dashboard" aria-expanded="${expanded}" aria-controls="development-dashboard-detail">
-        <span class="development-dashboard-label"><i aria-hidden="true"></i>개발 현황</span>
-        <strong>12 / 20</strong><b>60%</b><span class="development-dashboard-chevron" aria-hidden="true">${expanded ? '닫기' : '자세히'}</span>
-      </button>
-      <div class="development-dashboard-track" role="progressbar" aria-label="실행 묶음 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60"><i></i></div>
-      <div class="development-dashboard-access" data-development-access="true"><a data-dashboard-pc-url="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener">PC 주소 열기 ↗</a><a data-dashboard-progress-url="true" href="${PUBLIC_DASHBOARD_URL}" target="_blank" rel="noopener">진척 대시보드 ↗</a><a data-dashboard-qr-link="true" href="${PUBLIC_APP_URL}" target="_blank" rel="noopener"><img data-dashboard-qr="true" src="${PUBLIC_QR_DATA}" alt="현재 앱 주소 QR 코드"><span>QR</span></a></div><p class="development-dashboard-url" data-dashboard-pc-url-text="true">${PUBLIC_APP_URL}</p>
-      <div id="development-dashboard-detail" class="development-dashboard-detail"${expanded ? '' : ' hidden'}>
-        <p class="development-dashboard-summary">새 실행 묶음 <strong>12 / 20 · 60%</strong></p>
-        <section class="development-dashboard-readiness" data-dashboard-readiness="true" aria-label="상용 완성도"><div><strong>60%</strong><span>개발 진척</span><small>12/20 완료 조건</small></div><div><strong>39%</strong><span>모바일앱</span><small>국가·오프라인·접근성·복원 흐름 확인</small></div><div><strong>50%</strong><span>PC 웹</span><small>국가·배송·접근성·복원 안내 확인</small></div></section>
-        <dl>
-          <div><dt>완료</dt><dd>UX100-01 자료 상태 · UX100-02 국가·검색 · UX100-03 네 시작길 · UX100-04 모바일 신뢰 · UX100-05 모바일 조작 · UX100-06 비교 필터 · UX100-07 내 결정 · UX100-08 기기 우선 개인정보 · UX100-09 오프라인 복구 · UX100-10 국가별 판매처 · UX100-12 보기 설정 · UX100-13 기록 복원 안내</dd></div>
-          <div><dt>검증</dt><dd>출처·시각 없는 가격, 현지 가격 꾸밈, 후보 이유·확인할 점, 모바일 근거·성분·회피 조건과 단계·단가, 잘못된 가져오기와 이유 없는 기록 차단, 암호 오류 때 원본 보존, 오프라인 원격 요청 차단·기기 안 비교 지속, 10개 국가 판매처·배송 미확인 표시, 기존 기록·백업·오프라인 복원 안내</dd></div>
-          <div><dt>자료</dt><dd>합성 화면 자료 · 10개 국가 판매처·배송 상태는 모두 미확인으로 명시</dd></div>
-        </dl>
-        <p class="development-dashboard-blocker"><strong>다음 관문</strong>배송 국가·통관 조건과 실제 자료 연결 전에도 현지 가격·재고·구매 가능 여부를 꾸미지 않기</p>
-        <details class="development-dashboard-priorities" data-dashboard-next-20="true"><summary>다음 실행 우선순위 20</summary><ol>${next20.map((item) => `<li>${item}</li>`).join('')}</ol></details>
-        <details class="development-dashboard-priorities" data-dashboard-autonomous-20="true"><summary>사용자 없이 실행 가능한 20</summary><ol>${autonomous20.map((item) => `<li>${item}</li>`).join('')}</ol></details>
-        <p class="development-dashboard-note">기준 2026-08-10 → 기능 묶음 예상 2026-08-20(±4일) · 화면용 상품 자료와 개발 정본은 서로 다릅니다.</p>
-      </div>
-    </aside>`;
   }
 
   function layout(body) {
