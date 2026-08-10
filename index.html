@@ -1697,6 +1697,9 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
   const usageSourceById = new Map(usageFixture.sources.map((source) => [source.id, source]));
   const retentionCore = globalThis.AYS_RETENTION;
   const STORAGE_KEY = 'ays-alpha-decisions-v01';
+  const LOCAL_SCHEMA_KEY = 'ays-alpha-local-schema-v01';
+  const LOCAL_SCHEMA_VERSION = 2;
+  const LOCAL_COMPAT_BACKUP_KEY = 'ays-alpha-decisions-v01-before-v2';
   const EVENT_KEY = 'ays-alpha-events-v01';
   const SHARE_VOTE_KEY = 'ays-alpha-share-votes-v01';
   const SYNC_CONSENT_KEY = 'ays-alpha-sync-consent-v01';
@@ -1773,7 +1776,7 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     sharePayload:null, shareLink:'', friendVote:null, recalculateNotice:false,
     usageQuery:'', usageFilter:'all', selectedUsage:null, usageBack:'usage', usageContextProductId:null,
     guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, devDashboardOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product', libraryQuery:'', libraryFilter:'all', syncConsent:false,
-    online:navigator.onLine, offlineSince:null, connectionRecovered:false,
+    online:navigator.onLine, offlineSince:null, connectionRecovered:false, migrationNotice:null,
   };
 
   const won = (n) => `${n.toLocaleString('ko-KR')}원`;
@@ -1900,6 +1903,34 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     }
   }
 
+  function normalizeLegacyDecision(decision, index) {
+    const selectedAt = typeof decision?.selected_at === 'string' && !Number.isNaN(Date.parse(decision.selected_at)) ? decision.selected_at : (typeof decision?.created_at === 'string' && !Number.isNaN(Date.parse(decision.created_at)) ? decision.created_at : new Date(0).toISOString());
+    const reasons = Array.isArray(decision?.reasons) && decision.reasons.filter((item) => typeof item === 'string' && item.trim()).length ? decision.reasons.filter((item) => typeof item === 'string' && item.trim()) : (typeof decision?.reason === 'string' && decision.reason.trim() ? [decision.reason.trim()] : ['이전 판에서 저장한 선택입니다.']);
+    const metadata = { concern:decision?.metadata?.concern || decision?.concern || '', usage_period:decision?.metadata?.usage_period || 'not_started', repurchase:decision?.metadata?.repurchase || 'undecided' };
+    return {
+      ...decision,
+      id:typeof decision?.id === 'string' && decision.id ? decision.id : `legacy-${index}-${selectedAt}`,
+      product_id:typeof decision?.product_id === 'string' && decision.product_id ? decision.product_id : `legacy-product-${index}`,
+      name:typeof decision?.name === 'string' && decision.name ? decision.name : '이전 기록',
+      brand:typeof decision?.brand === 'string' && decision.brand ? decision.brand : '브랜드 미확인',
+      reasons,
+      selected_at:selectedAt,
+      metadata,
+      compatibility_version:LOCAL_SCHEMA_VERSION,
+    };
+  }
+
+  function migrateStoredDecisions(stored) {
+    const normalized = stored.map(normalizeLegacyDecision).map(hydrateDecisionRetention);
+    return { normalized, changed:JSON.stringify(stored) !== JSON.stringify(normalized) };
+  }
+
+  function preserveCompatibilityBackup(stored) {
+    try {
+      if (!localStorage.getItem(LOCAL_COMPAT_BACKUP_KEY)) localStorage.setItem(LOCAL_COMPAT_BACKUP_KEY, JSON.stringify(stored));
+    } catch { storageMode='memory'; }
+  }
+
   function track(name, props = {}, persist = true) {
     if (!allowedEvents.has(name)) throw new Error(`unregistered event: ${name}`);
     const safeProps = {};
@@ -1918,7 +1949,16 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
     } catch { storageMode = 'memory'; }
     const storedDecisions = safeRead(STORAGE_KEY, []);
     if (!Array.isArray(storedDecisions)) { storageMode='memory';storageReadOnly=true;storageIssue='corrupt';state.decisions=[]; }
-    else state.decisions = storedDecisions.map(hydrateDecisionRetention);
+    else {
+      const migration = migrateStoredDecisions(storedDecisions);
+      state.decisions = migration.normalized;
+      if (migration.changed && !storageReadOnly) {
+        preserveCompatibilityBackup(storedDecisions);
+        safeWrite(STORAGE_KEY, state.decisions);
+        state.migrationNotice = `${state.decisions.length}개 기존 기록을 새 화면에서도 이어서 보여줘요.`;
+      }
+      safeWrite(LOCAL_SCHEMA_KEY,{version:LOCAL_SCHEMA_VERSION,updated_at:new Date().toISOString()});
+    }
     const storedEvents = safeRead(EVENT_KEY, []);
     if (!Array.isArray(storedEvents)) { storageMode='memory';storageReadOnly=true;storageIssue='corrupt';state.events=[]; }
     else state.events = storedEvents;
@@ -2117,8 +2157,8 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
 
   function storageBar() {
     const memoryMode = storageMode === 'memory';
-    const message = storageIssue === 'corrupt' ? '기존 저장 기록 형식을 읽지 못해 원본은 덮지 않고, 현재 입력은 메모리에 유지해요. JSON 가져오기로 복구할 수 있어요.' : memoryMode ? C.storageMemory : C.storagePersistent;
-    return `<div id="storage-state" class="storage-bar ${memoryMode ? 'memory' : ''}" data-storage="${storageMode}" data-storage-issue="${storageIssue || 'none'}"><span class="storage-dot"></span><strong>${memoryMode ? '임시 저장' : '기기 저장'}</strong><span>${message}</span></div>`;
+    const message = storageIssue === 'corrupt' ? '기존 저장 기록 형식을 읽지 못해 원본은 덮지 않고, 현재 입력은 메모리에 유지해요. JSON 가져오기로 복구할 수 있어요.' : state.migrationNotice || (memoryMode ? C.storageMemory : C.storagePersistent);
+    return `<div id="storage-state" class="storage-bar ${memoryMode ? 'memory' : ''}" data-storage="${storageMode}" data-storage-issue="${storageIssue || 'none'}" data-storage-migration="${state.migrationNotice ? 'applied' : 'none'}"><span class="storage-dot"></span><strong>${memoryMode ? '임시 저장' : '기기 저장'}</strong><span>${message}</span></div>`;
   }
 
   function layout(body) {
