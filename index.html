@@ -1362,70 +1362,6 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
 .pc-handoff-dock { border-radius: 12px; box-shadow: var(--shadow-soft); }
 .pc-shortcut-panel > div { border-radius: 18px; }
 
-/* 개발 프롬프트의 진행 상황: 모든 경로에서 사라지지 않는 고정 상태 패널 */
-.development-dashboard {
-  position: fixed;
-  z-index: 56;
-  right: 16px;
-  bottom: 18px;
-  width: min(300px,calc(100vw - 32px));
-  overflow: hidden;
-  border: 1px solid #cfd8d2;
-  border-radius: 12px;
-  background: rgba(255,255,255,.97);
-  box-shadow: 0 12px 32px rgba(24,39,32,.16);
-  backdrop-filter: blur(12px);
-}
-.development-dashboard-toggle {
-  display: grid;
-  grid-template-columns: minmax(0,1fr) auto auto auto;
-  align-items: center;
-  width: 100%;
-  min-height: 42px;
-  gap: 8px;
-  padding: 9px 11px 7px;
-  border: 0;
-  color: #242a27;
-  background: transparent;
-  text-align: left;
-}
-.development-dashboard-toggle:hover { background: #f2f7f4; }
-.development-dashboard-label { display: inline-flex; min-width: 0; align-items: center; gap: 6px; color: #4d5651; font-size: 11px; font-weight: 800; }
-.development-dashboard-label i { width: 7px; height: 7px; border-radius: 50%; background: #19c37d; box-shadow: 0 0 0 4px rgba(25,195,125,.14); }
-.development-dashboard-toggle strong { color: #2d3832; font-size: 11px; white-space: nowrap; }
-.development-dashboard-toggle b { color: #0d8552; font-size: 15px; white-space: nowrap; }
-.development-dashboard-chevron { color: #6c756f; font-size: 10px; white-space: nowrap; }
-.development-dashboard-track { height: 4px; margin: 0 11px 10px; overflow: hidden; border-radius: 999px; background: #e4ebe7; }
-.development-dashboard-track i { display: block; width: 60%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0f9b63,#19c37d); }
-.development-dashboard-access { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 11px 10px; }
-.development-dashboard-access a { display:inline-flex; align-items:center; gap:5px; color:#0f6b45; font-size:10px; font-weight:850; text-decoration:none; }
-.development-dashboard-access a:first-child { min-height:28px; padding:0 8px; border:1px solid #bcd8ca; border-radius:8px; background:#f5fbf7; }
-.development-dashboard-access a:last-child { color:#506058; }
-.development-dashboard-access img { width:24px; height:24px; border:1px solid #d8e2dc; border-radius:4px; background:#fff; }
-.development-dashboard-url { overflow:hidden; margin:-6px 11px 10px; color:#6c7971; font-size:8px; line-height:1.3; text-overflow:ellipsis; white-space:nowrap; }
-.development-dashboard-detail { display: grid; gap: 9px; padding: 0 11px 12px; border-top: 1px solid #e7ece9; }
-.development-dashboard-detail[hidden] { display: none; }
-.development-dashboard-summary { margin: 10px 0 0; color: #444d48; font-size: 12px; }
-.development-dashboard-summary strong { color: #0f7b4e; }
-.development-dashboard-readiness { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; }
-.development-dashboard-readiness div { min-width:0; padding:7px; border:1px solid #dce8e1; border-radius:7px; background:#fbfdfb; }
-.development-dashboard-readiness strong,.development-dashboard-readiness span,.development-dashboard-readiness small { display:block; }
-.development-dashboard-readiness strong { color:#0f7b4e; font-size:14px; }
-.development-dashboard-readiness span { color:#3c4942; font-size:9px; font-weight:850; }
-.development-dashboard-readiness small { margin-top:2px; color:#7b827e; font-size:8px; line-height:1.3; }
-.development-dashboard-detail dl { display: grid; gap: 5px; margin: 0; }
-.development-dashboard-detail dl div { display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 8px; }
-.development-dashboard-detail dt { color: #727a75; font-size: 10px; }
-.development-dashboard-detail dd { margin: 0; color: #303833; font-size: 10px; line-height: 1.45; }
-.development-dashboard-blocker,.development-dashboard-note { margin: 0; font-size: 10px; line-height: 1.45; }
-.development-dashboard-blocker { padding: 8px; border-radius: 7px; color: #525b55; background: #f4f7f5; }
-.development-dashboard-blocker strong { display: block; margin-bottom: 2px; color: #25734f; }
-.development-dashboard-note { color: #7b827e; }
-.development-dashboard-priorities { border-top:1px solid #e7ece9; padding-top:7px; color:#45534b; font-size:10px; }
-.development-dashboard-priorities summary { cursor:pointer; color:#176b47; font-weight:850; }
-.development-dashboard-priorities ol { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 12px; margin:8px 0 0 16px; padding:0; line-height:1.35; }
-body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
-
 .mobile-evidence-drawer { margin:0 0 12px; border:1px solid #d4e2da; border-radius:11px; background:#fbfdfb; color:#3e5147; font-size:12px; }
 .mobile-evidence-drawer summary { min-height:42px; padding:12px; color:#175c3d; font-weight:850; cursor:pointer; }
 .mobile-evidence-drawer > div { display:grid; gap:8px; padding:0 12px 12px; border-top:1px solid #e2ece6; }
@@ -1454,11 +1390,6 @@ body:has(.storage-bar.memory) .development-dashboard { bottom: 74px; }
 .mobile-shopping-event span { color:#ffe4c1; font-size:9px; font-weight:900; letter-spacing:.08em; }.mobile-shopping-event h2 { margin:8px 0; font-size:25px; line-height:1.15; }.mobile-shopping-event p { margin:0 0 13px; color:#ffe8e6; font-size:12px; }.mobile-shopping-event button { padding:0; border:0; color:#fff; background:transparent; font-size:12px; font-weight:900; }
 .mobile-product-row { display:flex; gap:10px; overflow:auto; padding:9px 1px 3px; }.mobile-product-row article { flex:0 0 132px; display:grid; gap:5px; }.mobile-product-visual { display:grid; place-items:center; height:118px; border-radius:13px; color:#fff; background:#d7e9e1; }.mobile-product-visual.tone-1{background:#e9ddd5}.mobile-product-visual.tone-2{background:#d9e9ee}.mobile-product-visual.tone-3{background:#efe1d0}.mobile-product-visual span{padding:12px 7px;border-radius:4px;background:#fff;color:#315549;font-size:9px;font-weight:900}.mobile-product-row small{color:var(--muted);font-size:9px}.mobile-product-row strong{min-height:31px;font-size:12px;line-height:1.3}.mobile-product-row p{margin:0;color:var(--muted);font-size:10px}.mobile-product-row button{justify-self:start;padding:0;border:0;color:var(--primary);background:transparent;font-size:10px;font-weight:900;}
 .mobile-step-chip,.mobile-candidate-summary,.mobile-unit-price { display:none; }
-
-@media (min-width:1024px) {
-  /* QR 핸드오프와 나란히 놓아 두 고정 패널이 겹치지 않게 한다. */
-  .development-dashboard { right: 320px; }
-}
 
 @media (max-width:1023px) {
   /* 모바일 선택 버튼이 브라우저 하단 조작 영역에 붙지 않도록 서비스 자체의 여백만 남긴다. */
