@@ -1,5 +1,5 @@
-const CACHE = 'ays-service-v0.18-ux95-v2';
-const RELEASE_VERSION = '2026-08-12-ux95-v2';
+const CACHE = 'ays-service-v0.19-ux95-v3';
+const RELEASE_VERSION = '2026-08-12-ux95-v3';
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(['./', './index.html', './progress.html', './og-service-v2.png'])));
   self.skipWaiting();

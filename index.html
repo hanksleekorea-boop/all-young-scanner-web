@@ -931,6 +931,13 @@ body::selection { color: #fff; background: var(--primary-2); }
 .correction-form-shell label { display:grid; gap:7px; color:var(--primary); font-size:13px; font-weight:850; }
 .correction-form-shell select { width:100%; min-height:46px; padding:0 12px; border:1px solid var(--line); border-radius:11px; color:var(--text); background:#fff; font:inherit; }
 .correction-form-shell .correction-confirm { grid-template-columns:auto 1fr; align-items:start; color:var(--text); font-weight:650; line-height:1.5; }
+.incident-draft-shell { display:grid; grid-template-columns:minmax(0,.85fr) minmax(360px,1.15fr); gap:30px; padding:clamp(24px,4vw,44px); border:1px solid var(--line); border-radius:24px; background:#fff; }
+.incident-draft-shell h2 { margin:4px 0 8px; color:var(--primary); }
+.incident-draft-shell p,.incident-draft-shell li { color:var(--muted); line-height:1.55; }
+.incident-draft-shell form { display:grid; gap:15px; }
+.incident-draft-shell label { display:grid; gap:7px; color:var(--primary); font-size:13px; font-weight:850; }
+.incident-draft-shell select { width:100%; min-height:46px; padding:0 12px; border:1px solid var(--line); border-radius:11px; color:var(--text); background:#fff; font:inherit; }
+.incident-draft-shell .correction-confirm { grid-template-columns:auto 1fr; align-items:start; color:var(--text); font-weight:650; line-height:1.5; }
 .correction-confirm input { width:18px; height:18px; margin:2px 0 0; }
 .recovery-guide { display:grid; gap:16px; padding:clamp(22px,4vw,42px); border:1px solid var(--line); border-radius:24px; background:#fff; }
 .recovery-guide-heading { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; }
@@ -1033,7 +1040,7 @@ body::selection { color: #fff; background: var(--primary-2); }
   .source-contract { grid-template-columns:1fr; }
   .method-hero { grid-template-columns: 1fr; }
   .method-ledger { grid-template-columns: 1fr; }
-  .correction-form-shell { grid-template-columns:1fr; }
+  .correction-form-shell,.incident-draft-shell { grid-template-columns:1fr; }
   .recovery-steps { grid-template-columns:1fr; }
 }
 @media (max-width:760px) {
@@ -1790,7 +1797,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
-  const RELEASE_VERSION = '2026-08-12-ux95-v2';
+  const RELEASE_VERSION = '2026-08-12-ux95-v3';
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const memory = new Map();
@@ -2721,7 +2728,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   function pcReadinessView() {
     const browserName=navigator.userAgent.includes('Edg/')?'Microsoft Edge':navigator.userAgent.includes('Chrome/')?'Google Chrome 계열':'기타 브라우저';
     const secure=location.protocol==='https:'||['localhost','127.0.0.1'].includes(location.hostname);
-    return layout(`${sectionHead('서비스 상태·도움','PC에서 막히지 않고 스스로 복구할 수 있는 출시 후보 안내입니다.','home')}<section class="pc-readiness" data-pc-readiness="true" aria-labelledby="pc-readiness-title"><div class="pc-readiness-heading"><div><p class="eyebrow">PC RELEASE CANDIDATE</p><h2 id="pc-readiness-title">현재 PC 웹 상태</h2><p>핵심 비교·기기 저장·오프라인 복구는 준비됐지만 실제 판매 자료와 사람 상담 채널은 아직 연결되지 않았습니다.</p></div><span class="release-candidate-badge">출시 후보 · 제한 있음</span></div><div class="pc-readiness-grid"><article><strong>브라우저</strong><span>${browserName}</span><small>Chrome·Edge 최신판을 기준으로 검사합니다.</small></article><article><strong>보안 연결</strong><span>${secure?'안전한 연결':'로컬 확인'}</span><small>외부 스크립트 없이 단일 서비스 파일로 부팅합니다.</small></article><article><strong>연결 상태</strong><span>${state.online?'온라인':'오프라인'}</span><small>연결이 끊겨도 기기 안 비교·기록은 계속됩니다.</small></article><article><strong>자료 상태</strong><span>합성 테스트</span><small>실가격·재고·후기는 연결하지 않았습니다.</small></article></div><section class="pc-release-score" data-pc-release-score="95" aria-label="PC 웹 상용 완성도 계산"><h3>PC 웹 상용 완성도 95%</h3><dl><div><dt>브라우저·화면·키보드</dt><dd>20 / 20</dd></div><div><dt>핵심 흐름</dt><dd>20 / 20</dd></div><div><dt>속도·접근성</dt><dd>15 / 15</dd></div><div><dt>보안·개인정보</dt><dd>15 / 15</dd></div><div><dt>백업·복구</dt><dd>10 / 10</dd></div><div><dt>HTTPS·배포 감시</dt><dd>10 / 10</dd></div><div><dt>자기진단·도움</dt><dd>5 / 5</dd></div><div class="blocked"><dt>실판매·사람 상담</dt><dd>출시 차단 · 별도 외부 관문</dd></div></dl><p>→ 이 그림의 뜻: PC 자체 품질 관문은 95점이지만, 실제 판매 자료와 사람 상담이 없으므로 상업 운영 가능으로 부르지 않습니다.</p></section><section class="support-recovery" data-pc-support="self-service"><h3>문제가 생겼을 때</h3><ol><li><strong>화면이 오래됐으면</strong><span>새 버전 안내의 새로고침을 한 번 누릅니다. 기록은 지우지 않습니다.</span></li><li><strong>연결이 끊겼으면</strong><span>오프라인 안내에서 가능한 일을 확인하고 연결 뒤 가격·재고만 다시 확인합니다.</span></li><li><strong>기록을 옮기려면</strong><span>암호화 백업을 먼저 만들고 새 기기에서 검증한 뒤 가져옵니다.</span></li></ol><div class="toolbar"><button class="primary-btn" data-action="copy-pc-diagnostics">개인정보 없는 진단 정보 복사</button><button class="secondary-btn" data-action="offline-help">오프라인 도움</button><button class="ghost-btn" data-action="recovery-guide">복원 안내</button></div><p class="warning">사람 상담·실시간 장애 접수 채널은 아직 미연결입니다. 진단 정보에는 결정·검색어·국가 선택·기기 식별값을 넣지 않습니다.</p></section></section>`);
+    return layout(`${sectionHead('서비스 상태·도움','PC에서 막히지 않고 스스로 복구할 수 있는 출시 후보 안내입니다.','home')}<section class="pc-readiness" data-pc-readiness="true" aria-labelledby="pc-readiness-title"><div class="pc-readiness-heading"><div><p class="eyebrow">PC RELEASE CANDIDATE</p><h2 id="pc-readiness-title">현재 PC 웹 상태</h2><p>핵심 비교·기기 저장·오프라인 복구는 준비됐지만 실제 판매 자료와 사람 상담 채널은 아직 연결되지 않았습니다.</p></div><span class="release-candidate-badge">출시 후보 · 제한 있음</span></div><div class="pc-readiness-grid"><article><strong>브라우저</strong><span>${browserName}</span><small>Chrome·Edge 최신판을 기준으로 검사합니다.</small></article><article><strong>보안 연결</strong><span>${secure?'안전한 연결':'로컬 확인'}</span><small>외부 스크립트 없이 단일 서비스 파일로 부팅합니다.</small></article><article><strong>연결 상태</strong><span>${state.online?'온라인':'오프라인'}</span><small>연결이 끊겨도 기기 안 비교·기록은 계속됩니다.</small></article><article><strong>자료 상태</strong><span>합성 테스트</span><small>실가격·재고·후기는 연결하지 않았습니다.</small></article></div><section class="pc-release-score" data-pc-release-score="95" aria-label="PC 웹 상용 완성도 계산"><h3>PC 웹 상용 완성도 95%</h3><dl><div><dt>브라우저·화면·키보드</dt><dd>20 / 20</dd></div><div><dt>핵심 흐름</dt><dd>20 / 20</dd></div><div><dt>속도·접근성</dt><dd>15 / 15</dd></div><div><dt>보안·개인정보</dt><dd>15 / 15</dd></div><div><dt>백업·복구</dt><dd>10 / 10</dd></div><div><dt>HTTPS·배포 감시</dt><dd>10 / 10</dd></div><div><dt>자기진단·도움</dt><dd>5 / 5</dd></div><div class="blocked"><dt>실판매·사람 상담</dt><dd>출시 차단 · 별도 외부 관문</dd></div></dl><p>→ 이 그림의 뜻: PC 자체 품질 관문은 95점이지만, 실제 판매 자료와 사람 상담이 없으므로 상업 운영 가능으로 부르지 않습니다.</p></section><section class="support-recovery" data-pc-support="self-service"><h3>문제가 생겼을 때</h3><ol><li><strong>화면이 오래됐으면</strong><span>새 버전 안내의 새로고침을 한 번 누릅니다. 기록은 지우지 않습니다.</span></li><li><strong>연결이 끊겼으면</strong><span>오프라인 안내에서 가능한 일을 확인하고 연결 뒤 가격·재고만 다시 확인합니다.</span></li><li><strong>기록을 옮기려면</strong><span>암호화 백업을 먼저 만들고 새 기기에서 검증한 뒤 가져옵니다.</span></li></ol><div class="toolbar"><button class="primary-btn" data-action="copy-pc-diagnostics">개인정보 없는 진단 정보 복사</button><button class="secondary-btn" data-action="incident-draft">장애 보고 초안</button><button class="secondary-btn" data-action="offline-help">오프라인 도움</button><button class="ghost-btn" data-action="recovery-guide">복원 안내</button></div><p class="warning">사람 상담·실시간 장애 접수 채널은 아직 미연결입니다. 진단 정보와 장애 초안에는 결정·검색어·국가 선택·기기 식별값을 넣지 않습니다.</p></section></section>`);
   }
 
   function serviceRouteGroup() {
@@ -2730,7 +2737,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     if (['bridge','barcode'].includes(state.route)) return 'find';
     if (['usage','usage-detail','decision-guide'].includes(state.route)) return 'usage';
     if (['library','retention-review'].includes(state.route)) return 'library';
-    if (['method','privacy','offline-help','accessibility','recovery-guide','pc-readiness'].includes(state.route)) return 'method';
+    if (['method','privacy','offline-help','accessibility','recovery-guide','pc-readiness','incident-draft'].includes(state.route)) return 'method';
     return 'home';
   }
 
@@ -2893,6 +2900,27 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     toast('개인정보 없는 정정 초안을 저장했어요. 아직 제출되지는 않았습니다.');
   }
 
+  function incidentDraftView() {
+    return layout(`${sectionHead('장애 보고 초안','개인정보 없이 증상과 연결 상태만 골라 기기에 저장합니다.','pc-readiness')}<section class="incident-draft-shell" data-incident-draft="local-only" data-submission-status="not-connected" data-private-fields="0" aria-labelledby="incident-draft-title"><div><p class="eyebrow">INCIDENT DRAFT · LOCAL ONLY</p><h2 id="incident-draft-title">실시간 접수 채널은 아직 없습니다</h2><p>아래 선택은 문제를 다시 설명하기 쉽게 만드는 로컬 JSON 초안입니다. 전송되지 않으며 이름·연락처·검색어·결정·국가·자유문장을 받지 않습니다.</p><ol><li>문제 유형과 심각도를 고릅니다.</li><li>현재 연결 상태와 복구 시도를 고릅니다.</li><li>파일을 저장한 뒤 실제 지원 채널이 열릴 때만 직접 전달합니다.</li></ol></div><form id="incident-draft-form"><label>문제 유형<select name="incident_code" required><option value="stale_screen">화면이 이전 판처럼 보임</option><option value="offline_unavailable">오프라인에서 필요한 화면이 안 열림</option><option value="storage_warning">기기 저장 경고가 보임</option><option value="backup_restore">백업·복원에 막힘</option><option value="accessibility_block">읽기·키보드 조작에 막힘</option></select></label><label>심각도<select name="severity" required><option value="blocked">핵심 과업을 끝낼 수 없음</option><option value="degraded">우회하면 계속할 수 있음</option><option value="question">사용법 확인이 필요함</option></select></label><label>연결 상태<select name="connection_state" required><option value="online">온라인</option><option value="offline">오프라인</option><option value="unstable">불안정</option><option value="unknown">모름</option></select></label><label>이미 해본 안전한 조치<select name="recovery_step" required><option value="none">아직 없음</option><option value="reload_once">기록을 지우지 않고 한 번 새로고침</option><option value="offline_guide">오프라인 안내 확인</option><option value="backup_check">백업 파일 확인</option></select></label><label class="correction-confirm"><input type="checkbox" name="privacy_confirm" value="yes" required> 이 초안에 개인정보·검색어·결정·국가·자유문장이 없음을 확인합니다.</label><button class="primary-btn" type="submit">개인정보 없는 장애 JSON 저장</button><p class="notice warning"><strong>아직 접수되지 않습니다</strong><span>담당자와 접수 채널이 검증되기 전에는 제출 기능으로 표시하지 않습니다.</span></p></form></section>`);
+  }
+
+  function downloadIncidentDraft(form) {
+    const input=new FormData(form);
+    const incidentCode=String(input.get('incident_code')||'');
+    const severity=String(input.get('severity')||'');
+    const connectionState=String(input.get('connection_state')||'');
+    const recoveryStep=String(input.get('recovery_step')||'');
+    const allowedIncidents=new Set(['stale_screen','offline_unavailable','storage_warning','backup_restore','accessibility_block']);
+    const allowedSeverity=new Set(['blocked','degraded','question']);
+    const allowedConnection=new Set(['online','offline','unstable','unknown']);
+    const allowedRecovery=new Set(['none','reload_once','offline_guide','backup_check']);
+    if(!allowedIncidents.has(incidentCode)||!allowedSeverity.has(severity)||!allowedConnection.has(connectionState)||!allowedRecovery.has(recoveryStep)||input.get('privacy_confirm')!=='yes'){toast('선택 항목과 개인정보 확인을 다시 확인해 주세요.');return;}
+    const payload={format:'allyoung-incident-draft',version:1,release:RELEASE_VERSION,data_mode:DATA_MODE,incident_code:incidentCode,severity,connection_state:connectionState,recovery_step:recoveryStep,submission_status:'not_submitted'};
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const anchor=document.createElement('a');anchor.href=URL.createObjectURL(blob);anchor.download='allyoung-incident-draft.json';anchor.click();setTimeout(()=>URL.revokeObjectURL(anchor.href),1000);
+    toast('개인정보 없는 장애 초안을 저장했어요. 아직 제출되지는 않았습니다.');
+  }
+
   function render() {
     const app = document.querySelector('#app');
     let view;
@@ -2913,6 +2941,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     else if (state.route === 'retention-review') view = retentionReviewView();
     else if (state.route === 'method') view = methodView();
     else if (state.route === 'correction') view = correctionView();
+    else if (state.route === 'incident-draft') view = incidentDraftView();
     else if (state.route === 'privacy') view = privacyView();
     else if (state.route === 'recovery-guide') view = recoveryGuideView();
     else if (state.route === 'accessibility') view = accessibilityView();
@@ -3118,6 +3147,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     else if(action==='recovery-guide'){state.route='recovery-guide';render();}
     else if(action==='accessibility'){state.route='accessibility';render();}
     else if(action==='pc-readiness'){state.route='pc-readiness';render();}
+    else if(action==='incident-draft'){state.route='incident-draft';render();}
     else if(action==='copy-pc-diagnostics'){
       const diagnostic=`올영스캐너 PC 진단\nrelease=${RELEASE_VERSION}\nonline=${state.online}\nstorage=${storageMode}\ndata_mode=${DATA_MODE}`;
       try{await navigator.clipboard.writeText(diagnostic);toast('개인정보 없는 진단 정보를 복사했어요.');}catch{toast('복사할 수 없어요. 서비스 상태 화면의 네 항목을 직접 알려주세요.');}
@@ -3229,6 +3259,9 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   document.addEventListener('submit',async(event) => {
     if(event.target.id==='correction-draft-form'){
       event.preventDefault();downloadCorrectionDraft(event.target);return;
+    }
+    if(event.target.id==='incident-draft-form'){
+      event.preventDefault();downloadIncidentDraft(event.target);return;
     }
     if(event.target.dataset.decisionDeleteForm){
       event.preventDefault();const id=event.target.dataset.decisionDeleteForm;const confirmation=String(new FormData(event.target).get('confirmation')||'').trim();if(confirmation!=='영구 삭제'){toast('확인 문구가 맞지 않아 기록을 유지합니다.');return;}
