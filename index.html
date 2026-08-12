@@ -1544,11 +1544,29 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
 .pc-release-score dl div { display:flex; justify-content:space-between; gap:15px; padding:11px; border-radius:10px; background:#f5f8f6; }
 .pc-release-score dd { margin:0; font-weight:900; }
 .pc-release-score .blocked { border:1px solid #efc37b; color:#7a3b1b; background:#fff7e8; }
+.pc-launch-gate { display:grid; gap:16px; padding:22px; border:1px solid #c9dfd1; border-radius:16px; background:linear-gradient(135deg,#f4fbf6,#fff); }
+.pc-launch-gate-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; }
+.pc-launch-gate-heading h3 { margin:3px 0 7px; color:var(--primary); font-size:24px; }
+.pc-launch-gate-heading p { max-width:720px; margin:0; color:var(--muted); line-height:1.55; }
+.launch-gate-badge { flex:0 0 auto; padding:8px 12px; border-radius:999px; color:#0f6138; background:#e7f7ed; font-size:12px; font-weight:900; }
+.pc-launch-checks { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; padding:0; margin:0; list-style:none; }
+.pc-launch-checks li { display:grid; grid-template-columns:auto 1fr; column-gap:9px; align-content:start; min-height:134px; padding:14px; border:1px solid #d8e5dc; border-radius:12px; background:#fff; }
+.pc-launch-checks li>span { display:grid; place-items:center; width:21px; height:21px; border-radius:50%; color:#fff; background:#218653; font-size:13px; font-weight:900; }
+.pc-launch-checks strong,.pc-launch-checks small { display:block; }
+.pc-launch-checks strong { color:var(--primary); line-height:1.35; }
+.pc-launch-checks small { margin-top:6px; color:var(--muted); line-height:1.45; font-size:12px; }
+.pc-launch-checks b { grid-column:2; align-self:end; margin-top:9px; color:#167347; font-size:12px; }
+.pc-launch-external { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 16px; border:1px solid #efc37b; border-radius:12px; background:#fff8e9; }
+.pc-launch-external strong { color:#713a1b; }
+.pc-launch-external p { margin:5px 0 0; color:#714a31; line-height:1.5; }
+.pc-launch-external>span { flex:0 0 auto; padding:6px 9px; border-radius:999px; color:#713a1b; background:#ffe8bf; font-size:12px; font-weight:900; }
+.pc-launch-actions { margin:0; }
 .support-recovery ol { display:grid; gap:10px; padding-left:22px; }
 .support-recovery li strong,.support-recovery li span { display:block; }
 .support-recovery li span { margin-top:3px; color:var(--muted); line-height:1.5; }
-@media (max-width:900px) { .pc-readiness-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media (max-width:760px) { .pc-readiness-heading { display:block; } .release-candidate-badge { display:inline-block; margin-top:14px; } .pc-readiness-grid,.pc-release-score dl { grid-template-columns:1fr; } }
+@media (max-width:1100px) { .pc-launch-checks { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:900px) { .pc-readiness-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .pc-launch-checks { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:760px) { .pc-readiness-heading,.pc-launch-gate-heading { display:block; } .release-candidate-badge,.launch-gate-badge { display:inline-block; margin-top:14px; } .pc-readiness-grid,.pc-release-score dl,.pc-launch-checks { grid-template-columns:1fr; } .pc-launch-checks li { min-height:0; } .pc-launch-external { align-items:flex-start; flex-direction:column; } }
 .family-workspace{margin:0 0 24px;padding:24px;border:1px solid #dfe6db;border-radius:24px;background:linear-gradient(135deg,#fbfff8,#f5f8ff)}
 .family-heading{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.family-heading>span{padding:8px 12px;border-radius:999px;background:#e8f6e4;color:#236327;font-weight:800}.family-profile-form{margin:18px 0}.family-profile-form input{min-width:220px}
 .family-profile-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.family-profile-tabs button{border:1px solid #ccd8c8;border-radius:999px;padding:10px 14px;background:#fff}.family-profile-tabs button[aria-selected="true"]{background:#203d2b;color:#fff;border-color:#203d2b}
@@ -2725,6 +2743,10 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     return layout(`${sectionHead('오프라인에서도 이어가기','연결 상태가 바뀌어도 선택을 잃지 않도록, 되는 일과 기다려야 할 일을 나눠 보여드립니다.','privacy')}<section class="method-grid offline-guide" data-offline-guide="true"><article><span>01</span><h3>계속 되는 일</h3><p>기기에 저장된 후보 비교, 내 결정, 사용·재구매 기록, 암호화 백업은 ${status} 상태에서도 계속됩니다.</p></article><article><span>02</span><h3>기다리는 일</h3><p>실제 판매처 가격·재고 확인과 사용자가 켠 선택 동기화는 연결된 뒤에만 시도합니다.</p></article><article><span>03</span><h3>자동 전송 없음</h3><p>연결이 돌아와도 오프라인 동안 만든 기록을 자동으로 밖으로 보내지 않습니다.</p></article><article><span>04</span><h3>지금 상태</h3><p><strong data-offline-status-text="true">${status}</strong>${state.offlineSince ? ` · ${new Date(state.offlineSince).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}부터 기기 안 모드` : ''}</p></article></section><section class="method-actions"><h2>바로 이어가기</h2><div><button class="primary-btn" data-action="pc-start-quiz">기기 안 비교 시작</button><button class="secondary-btn" data-action="pc-library">내 결정 보기</button><button class="ghost-btn" data-action="privacy">개인정보 선택권</button></div></section>`);
   }
 
+  function pcLaunchGateView() {
+    return `<section class="pc-launch-gate" data-pc-launch-gate="self-check-ready" aria-labelledby="pc-launch-gate-title"><div class="pc-launch-gate-heading"><div><p class="eyebrow">LAUNCH CHECK</p><h3 id="pc-launch-gate-title">출시 전 마지막 점검</h3><p>PC 자체 품질에서 확인한 항목과, 외부 준비가 필요한 항목을 분리해 보여드립니다. 아래 ‘확인됨’은 자동·화면 검사 기준이며, 판매·상담 운영 시작을 뜻하지 않습니다.</p></div><span class="launch-gate-badge">PC 품질 · 95 / 100</span></div><ol class="pc-launch-checks" aria-label="확인된 PC 품질 조건"><li data-launch-check="browser"><span aria-hidden="true">✓</span><div><strong>화면·브라우저</strong><small>Chrome·Edge, 1280px·1920px와 좁은 폭을 검사합니다.</small></div><b>확인됨</b></li><li data-launch-check="keyboard"><span aria-hidden="true">✓</span><div><strong>키보드·확대</strong><small>검색 단축키와 200% 확대 상당 폭에서 가로 넘침을 검사합니다.</small></div><b>확인됨</b></li><li data-launch-check="privacy"><span aria-hidden="true">✓</span><div><strong>개인정보 경계</strong><small>진단·정정·장애 초안은 선택형 로컬 파일이며 실제 접수가 아닙니다.</small></div><b>확인됨</b></li><li data-launch-check="recovery"><span aria-hidden="true">✓</span><div><strong>기록·오프라인 복구</strong><small>기기 안 비교·기록과 백업·복원 안내 경로를 검사합니다.</small></div><b>확인됨</b></li><li data-launch-check="deployment"><span aria-hidden="true">✓</span><div><strong>HTTPS·공개 판 확인</strong><small>외부 부팅 요청 없이 조립하고 공개 판은 별도로 대조합니다.</small></div><b>확인됨</b></li></ol><div class="pc-launch-external" data-pc-external-gates="2"><div><strong>상업 운영 전 외부 관문</strong><p>실판매 가격·재고·배송 자료 권리와, 검증된 사람 상담·실시간 접수 채널은 아직 미연결입니다.</p></div><span>2개 미연결</span></div><div class="toolbar pc-launch-actions"><a class="secondary-btn" href="./progress.html" data-pc-launch-evidence="true">검사 증거 보기</a><button class="primary-btn" data-action="pc-start-quiz">핵심 비교 흐름 직접 확인</button></div></section>`;
+  }
+
   function pcReadinessView() {
     const browserName=navigator.userAgent.includes('Edg/')?'Microsoft Edge':navigator.userAgent.includes('Chrome/')?'Google Chrome 계열':'기타 브라우저';
     const secure=location.protocol==='https:'||['localhost','127.0.0.1'].includes(location.hostname);
@@ -2949,6 +2971,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     else if (state.route === 'offline-help') view = offlineView();
     else if (state.route === 'loading') view = loadingView();
     app.innerHTML = view;
+    if(state.route==='pc-readiness')document.querySelector('[data-pc-release-score]')?.insertAdjacentHTML('afterend',pcLaunchGateView());
     if(state.route==='library')document.querySelector('[data-watchlist-panel="true"]')?.insertAdjacentHTML('beforebegin',familyWorkspaceView());
     if(state.route==='library')document.querySelectorAll('article.decision[data-decision]').forEach((node)=>{const decision=state.decisions.find((item)=>item.id===node.dataset.decision);if(decision&&!node.querySelector('[data-retention-control]'))node.insertAdjacentHTML('beforeend',retentionControlView(decision));});
     const mobileShopHome = document.querySelector('.service-mobile-home');
