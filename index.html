@@ -1567,6 +1567,10 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
 @media (max-width:1100px) { .pc-launch-checks { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (max-width:900px) { .pc-readiness-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .pc-launch-checks { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:760px) { .pc-readiness-heading,.pc-launch-gate-heading { display:block; } .release-candidate-badge,.launch-gate-badge { display:inline-block; margin-top:14px; } .pc-readiness-grid,.pc-release-score dl,.pc-launch-checks { grid-template-columns:1fr; } .pc-launch-checks li { min-height:0; } .pc-launch-external { align-items:flex-start; flex-direction:column; } }
+.monetization-readiness{display:grid;gap:18px;margin:28px 0;padding:24px;border:1px solid #e3bd75;border-radius:20px;background:linear-gradient(135deg,#fff9ec,#fff)}
+.monetization-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.monetization-heading h2{margin:4px 0 8px;font-size:28px}.monetization-heading p{max-width:720px;margin:0;color:var(--muted);line-height:1.6}.monetization-badge{flex:0 0 auto;padding:8px 12px;border-radius:999px;color:#743d16;background:#ffe8bf;font-size:12px;font-weight:900}
+.monetization-readiness ul{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}.monetization-readiness li{display:flex;gap:9px;min-height:142px;padding:14px;border:1px solid #ead7b6;border-radius:13px;background:#fff}.monetization-readiness li>span{display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border-radius:50%;color:#fff;background:#b76b27;font-weight:900}.monetization-readiness li[data-gate-status="complete"]>span{background:#218653}.monetization-readiness li div{display:flex;flex-direction:column;gap:6px}.monetization-readiness li small{color:var(--muted);line-height:1.45}.monetization-readiness li b{margin-top:auto;color:#7a431e;font-size:12px}.monetization-readiness li[data-gate-status="complete"] b{color:#167347}.monetization-readiness>button{min-height:48px;border:1px solid #c8cec9;border-radius:13px;color:#5e6762;background:#e6e9e6;font-weight:900;cursor:not-allowed}.monetization-footnote{margin:0;color:var(--muted);font-size:12px}
+@media(max-width:1100px){.monetization-readiness ul{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:760px){.monetization-heading{display:block}.monetization-badge{display:inline-block;margin-top:12px}.monetization-readiness ul{grid-template-columns:1fr}.monetization-readiness li{min-height:0}}
 .family-workspace{margin:0 0 24px;padding:24px;border:1px solid #dfe6db;border-radius:24px;background:linear-gradient(135deg,#fbfff8,#f5f8ff)}
 .family-heading{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.family-heading>span{padding:8px 12px;border-radius:999px;background:#e8f6e4;color:#236327;font-weight:800}.family-profile-form{margin:18px 0}.family-profile-form input{min-width:220px}
 .family-profile-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.family-profile-tabs button{border:1px solid #ccd8c8;border-radius:999px;padding:10px 14px;background:#fff}.family-profile-tabs button[aria-selected="true"]{background:#203d2b;color:#fff;border-color:#203d2b}
@@ -2303,6 +2307,17 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     return `<div class="shell">${header()}<main id="main" class="content" tabindex="-1">${body}<p class="footer-note">${C.medicalDisclaimer}<br>${C.testPriceNotice}</p></main>${pcDock}${pcHelp}${storageBar()}</div>`;
   }
 
+  function monetizationReadinessPanel() {
+    const checks = [
+      ['기술 안전장치','완료','빠진 조건 하나만 있어도 결제를 닫습니다.'],
+      ['요금제·사업자','미확인','실제 가격과 사업자 정보를 연결하지 않았습니다.'],
+      ['결제대행사','미확인','프로덕션 운영모드와 허용 출처가 필요합니다.'],
+      ['정책·사람 지원','미확인','약관·개인정보·환불·사람 지원 주소가 필요합니다.'],
+      ['상품 자료 권리','미확인','상업 이용 권리가 확인된 자료만 연결합니다.'],
+    ];
+    return `<section class="monetization-readiness" data-monetization-readiness="blocked" aria-labelledby="monetization-title"><div class="monetization-heading"><div><p class="eyebrow">PAYMENT SAFETY GATE</p><h2 id="monetization-title">유료 기능은 준비 확인 뒤에 엽니다</h2><p>현재 서비스는 무료 비교 시험판입니다. 가격만 채워 구매를 서두르지 않고, 필수 운영 증거가 모두 확인될 때까지 결제를 차단합니다.</p></div><span class="monetization-badge">주의 · 결제 차단</span></div><ul>${checks.map(([title,status,detail])=>`<li data-gate-status="${status==='완료'?'complete':'unverified'}"><span>${status==='완료'?'✓':'!'}</span><div><strong>${title}</strong><small>${detail}</small><b>${status}</b></div></li>`).join('')}</ul><button type="button" disabled aria-disabled="true" data-checkout-disabled="true">결제 준비 확인 전에는 구매할 수 없어요</button><p class="monetization-footnote">카드번호·결제 비밀값을 입력하거나 저장하지 않습니다.</p></section>`;
+  }
+
   function homePreviewCard(product, index) {
     const fit = product.concerns.slice(0,2).map(label);
     const previewConcern = product.concerns[0] || 'moisture';
@@ -2332,7 +2347,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
       <div class="notice warning"><strong>알파 데이터</strong><span>${C.dataModeSynthetic} 커버리지·가격·평점 성과로 사용할 수 없습니다.</span></div>
       ${preferenceFingerprintView()}
       ${recent.length ? `<section><h2>최근 결정</h2><div class="decision-list">${recent.map(decisionRow).join('')}</div></section>` : ''}</div>`;
-    return layout(`${pcHome}${mobileHome}${pcDesk}`);
+    return layout(`${pcHome}${mobileHome}${monetizationReadinessPanel()}${pcDesk}`);
   }
 
   function sectionHead(title, sub, back = 'home') {
@@ -2890,7 +2905,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     </section>`;
     const pcDesk = `<aside class="pc-desk service-decision-rail" data-pc-home="true" aria-label="오늘의 결정 작업공간"><div class="rail-top"><span class="pc-area-label">TODAY'S DECISION SET</span><span class="rail-status">기기 저장</span></div><h2>${latest ? '이어볼 결정이 있어요' : '세 개를 나란히 보면 달라집니다'}</h2><p class="muted">${latest ? `${escapeHtml(latest.name)}의 사용법과 회고를 이어보세요.` : '장벽 케어 후보를 맞는 점과 감수할 점으로 먼저 비교해 보세요.'}</p><ol class="rail-candidates">${previewProducts.slice(0,3).map((product,index)=>`<li><span>0${index+1}</span><div><small>${escapeHtml(product.brand)}</small><strong>${escapeHtml(product.name.replace(/^테스트 /,''))}</strong></div></li>`).join('')}</ol><div class="pc-decision-slots" aria-label="결정 진행"><span class="filled"></span><span class="${state.decisions.length>0?'filled':''}"></span><span class="${state.decisions.length>1?'filled':''}"></span><strong>${Math.min(state.decisions.length,3)} / 3</strong></div><section class="pc-summary" aria-label="기기 저장"><h3>이 기기에 저장한 결정</h3><p><strong data-pc-decision-count>${state.decisions.length}건</strong> · 계정 없이 이 브라우저에만 보관합니다.</p></section><div class="pc-desk-actions"><button class="primary-btn wide" data-action="pc-ranking">세 후보 비교 시작</button><button class="secondary-btn wide" data-action="pc-library">내 결정 이어보기</button></div><p class="rail-footnote">가격·재고·리뷰는 검증된 자료가 생길 때만 표시합니다.</p></aside>`;
     const mobileHome = `<div class="mobile-home-legacy service-mobile-home"><section class="mobile-hero"><p class="eyebrow">BEAUTY, WITH REASONS</p><h1>고르기 전에,<br><em>이유부터.</em></h1><p>내 조건에 맞는 후보 세 개와 감수할 점을 함께 비교합니다.</p><button class="primary-btn wide" data-action="pc-start-quiz">내 고민으로 3개 압축</button></section><div class="mobile-search-prompt"><strong>제품·브랜드·성분 찾기</strong><button data-action="service-bridge">검색 시작 →</button></div><section class="actions-grid mobile-service-actions" aria-label="시작 방법"><button class="entry primary" data-action="start-quiz"><span class="entry-index">01</span><strong>${C.startConcern}</strong><span>다섯 가지 질문으로 기준을 정리해요.</span></button><button class="entry" data-action="bridge"><span class="entry-index">02</span><strong>${C.startBridge}</strong><span>같은 점과 다른 점에서 출발해요.</span></button><button class="entry" data-action="barcode"><span class="entry-index">03</span><strong>${C.startBarcode}</strong><span>테스트 GTIN으로 확인해요.</span></button><button class="entry" data-action="ranking"><span class="entry-index">04</span><strong>${C.startRanking}</strong><span>후보 차이를 바로 펼쳐요.</span></button><button class="entry usage-entry" data-action="usage"><span class="entry-index">05</span><strong>${C.startUsage}</strong><span>${C.usageHomeSub}</span></button></section><div class="notice warning"><strong>테스트 자료</strong><span>실제 상품·가격·평점·인기 순위가 아닙니다.</span></div><section class="mobile-curated"><div><p class="eyebrow">DECISION SET</p><h2>장벽 케어 세 가지 관점</h2></div>${previewProducts.slice(0,3).map((product,index)=>`<button data-home-concern="${product.concerns[0] || 'moisture'}"><span>0${index+1}</span><div><small>${escapeHtml(product.brand)}</small><strong>${escapeHtml(product.name.replace(/^테스트 /,''))}</strong><p>${escapeHtml(product.reasons?.[0] || '')}</p></div><i>→</i></button>`).join('')}</section>${recent.length ? `<section><h2>최근 결정</h2><div class="decision-list">${recent.map(decisionRow).join('')}</div></section>` : ''}</div>`;
-    return layout(`${pcHome}${mobileHome}${pcDesk}`);
+    return layout(`${pcHome}${mobileHome}${monetizationReadinessPanel()}${pcDesk}`);
   }
 
   function sectionHead(title, sub, back = 'home') {
