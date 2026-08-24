@@ -1,7 +1,13 @@
-const CACHE = 'ays-service-v0.19-ux95-v3';
-const RELEASE_VERSION = '2026-08-12-ux95-v3';
+const CACHE = 'ays-service-vnext-0.13';
+const RELEASE_VERSION = '2026-08-24-vnext-0.13';
+const CORE = [
+  './', './index.html', './progress.html', './offline.html',
+  './privacy.html', './terms.html', './support.html',
+  './manifest.webmanifest', './icon.svg', './icon-192.svg', './icon-512.svg',
+  './readiness.json', './catalog-governance.json',
+];
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(['./', './index.html', './progress.html', './og-service-v2.png'])));
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE)));
   self.skipWaiting();
 });
 self.addEventListener('activate', (event) => {
@@ -10,10 +16,11 @@ self.addEventListener('activate', (event) => {
 });
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  const fallback = new URL(event.request.url).pathname.endsWith('/progress.html') ? './progress.html' : './index.html';
+  const fallback = event.request.mode === 'navigate' ? './offline.html' : undefined;
   event.respondWith(fetch(event.request).then((response) => {
+    if (!response || response.status !== 200 || response.type === 'opaque') return response;
     const copy = response.clone();
     caches.open(CACHE).then((cache) => cache.put(event.request, copy));
     return response;
-  }).catch(() => caches.match(event.request).then((cached) => cached || caches.match(fallback))));
+  }).catch(() => caches.match(event.request).then((cached) => cached || (fallback ? caches.match(fallback) : Response.error()))));
 });
