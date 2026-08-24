@@ -3110,6 +3110,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
     const payload={version:3,format:'allyoung-decision-library',data_mode:DATA_MODE,exported_at:new Date().toISOString(),decisions:state.decisions};
     const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='allyoung-decisions-alpha.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    toast('JSON 백업을 만들었어요. 브라우저 다운로드 목록을 확인해 주세요.');
   }
 
   const bytesToBase64 = (bytes) => {

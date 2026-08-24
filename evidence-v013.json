@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-24-vnext-0.13",
+  "verified_at": "2026-08-24T10:25:00.000Z",
+  "automatic": {
+    "public_contract": "pass",
+    "required_files": 15,
+    "resource_http_200": 12,
+    "console_errors": 0
+  },
+  "browser": {
+    "local": {
+      "widths": [360, 390, 1440],
+      "horizontal_overflow": 0,
+      "minimum_visible_button_height_px": 44,
+      "large_text_390_overflow": false
+    },
+    "public": {
+      "url": "https://hanksleekorea-boop.github.io/all-young-scanner-web/",
+      "version": "v0.13",
+      "widths": [360, 390, 1440],
+      "horizontal_overflow": 0,
+      "minimum_visible_button_height_px": 44,
+      "barcode_to_candidates": "pass",
+      "candidate_count": 3,
+      "decision_save": "pass",
+      "synthetic_notice_visible": true,
+      "legal_pages": ["privacy.html", "terms.html", "support.html"],
+      "console_errors": 0
+    }
+  },
+  "android": { "status": "not_run", "reason": "USB debugging device disconnected before current-release test" },
+  "ios": { "status": "not_run", "reason": "No iOS test device available" },
+  "real_users": { "status": "not_run", "count": 0 },
+  "operator": { "status": "blocked", "reason": "Operator identity and private human support channel not confirmed" }
+}

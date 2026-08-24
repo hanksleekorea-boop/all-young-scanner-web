@@ -4,7 +4,7 @@ const CORE = [
   './', './index.html', './progress.html', './offline.html',
   './privacy.html', './terms.html', './support.html',
   './manifest.webmanifest', './icon.svg', './icon-192.svg', './icon-512.svg',
-  './readiness.json', './catalog-governance.json',
+  './readiness.json', './catalog-governance.json', './evidence-v013.json',
 ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE)));
