@@ -1452,6 +1452,12 @@ button:focus-visible,input:focus-visible,a:focus-visible { outline: 3px solid rg
   .mobile-service-actions { gap: 8px; }
   .mobile-service-actions .entry { min-height: 108px; border-radius: 13px; box-shadow: none; }
   .mobile-service-actions .entry-index { margin-bottom: 12px; }
+  .mobile-service-actions .entry.primary .entry-index,
+  .mobile-service-actions .entry.primary span:not(.entry-index) { color: #fff; opacity: 1; }
+  .mobile-curated,.mobile-shopping-home,.service-footer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 640px;
+  }
   .mobile-curated button { border-radius: 12px; }
   .mobile-curated i { color: #fff; background: var(--primary); }
   .service-footer { width: min(calc(100% - 24px),900px); }
