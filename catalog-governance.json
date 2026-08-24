@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-24T00:00:00.000Z",
+  "launch_scope": { "market": "KR", "language": "ko-KR", "currency": "KRW" },
+  "commercial_catalog_connected": false,
+  "public_real_product_count": 0,
+  "synthetic_products": {
+    "count": 8,
+    "rights_state": "restricted",
+    "public_as_real_product": false,
+    "purpose": "UI와 자동검사 전용",
+    "source": "내부 생성 시험자료"
+  },
+  "publication_rule": "rights_state=approved, public_allowed=true, evidence_ref와 verified_at가 모두 있어야 실상품 공개",
+  "offer_rule": "승인 판매처, KRW, 수집 후 24시간 이내만 현재 판매정보로 표시"
+}

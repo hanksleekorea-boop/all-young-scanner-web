@@ -1,0 +1,9 @@
+{
+  "name": "all-young-scanner-web",
+  "private": true,
+  "version": "0.13.0",
+  "type": "module",
+  "scripts": {
+    "verify": "node scripts/verify-public.mjs"
+  }
+}
