@@ -27,6 +27,7 @@ assert(html.includes("'BarcodeDetector' in window") && html.includes('navigator.
 assert(html.includes('숫자를 직접 입력해 주세요'), '카메라 미지원 대체 경로 누락');
 assert(/\.mobile-service-actions \.entry\.primary \.entry-index,[\s\S]*?color: #fff; opacity: 1;/.test(html), '모바일 핵심 버튼 글자 대비 보호 규칙 누락');
 assert(/\.mobile-curated,\.mobile-shopping-home,\.service-footer[\s\S]*?content-visibility: auto;/.test(html), '모바일 아래 영역 렌더링 지연 규칙 누락');
+assert(/\.pc-home-v2 > \.service-concerns,[\s\S]*?contain-intrinsic-size: auto 520px;/.test(html), 'PC 아래 영역 렌더링 지연 규칙 누락');
 assert(['privacy.html', 'terms.html', 'support.html'].every((path) => html.includes(`href="${path}"`)), '법적·지원 링크 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.icons.length >= 2, 'PWA manifest 계약 실패');
 assert(sw.includes("const RELEASE_VERSION = '2026-08-24-vnext-0.13'"), '서비스 워커 판 불일치');
