@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "release_id": "2026-08-24-vnext-0.13",
-  "source_commit": "pending-publication",
+  "source_commit": "b006289352614c6c534f04e1476478afffc48fd9",
   "scope": "KR/ko-KR/KRW",
   "calculation": "passed tasks with required evidence / 20 stage-one tasks",
   "stage_one": { "total": 20, "passed": 0, "partial": 12, "blocked_external": 6, "ready": 2, "percent": 0 },
   "mobile": { "claim": "not_99", "android_devices_verified": 0, "ios_devices_verified": 0 },
-  "pc_web": { "claim": "release-candidate-test-data", "browser_evidence_current_release": false },
+  "pc_web": { "claim": "release-candidate-test-data", "browser_evidence_current_release": true, "tested_widths": [360, 390, 1440] },
   "commercial": { "claim": "blocked", "real_products": 0, "real_users": 0, "human_support": false, "operator_identity": false },
   "evidence_separation": ["automatic", "browser", "android", "ios", "user", "operator", "external"]
 }
