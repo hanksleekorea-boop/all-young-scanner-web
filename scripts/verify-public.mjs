@@ -38,12 +38,14 @@ assert(readiness.stage_one.passed === 0 && readiness.stage_one.total === 20, 'vN
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
 assert(readiness.pc_web.browser_evidence_current_release === true, '현재 공개 PC 브라우저 증거 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
-assert(evidence.android.status === 'not_run', '실시하지 않은 Android 시험을 통과 처리함');
+assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
+assert(evidence.android.checks.offline_reload === 'pass' && evidence.android.checks.camera_permission === 'not_granted', 'Android 통과·미확인 경계 불일치');
+assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 기기 일련번호가 포함됨');
 assert(evidence.automatic.required_files === required.length, '공개 증거의 필수 파일 수 불일치');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
 assert(!progress.includes('<strong>95%</strong>') && !progress.includes('A56 격리'), '옛 완료율 또는 기기 증거가 남아 있음');
-assert(progress.includes('0 / 20 DONE') && progress.includes('SM-G996N'), '현재 vNEXT 분모 또는 기기 상태 누락');
+assert(progress.includes('0 / 20 DONE') && progress.includes('SM-A5660') && !progress.includes('SM-G996N'), '현재 vNEXT 분모 또는 Android 기기 상태 불일치');
 assert(read('robots.txt').includes('sitemap.xml'), 'robots sitemap 누락');
 assert(read('sitemap.xml').includes('privacy.html') && read('sitemap.xml').includes('terms.html'), 'sitemap 법적 표면 누락');
 

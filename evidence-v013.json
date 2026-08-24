@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "release_id": "2026-08-24-vnext-0.13",
-  "verified_at": "2026-08-24T10:49:55.050Z",
+  "verified_at": "2026-08-24T11:00:51.085Z",
   "implementation_commit": "f1cf33aa21552ae0c62c255ee42d9fcd4f5f2ef6",
   "automatic": {
     "public_contract": "pass",
@@ -57,7 +57,37 @@
       "console_errors": 0
     }
   },
-  "android": { "status": "not_run", "reason": "USB debugging device disconnected before current-release test" },
+  "android": {
+    "status": "partial_pass",
+    "current_release": true,
+    "tested_at": "2026-08-24T11:00:51.085Z",
+    "device_count": 1,
+    "device_model": "SM-A5660",
+    "os": "Android 8.1.0",
+    "browser": "Chrome 101.0.4951.61",
+    "physical_display": "720x1560 at 320 dpi",
+    "css_viewport": "360x638 at DPR 2",
+    "checks": {
+      "home_load": "pass",
+      "console_errors": 0,
+      "horizontal_overflow_px": 0,
+      "minimum_visible_button_height_px": 44,
+      "quiz_five_steps": "pass",
+      "three_candidates": "pass",
+      "comparison": "pass",
+      "decision_card": "pass",
+      "local_decision_record": "pass",
+      "service_worker_controlled": true,
+      "offline_reload": "pass",
+      "online_recovery": "pass",
+      "barcode_detector_available": true,
+      "camera_api_available": true,
+      "camera_permission": "not_granted",
+      "json_download_file": "not_confirmed",
+      "landscape": "not_confirmed_device_firmware_rejected_forced_rotation"
+    },
+    "limitation": "One older Android device and one portrait core flow only; camera grant, downloaded file, landscape, install/update, additional Android versions, and iOS remain unverified."
+  },
   "ios": { "status": "not_run", "reason": "No iOS test device available" },
   "real_users": { "status": "not_run", "count": 0 },
   "operator": { "status": "blocked", "reason": "Operator identity and private human support channel not confirmed" }
