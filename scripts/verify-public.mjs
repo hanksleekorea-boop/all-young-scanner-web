@@ -37,7 +37,11 @@ assert(governance.synthetic_products.public_as_real_product === false, '합성 �
 assert(readiness.stage_one.passed === 0 && readiness.stage_one.total === 20, 'vNEXT 완료율 분모 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
 assert(readiness.pc_web.browser_evidence_current_release === true, '현재 공개 PC 브라우저 증거 누락');
-assert(JSON.parse(read('evidence-v013.json')).android.status === 'not_run', '실시하지 않은 Android 시험을 통과 처리함');
+const evidence = JSON.parse(read('evidence-v013.json'));
+assert(evidence.android.status === 'not_run', '실시하지 않은 Android 시험을 통과 처리함');
+assert(evidence.automatic.required_files === required.length, '공개 증거의 필수 파일 수 불일치');
+assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
+assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
 assert(!progress.includes('<strong>95%</strong>') && !progress.includes('A56 격리'), '옛 완료율 또는 기기 증거가 남아 있음');
 assert(progress.includes('0 / 20 DONE') && progress.includes('SM-G996N'), '현재 vNEXT 분모 또는 기기 상태 누락');
 assert(read('robots.txt').includes('sitemap.xml'), 'robots sitemap 누락');
