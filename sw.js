@@ -1,5 +1,5 @@
-const CACHE = 'ays-service-vnext-0.13';
-const RELEASE_VERSION = '2026-08-24-vnext-0.13';
+const CACHE = 'ays-service-v0.14';
+const RELEASE_VERSION = '2026-08-25-service-v0.14';
 const CORE = [
   './', './index.html', './progress.html', './offline.html',
   './privacy.html', './terms.html', './support.html',

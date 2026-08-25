@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-24-vnext-0.13",
+  "release_id": "2026-08-25-service-v0.14",
   "source_commit": "f1cf33aa21552ae0c62c255ee42d9fcd4f5f2ef6",
   "scope": "KR/ko-KR/KRW",
   "calculation": "passed tasks with required evidence / 20 stage-one tasks",

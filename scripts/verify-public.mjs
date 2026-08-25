@@ -30,7 +30,7 @@ assert(/\.mobile-curated,\.mobile-shopping-home,\.service-footer[\s\S]*?content-
 assert(/\.pc-home-v2 > \.service-concerns,[\s\S]*?contain-intrinsic-size: auto 520px;/.test(html), 'PC 아래 영역 렌더링 지연 규칙 누락');
 assert(['privacy.html', 'terms.html', 'support.html'].every((path) => html.includes(`href="${path}"`)), '법적·지원 링크 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.icons.length >= 2, 'PWA manifest 계약 실패');
-assert(sw.includes("const RELEASE_VERSION = '2026-08-24-vnext-0.13'"), '서비스 워커 판 불일치');
+assert(sw.includes("const RELEASE_VERSION = '2026-08-25-service-v0.14'"), '서비스 워커 판 불일치');
 assert(required.filter((path) => !['robots.txt', 'sitemap.xml', 'og-service-v2.svg', 'scripts/verify-public.mjs'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['sw.js'].includes(path)), '오프라인 핵심 파일 누락');
 assert(governance.commercial_catalog_connected === false && governance.public_real_product_count === 0, '실상품 연결 상태가 거짓임');
 assert(governance.synthetic_products.public_as_real_product === false, '합성 자료가 실상품으로 공개됨');
