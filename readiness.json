@@ -1,18 +1,18 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-26-service-v0.18",
+  "release_id": "2026-08-26-service-v0.19",
   "updated_at": "2026-08-26",
-  "source_baseline_commit": "f490a4ed7b80bd5611c5ca6aba6de2e3ac091122",
+  "source_baseline_commit": "1123085848290a3aa4516b107c5dc6aa34b37637",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
   "scope": "KR/ko-KR/KRW",
   "calculation": "DONE / 26 equally counted stage-one task cards; not a commercial readiness score",
   "stage_one": {
     "total": 26,
-    "passed": 13,
+    "passed": 14,
     "in_progress": 0,
-    "verifying": 3,
+    "verifying": 2,
     "blocked": 10,
-    "percent": 50,
+    "percent": 53.8,
     "done": [
       "P1-00",
       "P1-01",
@@ -23,6 +23,7 @@
       "P1-12",
       "V3-00",
       "V3-01",
+      "V3-02",
       "V3-03",
       "V3-04",
       "V3-05",
@@ -31,13 +32,13 @@
   },
   "mobile": {
     "claim": "not_99",
-    "current_release_device_test": "partial",
-    "reason": "SM-G996N에서 공개 홈·HTTPS·주요 버튼을 확인했으나 다른 앱 전면 점유로 전체 왕복은 중단",
+    "current_release_device_test": "partial_pass",
+    "reason": "SM-G996N 한 대에서 공개 홈·HTTPS·독립/제휴 고지·사용법 이동·가로/세로 회전과 새로고침을 확인; 오프라인·카메라·설치·백업 왕복은 미실시",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.18 responsive service routes, independent-brand notice, affiliate disclosure and user-facing copy; not real catalog journey",
+    "browser_evidence_scope": "v0.19 live responsive service routes, independent-brand notice, affiliate disclosure and user-facing copy; not real catalog journey",
     "tested_widths": [
       360,
       390,
@@ -56,7 +57,7 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
-  "evidence_file": "evidence-v018.json",
+  "evidence_file": "evidence-v019.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

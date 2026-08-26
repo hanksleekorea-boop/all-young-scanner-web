@@ -9,7 +9,7 @@ const required = [
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
   'assets/local-records.mjs', 'assets/decision-client.mjs',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -50,7 +50,7 @@ assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === r
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.18 responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.19 live responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');

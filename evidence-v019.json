@@ -1,0 +1,47 @@
+{
+  "release_id": "2026-08-26-service-v0.19",
+  "verified_at": "2026-08-26",
+  "automatic": {
+    "public_tests": 26,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "v3_plan_requirements": 48,
+    "v3_safety_rules": 16,
+    "v3_safety_negative_tests": 16,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core and storage tests; not real users, real products, or full device journeys"
+  },
+  "server": {
+    "source_commit": "1123085848290a3aa4516b107c5dc6aa34b37637",
+    "full_run": "32949117866",
+    "status": "pass",
+    "public_origin_contract": "implemented_and_automatically_tested",
+    "production_database_applied": false,
+    "public_api_connected": false
+  },
+  "browser": {
+    "status": "pass_live",
+    "widths": [360, 390, 1440],
+    "horizontal_overflow": false,
+    "undersized_visible_controls": 0,
+    "internal_copy_visible": false,
+    "independent_service_notice": true,
+    "affiliate_neutrality_notice": true,
+    "policy_routes_checked": ["privacy", "terms", "support"],
+    "operations_route_noindex_nofollow": true
+  },
+  "android": {
+    "status": "partial_pass_current_release",
+    "model": "SM-G996N",
+    "device_count": 1,
+    "checks": ["public_home", "https", "independent_notice", "affiliate_neutrality_notice", "usage_navigation", "portrait_landscape_content", "reload"],
+    "restored_settings": ["user_rotation=free"],
+    "not_verified": ["offline_network_cut", "camera_permission", "real_barcode_50", "pwa_install_update", "backup_round_trip"]
+  },
+  "ios": { "status": "not_run" },
+  "real_users": { "status": "not_run", "count": 0 },
+  "operator": { "status": "blocked", "runbooks_prepared": true },
+  "commercial": "blocked_real_catalog_production_endpoint_operator_affiliate_contract_and_real_user_evidence"
+}
