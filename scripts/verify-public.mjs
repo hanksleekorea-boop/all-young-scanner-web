@@ -9,7 +9,7 @@ const required = [
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
   'assets/local-records.mjs', 'assets/decision-client.mjs',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -20,6 +20,10 @@ const manifest = JSON.parse(read('manifest.webmanifest'));
 const readiness = JSON.parse(read('readiness.json'));
 const governance = JSON.parse(read('catalog-governance.json'));
 const progress = read('progress.html');
+const privacy = read('privacy.html');
+const terms = read('terms.html');
+const support = read('support.html');
+const sitemap = read('sitemap.xml');
 
 assert(html.includes('<link rel="manifest" href="manifest.webmanifest">'), '정적 manifest 연결 없음');
 assert(!html.includes('data:application/manifest+json'), 'data URL manifest가 남아 있음');
@@ -31,16 +35,22 @@ assert(/\.mobile-service-actions \.entry\.primary \.entry-index,[\s\S]*?color: #
 assert(/\.mobile-curated,\.mobile-shopping-home,\.service-footer[\s\S]*?content-visibility: auto;/.test(html), '모바일 아래 영역 렌더링 지연 규칙 누락');
 assert(/\.pc-home-v2 > \.service-concerns,[\s\S]*?contain-intrinsic-size: auto 520px;/.test(html), 'PC 아래 영역 렌더링 지연 규칙 누락');
 assert(['privacy.html', 'terms.html', 'support.html'].every((path) => html.includes(`href="${path}"`)), '법적·지원 링크 누락');
+assert(html.includes("const SERVICE_ID = 'all-young-scanner'") && html.includes("const SERVICE_RELATIONSHIP = 'independent_unaffiliated'"), '브랜드 내부 식별자·관계 상태 누락');
+assert(html.includes('CJ올리브영 또는 특정 판매처가 운영·후원·보증하는 공식 서비스가 아닙니다'), '홈·푸터 독립 서비스 고지 누락');
+assert(html.includes('수수료는 추천 순서에 영향을 주지 않습니다'), '제휴 중립성 고지 누락');
+assert([privacy, terms, support].every((page) => page.includes('독립 서비스 안내')), '정책·지원 독립 서비스 고지 누락');
+assert(privacy.includes('광고 대상으로 사용하지 않습니다'), '민감 정보 광고 사용 금지 누락');
+assert(terms.includes('수수료는 추천 순서에 영향을 주지 않습니다'), '약관 제휴 중립성 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.icons.length >= 2, 'PWA manifest 계약 실패');
 assert(sw.includes(`const RELEASE_VERSION = '${readiness.release_id}'`) && html.includes(`const RELEASE_VERSION = '${readiness.release_id}'`), '서비스 워커 판 불일치');
 assert(required.filter((path) => !['robots.txt', 'sitemap.xml', 'og-service-v2.svg', 'scripts/verify-public.mjs'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['sw.js'].includes(path)), '오프라인 핵심 파일 누락');
 assert(governance.commercial_catalog_connected === false && governance.public_real_product_count === 0, '실상품 연결 상태가 거짓임');
 assert(governance.synthetic_products.public_as_real_product === false, '합성 자료가 실상품으로 공개됨');
-assert(readiness.stage_one.total === 17 && readiness.stage_one.done.length === readiness.stage_one.passed && new Set(readiness.stage_one.done).size === readiness.stage_one.passed, 'v2 완료율 분모 오류');
-assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===17, 'v2 상태 합계 오류');
+assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === readiness.stage_one.passed && new Set(readiness.stage_one.done).size === readiness.stage_one.passed, 'v3 완료율 분모 오류');
+assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.17 responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.18 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
@@ -53,7 +63,9 @@ assert(currentEvidence.server.public_api_connected === false && currentEvidence.
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
 assert(!progress.includes('<strong>95%</strong>') && !progress.includes('A56 격리'), '옛 완료율 또는 기기 증거가 남아 있음');
-assert(progress.includes(`${readiness.stage_one.passed} / 17 DONE`) && progress.includes(`${readiness.stage_one.percent}%`) && progress.includes('미실시'), '현재 v2 분모 또는 증거 경계 오류');
+assert(progress.includes('noindex,nofollow'), '운영 대시보드 검색·링크 추적 차단 누락');
+assert(!sitemap.includes('progress.html'), '운영 대시보드가 소비자 sitemap에 포함됨');
+assert(progress.includes(`${readiness.stage_one.passed} / 26 DONE`) && progress.includes(`${readiness.stage_one.percent.toFixed(1)}%`) && progress.includes('미실시'), '현재 v3 분모 또는 증거 경계 오류');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href)) return'), '다른 앱 임시 저장·API 응답 보호 누락');
 assert(html.includes("import * as recordStore from './assets/local-records.mjs'"), '안전 기록 모듈 누락');
 assert(html.includes("import { createDecisionClient } from './assets/decision-client.mjs'"), 'v2 진단 연결 모듈 누락');
@@ -62,4 +74,4 @@ assert(!html.includes('24개 모두 review 상태') && !html.includes('불편하
 assert(read('robots.txt').includes('sitemap.xml'), 'robots sitemap 누락');
 assert(read('sitemap.xml').includes('privacy.html') && read('sitemap.xml').includes('terms.html'), 'sitemap 법적 표면 누락');
 
-console.log(`[public-verify] PASS — 필수 파일 ${required.length}개, 한국 범위, PWA, 법적 표면, 합성자료 차단, v2 분모 확인`);
+console.log(`[public-verify] PASS — 필수 파일 ${required.length}개, 한국 범위, PWA, 독립 브랜드·제휴 고지, 합성자료 차단, v3 분모 확인`);

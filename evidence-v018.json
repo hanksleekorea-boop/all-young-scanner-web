@@ -1,0 +1,43 @@
+{
+  "release_id": "2026-08-26-service-v0.18",
+  "verified_at": "2026-08-26",
+  "automatic": {
+    "public_tests": 26,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "v3_plan_requirements": 48,
+    "v3_safety_rules": 16,
+    "v3_safety_negative_tests": 16,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core and storage tests; not real users, real products, or full device journeys"
+  },
+  "server": {
+    "source_commit": "f490a4ed7b80bd5611c5ca6aba6de2e3ac091122",
+    "full_run": "32947902468",
+    "status": "pass",
+    "public_origin_contract": "implemented_and_automatically_tested",
+    "production_database_applied": false,
+    "public_api_connected": false
+  },
+  "browser": {
+    "status": "pass_local_preview",
+    "widths": [360, 390, 1440],
+    "horizontal_overflow": false,
+    "undersized_visible_controls": 0,
+    "internal_copy_visible": false,
+    "independent_service_notice": true,
+    "affiliate_neutrality_notice": true,
+    "live_release_verified": false
+  },
+  "android": {
+    "status": "not_run_current_release",
+    "historical_release_status": "partial_pass",
+    "not_verified": ["current_release_home", "rotation", "offline", "camera", "install_update", "backup_round_trip"]
+  },
+  "ios": { "status": "not_run" },
+  "real_users": { "status": "not_run", "count": 0 },
+  "operator": { "status": "blocked", "runbooks_prepared": true },
+  "commercial": "blocked_real_catalog_production_endpoint_operator_affiliate_contract_and_real_user_evidence"
+}

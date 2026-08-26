@@ -1,18 +1,18 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-26-service-v0.17",
+  "release_id": "2026-08-26-service-v0.18",
   "updated_at": "2026-08-26",
-  "source_baseline_commit": "40d2e91ba0840d1dfccb3d05fb8981d978d42dfd",
-  "plan": "DETAILED_DEVELOPMENT_PLAN_v2.md",
+  "source_baseline_commit": "f490a4ed7b80bd5611c5ca6aba6de2e3ac091122",
+  "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
   "scope": "KR/ko-KR/KRW",
-  "calculation": "DONE / 17 equally counted phase-one task cards; not a commercial readiness score",
+  "calculation": "DONE / 26 equally counted stage-one task cards; not a commercial readiness score",
   "stage_one": {
-    "total": 17,
-    "passed": 7,
+    "total": 26,
+    "passed": 13,
     "in_progress": 0,
-    "verifying": 2,
-    "blocked": 8,
-    "percent": 41.2,
+    "verifying": 3,
+    "blocked": 10,
+    "percent": 50,
     "done": [
       "P1-00",
       "P1-01",
@@ -20,7 +20,13 @@
       "P1-05",
       "P1-06",
       "P1-10",
-      "P1-12"
+      "P1-12",
+      "V3-00",
+      "V3-01",
+      "V3-03",
+      "V3-04",
+      "V3-05",
+      "V3-06"
     ]
   },
   "mobile": {
@@ -31,7 +37,7 @@
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.17 responsive service routes and user-facing copy; not real catalog journey",
+    "browser_evidence_scope": "v0.18 responsive service routes, independent-brand notice, affiliate disclosure and user-facing copy; not real catalog journey",
     "tested_widths": [
       360,
       390,
@@ -50,7 +56,7 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
-  "evidence_file": "evidence-v017.json",
+  "evidence_file": "evidence-v018.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",
