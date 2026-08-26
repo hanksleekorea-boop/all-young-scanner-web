@@ -8,7 +8,8 @@ const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
-  'assets/local-records.mjs', 'evidence-v015.json', 'evidence-v016.json',
+  'assets/local-records.mjs', 'assets/decision-client.mjs',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -39,19 +40,25 @@ assert(readiness.stage_one.total === 17 && readiness.stage_one.done.length === r
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===17, 'v2 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.startsWith('local record'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.17 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
+const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
 assert(evidence.android.checks.offline_reload === 'pass' && evidence.android.checks.camera_permission === 'not_granted', 'Android 통과·미확인 경계 불일치');
 assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 기기 일련번호가 포함됨');
 assert(evidence.automatic.required_files === 16, '이전판 증거는 역사 기록으로 보존');
 assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기록 누락');
+assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 26, '현재판 증거와 검사 수 불일치');
+assert(currentEvidence.server.public_api_connected === false && currentEvidence.commercial.startsWith('blocked_'), '운영 연결 상태를 자동 통과로 잘못 표시함');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
 assert(!progress.includes('<strong>95%</strong>') && !progress.includes('A56 격리'), '옛 완료율 또는 기기 증거가 남아 있음');
 assert(progress.includes(`${readiness.stage_one.passed} / 17 DONE`) && progress.includes(`${readiness.stage_one.percent}%`) && progress.includes('미실시'), '현재 v2 분모 또는 증거 경계 오류');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href)) return'), '다른 앱 임시 저장·API 응답 보호 누락');
 assert(html.includes("import * as recordStore from './assets/local-records.mjs'"), '안전 기록 모듈 누락');
+assert(html.includes("import { createDecisionClient } from './assets/decision-client.mjs'"), 'v2 진단 연결 모듈 누락');
+assert(html.includes("dataset.apiContract = productionDecisionClient ? 'v2-ready' : 'awaiting-endpoint'"), '운영 API 연결 상태 구분 누락');
+assert(!html.includes('24개 모두 review 상태') && !html.includes('불편하면 멈추는 내부 검수용 가이드'), '사용 화면에 내부 검수 문구가 남아 있음');
 assert(read('robots.txt').includes('sitemap.xml'), 'robots sitemap 누락');
 assert(read('sitemap.xml').includes('privacy.html') && read('sitemap.xml').includes('terms.html'), 'sitemap 법적 표면 누락');
 
