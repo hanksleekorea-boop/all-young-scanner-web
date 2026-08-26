@@ -1,0 +1,14 @@
+{
+  "release_id": "2026-08-26-service-v0.15",
+  "verified_at": "2026-08-26",
+  "automatic": {"local_record_tests": 16, "synthetic_round_trip_cases": 1000, "limitation": "Record transport scenarios only; not 1000 real users or full product personas"},
+  "browser": {"environment": "local preview in Codex browser", "widths": [360,390,1440], "horizontal_overflow_px": 0, "import_preview": "pass", "merge": "pass", "duplicate_preview": "pass", "cancel": "pass", "invalid_file_preserves_records": "pass", "reload_preserves_records": "pass", "html_text_escaped": "pass", "withdrawn_product_notice": "pass", "console_errors": 0},
+  "android": {"status": "not_run", "reason": "Designated A56 not connected; different connected device not operated"},
+  "ios": {"status": "not_run"},
+  "physical_device_round_trip": "not_run",
+  "full_product_flow": "blocked_real_catalog_and_database",
+  "lighthouse": "not_rerun_for_v015",
+  "real_users": {"status": "not_run", "count": 0},
+  "operator": {"status": "blocked"},
+  "historical_evidence": "evidence-v013.json"
+}

@@ -1,12 +1,58 @@
 {
-  "schema_version": 1,
-  "release_id": "2026-08-25-service-v0.14",
-  "source_commit": "f1cf33aa21552ae0c62c255ee42d9fcd4f5f2ef6",
+  "schema_version": 2,
+  "release_id": "2026-08-26-service-v0.15",
+  "updated_at": "2026-08-26",
+  "source_baseline_commit": "c323deeff372e29790b2b1a09d8934f7223c39a5",
+  "plan": "DETAILED_DEVELOPMENT_PLAN_v2.md",
   "scope": "KR/ko-KR/KRW",
-  "calculation": "passed tasks with required evidence / 20 stage-one tasks",
-  "stage_one": { "total": 20, "passed": 0, "partial": 12, "blocked_external": 6, "ready": 2, "percent": 0 },
-  "mobile": { "claim": "not_99", "lighthouse_performance": 96, "lighthouse_accessibility": 100, "android_devices_verified": 1, "android_scope": "SM-A5660 portrait core flow and offline recovery; camera grant, landscape, install/update, newer Android versions pending", "ios_devices_verified": 0 },
-  "pc_web": { "claim": "release-candidate-test-data", "lighthouse_performance": 98, "lighthouse_accessibility": 100, "browser_evidence_current_release": true, "tested_widths": [360, 390, 1440] },
-  "commercial": { "claim": "blocked", "real_products": 0, "real_users": 0, "human_support": false, "operator_identity": false },
-  "evidence_separation": ["automatic", "browser", "android", "ios", "user", "operator", "external"]
+  "calculation": "DONE / 17 equally counted phase-one task cards; not a commercial readiness score",
+  "stage_one": {
+    "total": 17,
+    "passed": 6,
+    "in_progress": 1,
+    "verifying": 2,
+    "blocked": 8,
+    "percent": 35.3,
+    "done": [
+      "P1-00",
+      "P1-01",
+      "P1-04",
+      "P1-05",
+      "P1-06",
+      "P1-10"
+    ]
+  },
+  "mobile": {
+    "claim": "not_99",
+    "current_release_device_test": "not_run",
+    "reason": "Designated A56 is not connected; connected different model was not operated",
+    "ios_devices_verified": 0
+  },
+  "pc_web": {
+    "claim": "partial",
+    "browser_evidence_scope": "local record management; not full product journey",
+    "tested_widths": [
+      360,
+      390,
+      1440
+    ]
+  },
+  "commercial": {
+    "claim": "blocked",
+    "real_products": 0,
+    "real_users": 0,
+    "human_support": false,
+    "operator_identity": false
+  },
+  "evidence_file": "evidence-v015.json",
+  "historical_evidence": "evidence-v013.json",
+  "evidence_separation": [
+    "automatic",
+    "browser",
+    "android",
+    "ios",
+    "user",
+    "operator",
+    "external"
+  ]
 }

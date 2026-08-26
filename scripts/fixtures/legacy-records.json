@@ -1,0 +1,8 @@
+{
+  "format": "allyoung-decision-library",
+  "version": 3,
+  "decisions": [
+    {"id":"qa-kept-1","product_id":"qa-product-1","name":"검사용 보관 기록","brand":"가상 자료","reasons":["이전 기록 보존 확인"],"selected_at":"2026-08-26T00:00:00.000Z","metadata":{"usage_period":"not_started","repurchase":"undecided"}},
+    {"id":"qa-withdrawn-2","product_id":"qa-product-2","name":"<img src=x onerror=alert(1)>","brand":"가상 자료","reasons":["문자열은 HTML로 실행되면 안 됨"],"selected_at":"2026-08-26T00:00:00.000Z","renewal_state":"withdrawn"}
+  ]
+}
