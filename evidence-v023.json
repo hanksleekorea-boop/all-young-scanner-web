@@ -1,0 +1,40 @@
+{
+  "release_id": "2026-08-26-service-v0.23",
+  "verified_at": "2026-08-26",
+  "automatic": {
+    "public_tests": 33,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "account_sync_contract_tests": 3,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core, local storage and Google-only account-sync configuration tests; not real Google OAuth, real users, real products, or full device journeys"
+  },
+  "server": {
+    "source_commit": "6349c77",
+    "full_run": "pending_source_ci",
+    "status": "partial_user_sync_schema_applied",
+    "production_database_applied": "user_sync_snapshot_only",
+    "public_api_connected": false,
+    "account_sync_schema_prepared": true,
+    "oauth_provider_configured": false
+  },
+  "browser": {
+    "status": "pending_live_publish",
+    "widths": [360, 390, 1440],
+    "document_csp": true,
+    "dom_output_sanitized": true,
+    "account_sync_ui": "google_only_configuration_pending_no_external_transfer"
+  },
+  "android": {
+    "status": "not_run_for_v0.23",
+    "reason": "Google OAuth provider and public account-sync configuration are not configured; no Android device is currently connected",
+    "not_verified": ["Google OAuth", "account save", "account restore", "account snapshot deletion"]
+  },
+  "ios": {"status": "not_run"},
+  "real_users": {"status": "not_run", "count": 0},
+  "commercial": "blocked_google_oauth_operator_identity_policy_retention_and_real_device_evidence"
+}
