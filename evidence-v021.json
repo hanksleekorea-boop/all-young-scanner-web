@@ -20,7 +20,7 @@
     "public_api_connected": false
   },
   "browser": {
-    "status": "pending_live_deploy",
+    "status": "pass_live",
     "widths": [360, 390, 1440],
     "document_csp": true,
     "dom_output_sanitized": true,
@@ -31,7 +31,9 @@
     "dependabot_security_updates": true,
     "secret_scanning": true,
     "push_protection": true,
-    "codeql_fix_pending": true
+    "codeql_open_alerts": 0,
+    "codeql_run": "32953158495",
+    "codeql_fix_pending": false
   },
   "operations": {
     "general_issue_intake": "public_no_personal_data",
