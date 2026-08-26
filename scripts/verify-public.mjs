@@ -8,7 +8,7 @@ const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
-  'assets/local-records.mjs', 'evidence-v015.json',
+  'assets/local-records.mjs', 'evidence-v015.json', 'evidence-v016.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -35,7 +35,8 @@ assert(sw.includes(`const RELEASE_VERSION = '${readiness.release_id}'`) && html.
 assert(required.filter((path) => !['robots.txt', 'sitemap.xml', 'og-service-v2.svg', 'scripts/verify-public.mjs'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['sw.js'].includes(path)), '오프라인 핵심 파일 누락');
 assert(governance.commercial_catalog_connected === false && governance.public_real_product_count === 0, '실상품 연결 상태가 거짓임');
 assert(governance.synthetic_products.public_as_real_product === false, '합성 자료가 실상품으로 공개됨');
-assert(readiness.stage_one.passed === 6 && readiness.stage_one.total === 17 && readiness.stage_one.done.length === readiness.stage_one.passed, 'v2 완료율 분모 오류');
+assert(readiness.stage_one.total === 17 && readiness.stage_one.done.length === readiness.stage_one.passed && new Set(readiness.stage_one.done).size === readiness.stage_one.passed, 'v2 완료율 분모 오류');
+assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===17, 'v2 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
 assert(readiness.pc_web.browser_evidence_scope.startsWith('local record'), '브라우저 증거 범위 누락');
@@ -48,7 +49,7 @@ assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기�
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
 assert(!progress.includes('<strong>95%</strong>') && !progress.includes('A56 격리'), '옛 완료율 또는 기기 증거가 남아 있음');
-assert(progress.includes('6 / 17 DONE') && progress.includes('35.3%') && progress.includes('미실시'), '현재 v2 분모 또는 증거 경계 오류');
+assert(progress.includes(`${readiness.stage_one.passed} / 17 DONE`) && progress.includes(`${readiness.stage_one.percent}%`) && progress.includes('미실시'), '현재 v2 분모 또는 증거 경계 오류');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href)) return'), '다른 앱 임시 저장·API 응답 보호 누락');
 assert(html.includes("import * as recordStore from './assets/local-records.mjs'"), '안전 기록 모듈 누락');
 assert(read('robots.txt').includes('sitemap.xml'), 'robots sitemap 누락');

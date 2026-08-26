@@ -1,0 +1,33 @@
+{
+  "release_id": "2026-08-26-service-v0.16",
+  "verified_at": "2026-08-26",
+  "automatic": {
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "synthetic_round_trip_cases": 1000,
+    "limitation": "Record transport and simulated worker tests; not 1000 real users or full product personas"
+  },
+  "server": {
+    "last_full_success_run": "32933549531",
+    "unit_tests": 108,
+    "affiliate_policy_tests": 4,
+    "api_tests_at_full_success": 74,
+    "real_postgres_api_tests": 67,
+    "pure_api_contract_tests": 7,
+    "expanded_run": "32933549531",
+    "expanded_status": "pass",
+    "production_database_applied": false,
+    "public_api_connected": false
+  },
+  "browser": {
+    "status": "not_rerun_for_v016",
+    "inherited_evidence": "evidence-v015.json",
+    "scope": "record module unchanged; new service-worker changes have simulated automatic coverage only"
+  },
+  "android": { "status": "not_run", "reason": "Designated A56 not connected; different connected device not operated" },
+  "ios": { "status": "not_run" },
+  "lighthouse": "not_rerun_for_v016",
+  "real_users": { "status": "not_run", "count": 0 },
+  "operator": { "status": "blocked" },
+  "full_product_flow": "blocked_real_catalog_and_production_api"
+}

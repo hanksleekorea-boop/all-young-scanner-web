@@ -1,10 +1,10 @@
 {
   "name": "all-young-scanner-web",
   "private": true,
-  "version": "0.15.0",
+  "version": "0.16.0",
   "type": "module",
   "scripts": {
-    "verify": "node scripts/verify-public.mjs && node --test scripts/local-records.test.mjs",
+    "verify": "node scripts/verify-public.mjs && node --test scripts/local-records.test.mjs scripts/service-worker.test.mjs",
     "preview": "node scripts/serve-preview.mjs"
   }
 }

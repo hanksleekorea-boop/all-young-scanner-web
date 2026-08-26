@@ -1,25 +1,26 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-26-service-v0.15",
+  "release_id": "2026-08-26-service-v0.16",
   "updated_at": "2026-08-26",
-  "source_baseline_commit": "c323deeff372e29790b2b1a09d8934f7223c39a5",
+  "source_baseline_commit": "4a0696dda4de05d7521a7590ada1b714b5c420cf",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v2.md",
   "scope": "KR/ko-KR/KRW",
   "calculation": "DONE / 17 equally counted phase-one task cards; not a commercial readiness score",
   "stage_one": {
     "total": 17,
-    "passed": 6,
-    "in_progress": 1,
+    "passed": 7,
+    "in_progress": 0,
     "verifying": 2,
     "blocked": 8,
-    "percent": 35.3,
+    "percent": 41.2,
     "done": [
       "P1-00",
       "P1-01",
       "P1-04",
       "P1-05",
       "P1-06",
-      "P1-10"
+      "P1-10",
+      "P1-12"
     ]
   },
   "mobile": {
@@ -30,7 +31,7 @@
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "local record management; not full product journey",
+    "browser_evidence_scope": "local record management verified in v0.15; unchanged record module in v0.16; not full product journey",
     "tested_widths": [
       360,
       390,
@@ -44,7 +45,7 @@
     "human_support": false,
     "operator_identity": false
   },
-  "evidence_file": "evidence-v015.json",
+  "evidence_file": "evidence-v016.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",
