@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "verify": "node scripts/verify-public.mjs && node --test scripts/local-records.test.mjs scripts/service-worker.test.mjs",
+    "verify:live": "node scripts/verify-live.mjs",
     "preview": "node scripts/serve-preview.mjs"
   }
 }
