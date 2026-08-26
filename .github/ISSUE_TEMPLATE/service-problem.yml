@@ -1,0 +1,51 @@
+name: 서비스 오류 알림
+description: 개인정보 없이 공개 웹의 일반 기능 오류를 알려 주세요.
+title: "[서비스 오류] "
+labels:
+  - service-report
+body:
+  - type: markdown
+    attributes:
+      value: |
+        이름, 연락처, 피부정보, 검색 내용, 백업 파일, 화면에 표시된 개인 기록을 적거나 첨부하지 마세요.
+  - type: dropdown
+    id: area
+    attributes:
+      label: 문제가 생긴 화면
+      options:
+        - 첫 화면
+        - 빠른 결정
+        - 제품 비교
+        - 사용법
+        - 내 결정·백업
+        - 도움·정책
+        - 기타
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: 사용 환경
+      options:
+        - Android Chrome
+        - iPhone Safari
+        - Windows Chrome 또는 Edge
+        - macOS Safari 또는 Chrome
+        - 기타
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 개인정보를 뺀 재현 순서
+      description: 어떤 버튼을 어떤 순서로 눌렀는지만 적어 주세요.
+      placeholder: "1. 첫 화면 열기\n2. 빠른 결정 선택\n3. ..."
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 공개 작성 확인
+      options:
+        - label: 개인정보·피부정보·검색 내용·백업 파일을 포함하지 않았습니다.
+          required: true

@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-26-service-v0.19",
+  "release_id": "2026-08-26-service-v0.20",
   "updated_at": "2026-08-26",
-  "source_baseline_commit": "1123085848290a3aa4516b107c5dc6aa34b37637",
+  "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
   "scope": "KR/ko-KR/KRW",
   "calculation": "DONE / 26 equally counted stage-one task cards; not a commercial readiness score",
@@ -38,7 +38,7 @@
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.19 live responsive service routes, independent-brand notice, affiliate disclosure and user-facing copy; not real catalog journey",
+    "browser_evidence_scope": "v0.20 responsive service routes, policy links, general issue intake, private vulnerability intake and document CSP; not real catalog journey",
     "tested_widths": [
       360,
       390,
@@ -57,7 +57,7 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
-  "evidence_file": "evidence-v019.json",
+  "evidence_file": "evidence-v020.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

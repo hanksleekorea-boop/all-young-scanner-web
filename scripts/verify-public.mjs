@@ -5,11 +5,11 @@ const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 const required = [
-  'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html',
+  'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', '.well-known/security.txt',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
   'assets/local-records.mjs', 'assets/decision-client.mjs',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -35,6 +35,8 @@ assert(/\.mobile-service-actions \.entry\.primary \.entry-index,[\s\S]*?color: #
 assert(/\.mobile-curated,\.mobile-shopping-home,\.service-footer[\s\S]*?content-visibility: auto;/.test(html), '모바일 아래 영역 렌더링 지연 규칙 누락');
 assert(/\.pc-home-v2 > \.service-concerns,[\s\S]*?contain-intrinsic-size: auto 520px;/.test(html), 'PC 아래 영역 렌더링 지연 규칙 누락');
 assert(['privacy.html', 'terms.html', 'support.html'].every((path) => html.includes(`href="${path}"`)), '법적·지원 링크 누락');
+assert([html, privacy, terms, support].every((page) => page.includes('Content-Security-Policy')), '문서 보안 정책 누락');
+assert(support.includes('issues/new/choose') && support.includes('security/advisories/new'), '일반·비공개 신고 경로 누락');
 assert(html.includes("const SERVICE_ID = 'all-young-scanner'") && html.includes("const SERVICE_RELATIONSHIP = 'independent_unaffiliated'"), '브랜드 내부 식별자·관계 상태 누락');
 assert(html.includes('CJ올리브영 또는 특정 판매처가 운영·후원·보증하는 공식 서비스가 아닙니다'), '홈·푸터 독립 서비스 고지 누락');
 assert(html.includes('수수료는 추천 순서에 영향을 주지 않습니다'), '제휴 중립성 고지 누락');
@@ -50,7 +52,7 @@ assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === r
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.19 live responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.20 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
@@ -58,7 +60,7 @@ assert(evidence.android.checks.offline_reload === 'pass' && evidence.android.che
 assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 기기 일련번호가 포함됨');
 assert(evidence.automatic.required_files === 16, '이전판 증거는 역사 기록으로 보존');
 assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기록 누락');
-assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 26, '현재판 증거와 검사 수 불일치');
+assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 28, '현재판 증거와 검사 수 불일치');
 assert(currentEvidence.server.public_api_connected === false && currentEvidence.commercial.startsWith('blocked_'), '운영 연결 상태를 자동 통과로 잘못 표시함');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');

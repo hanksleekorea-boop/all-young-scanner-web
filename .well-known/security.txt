@@ -1,0 +1,5 @@
+Contact: https://github.com/hanksleekorea-boop/all-young-scanner-web/security/advisories/new
+Expires: 2027-08-26T00:00:00Z
+Preferred-Languages: ko, en
+Canonical: https://hanksleekorea-boop.github.io/all-young-scanner-web/.well-known/security.txt
+Policy: https://hanksleekorea-boop.github.io/all-young-scanner-web/support.html

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data: blob:; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; worker-src 'self'; manifest-src 'self'; connect-src 'self' https:; upgrade-insecure-requests">
   <meta name="theme-color" content="#123f34">
   <meta name="application-name" content="올영스캐너">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1881,7 +1882,7 @@ import { createDecisionClient } from './assets/decision-client.mjs';
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
-  const RELEASE_VERSION = '2026-08-26-service-v0.19';
+  const RELEASE_VERSION = '2026-08-26-service-v0.20';
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const productionDecisionClient = API_BASE ? createDecisionClient({ baseUrl:API_BASE }) : null;
@@ -2957,7 +2958,7 @@ import { createDecisionClient } from './assets/decision-client.mjs';
       </section>
       <nav aria-label="하단 길찾기">
         <div><strong>서비스</strong><button data-action="service-catalog">상품 비교</button><button data-action="pc-usage">K-뷰티 사용법</button><button data-action="pc-library">내 결정</button></div>
-        <div><strong>안내</strong><button data-action="recovery-guide">기록 복원 안내</button><button data-action="method">서비스 이용 기준</button><a class="footer-progress-link" href="privacy.html">개인정보 처리방침</a><a class="footer-progress-link" href="terms.html">이용약관</a><a class="footer-progress-link" href="support.html">삭제 안내</a></div>
+        <div><strong>안내</strong><button data-action="recovery-guide">기록 복원 안내</button><button data-action="method">서비스 이용 기준</button><a class="footer-progress-link" href="privacy.html">개인정보 처리방침</a><a class="footer-progress-link" href="terms.html">이용약관</a><a class="footer-progress-link" href="support.html">도움·삭제·문의</a></div>
       </nav>
       <div class="footer-legal" data-service-id="${SERVICE_ID}" data-relationship="${SERVICE_RELATIONSHIP}"><p>${C.medicalDisclaimer}</p><p>${C.testPriceNotice}</p><p>${INDEPENDENCE_NOTICE}<br>${AFFILIATE_NOTICE}</p><span>지원 언어: 한국어 · 표시 통화: 원화</span></div>
     </footer>`;
