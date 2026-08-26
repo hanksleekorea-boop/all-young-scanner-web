@@ -1,0 +1,47 @@
+{
+  "release_id": "2026-08-26-service-v0.22",
+  "verified_at": "2026-08-26",
+  "automatic": {
+    "public_tests": 33,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "account_sync_contract_tests": 3,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core, local storage and account-sync configuration tests; not real OAuth providers, real users, real products, or full device journeys"
+  },
+  "server": {
+    "source_commit": "pending_source_publish",
+    "full_run": "pending_source_ci",
+    "status": "pending",
+    "production_database_applied": false,
+    "public_api_connected": false,
+    "account_sync_schema_prepared": true,
+    "oauth_provider_configured": false
+  },
+  "browser": {
+    "status": "pending_live_publish",
+    "widths": [360, 390, 1440],
+    "document_csp": true,
+    "dom_output_sanitized": true,
+    "account_sync_ui": "configuration_pending_no_external_transfer"
+  },
+  "github_security": {
+    "private_vulnerability_reporting": true,
+    "dependabot_security_updates": true,
+    "secret_scanning": true,
+    "push_protection": true,
+    "codeql_open_alerts": 0
+  },
+  "android": {
+    "status": "not_run_for_v0.22",
+    "reason": "OAuth provider and production account-sync endpoint are not configured; a device test would not validate real login or server storage",
+    "not_verified": ["Google OAuth", "Apple OAuth", "account save", "account restore", "account snapshot deletion"]
+  },
+  "ios": {"status": "not_run"},
+  "real_users": {"status": "not_run", "count": 0},
+  "commercial": "blocked_supabase_project_google_apple_oauth_operator_identity_policy_retention_and_real_device_evidence"
+}
