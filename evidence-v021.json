@@ -1,0 +1,51 @@
+{
+  "release_id": "2026-08-26-service-v0.21",
+  "verified_at": "2026-08-26",
+  "automatic": {
+    "public_tests": 29,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core and storage tests; not real users, real products, or full device journeys"
+  },
+  "server": {
+    "source_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
+    "full_run": "32949917398",
+    "status": "pass",
+    "production_database_applied": false,
+    "public_api_connected": false
+  },
+  "browser": {
+    "status": "pending_live_deploy",
+    "widths": [360, 390, 1440],
+    "document_csp": true,
+    "dom_output_sanitized": true,
+    "policy_routes_checked": ["privacy", "terms", "support"]
+  },
+  "github_security": {
+    "private_vulnerability_reporting": true,
+    "dependabot_security_updates": true,
+    "secret_scanning": true,
+    "push_protection": true,
+    "codeql_fix_pending": true
+  },
+  "operations": {
+    "general_issue_intake": "public_no_personal_data",
+    "private_vulnerability_intake": "enabled",
+    "security_txt": true,
+    "human_response_sla": "not_verified",
+    "operator_legal_identity": "not_provided"
+  },
+  "android": {
+    "status": "not_rerun_for_v0.21",
+    "previous_release_evidence": "evidence-v019.json",
+    "not_verified": ["offline_network_cut", "camera_permission", "real_barcode_50", "pwa_install_update", "backup_round_trip"]
+  },
+  "ios": { "status": "not_run" },
+  "real_users": { "status": "not_run", "count": 0 },
+  "commercial": "blocked_real_catalog_production_endpoint_operator_affiliate_contract_and_real_user_evidence"
+}

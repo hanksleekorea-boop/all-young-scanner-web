@@ -1632,6 +1632,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   <a class="skip" href="#main">본문으로 건너뛰기</a>
   <div id="app"></div>
   <div id="toast" role="status" aria-live="polite"></div>
+  <script src="./assets/dompurify.min.js"></script>
   <script type="module">
 import * as recordStore from './assets/local-records.mjs';
 import { createDecisionClient } from './assets/decision-client.mjs';
@@ -1882,7 +1883,7 @@ import { createDecisionClient } from './assets/decision-client.mjs';
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
-  const RELEASE_VERSION = '2026-08-26-service-v0.20';
+  const RELEASE_VERSION = '2026-08-26-service-v0.21';
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const productionDecisionClient = API_BASE ? createDecisionClient({ baseUrl:API_BASE }) : null;
@@ -2583,13 +2584,13 @@ import { createDecisionClient } from './assets/decision-client.mjs';
   }
 
   function bridgeMatchCard(match) {
-    return `<section class="form-card"><p class="eyebrow">부분 유사 비교 출발점</p><h2>${match.name}</h2><p>${match.brand} · GTIN ${match.gtin}</p><div class="fingerprint"><div><small>목적</small>${label(match.concern)}</div><div><small>제형</small>${match.texture}</div><div><small>좋았던 점</small>${match.liked}</div><div><small>아쉬운 점</small>${match.disliked}</div></div><p class="notice warning">동일 상품을 찾았다는 뜻이 아닙니다. 입력한 테스트 지문과 일부 조건이 비슷한 후보를 찾습니다.</p><button class="primary-btn wide" data-action="bridge-candidates">이 조건으로 후보 3개 보기</button></section>`;
+    return `<section class="form-card"><p class="eyebrow">부분 유사 비교 출발점</p><h2>${escapeHtml(match.name)}</h2><p>${escapeHtml(match.brand)} · GTIN ${escapeHtml(match.gtin)}</p><div class="fingerprint"><div><small>목적</small>${escapeHtml(label(match.concern))}</div><div><small>제형</small>${escapeHtml(match.texture)}</div><div><small>좋았던 점</small>${escapeHtml(match.liked)}</div><div><small>아쉬운 점</small>${escapeHtml(match.disliked)}</div></div><p class="notice warning">동일 상품을 찾았다는 뜻이 아닙니다. 입력한 테스트 지문과 일부 조건이 비슷한 후보를 찾습니다.</p><button class="primary-btn wide" data-action="bridge-candidates">이 조건으로 후보 3개 보기</button></section>`;
   }
 
   function bridgeResult(result) {
     if (!result || result.match_state === 'zero') return `<div class="empty" data-bridge-state="zero">${C.bridgeZero}<div class="toolbar"><button class="primary-btn" data-action="start-quiz">일반 퀵진단 시작</button></div></div>`;
-    if (result.match_state === 'multiple') return `<section data-bridge-state="multiple"><div class="notice"><strong>${result.matches.length}개가 비슷해요</strong><span>사용하던 제품을 하나 골라주세요.</span></div><div class="decision-list">${result.matches.map((match,index)=>`<article class="decision"><div><h3>${match.name}</h3><p class="muted">${match.brand} · ${match.gtin}</p></div><button class="secondary-btn" data-action="choose-bridge" data-bridge-index="${index}">이 제품</button></article>`).join('')}</div></section>`;
-    return `<div data-bridge-state="${result.match_state}">${bridgeMatchCard(result.matches[0])}</div>`;
+    if (result.match_state === 'multiple') return `<section data-bridge-state="multiple"><div class="notice"><strong>${result.matches.length}개가 비슷해요</strong><span>사용하던 제품을 하나 골라주세요.</span></div><div class="decision-list">${result.matches.map((match,index)=>`<article class="decision"><div><h3>${escapeHtml(match.name)}</h3><p class="muted">${escapeHtml(match.brand)} · ${escapeHtml(match.gtin)}</p></div><button class="secondary-btn" data-action="choose-bridge" data-bridge-index="${index}">이 제품</button></article>`).join('')}</div></section>`;
+    return `<div data-bridge-state="${escapeHtml(result.match_state)}">${bridgeMatchCard(result.matches[0])}</div>`;
   }
 
   function calculateAlternativesLocal(base, purpose) {
@@ -3128,11 +3129,11 @@ import { createDecisionClient } from './assets/decision-client.mjs';
     else if (state.route === 'pc-readiness') view = methodView();
     else if (state.route === 'offline-help') view = offlineView();
     else if (state.route === 'loading') view = loadingView();
-    app.innerHTML = view;
-    if(state.route==='library')document.querySelectorAll('article.decision[data-decision]').forEach((node)=>{const decision=state.decisions.find((item)=>item.id===node.dataset.decision);if(decision&&!node.querySelector('[data-retention-control]'))node.insertAdjacentHTML('beforeend',retentionControlView(decision));});
+    app.innerHTML = DOMPurify.sanitize(view,{RETURN_TRUSTED_TYPE:true});
+    if(state.route==='library')document.querySelectorAll('article.decision[data-decision]').forEach((node)=>{const decision=state.decisions.find((item)=>item.id===node.dataset.decision);if(decision&&!node.querySelector('[data-retention-control]'))node.insertAdjacentHTML('beforeend',DOMPurify.sanitize(retentionControlView(decision),{RETURN_TRUSTED_TYPE:true}));});
     const mobileShopHome = document.querySelector('.service-mobile-home');
     if (mobileShopHome && !mobileShopHome.querySelector('[data-mobile-shopping-home]')) {
-      mobileShopHome.querySelector('.mobile-search-prompt')?.insertAdjacentHTML('afterend', `<div class="mobile-shopping-home" data-mobile-shopping-home="true"><section class="mobile-shop-categories"><div><h2>카테고리</h2><button data-action="pc-ranking">전체보기</button></div><nav><button data-home-concern="moisture"><span>01</span><strong>스킨케어</strong><small>보습·진정</small></button><button data-home-concern="sun"><span>02</span><strong>선케어</strong><small>매일 보호</small></button><button data-home-concern="tone"><span>03</span><strong>메이크업</strong><small>톤·윤기</small></button><button data-home-concern="soothing"><span>04</span><strong>바디·헤어</strong><small>순한 케어</small></button></nav></section><section class="mobile-shopping-event"><span>WEEKLY BEAUTY PICK</span><h2>수분 장벽 케어<br>기획전</h2><p>제형·마무리감·확인할 점을 나란히 비교하세요.</p><button data-home-concern="moisture">기획전 보러가기 →</button></section><section class="mobile-shop-products"><div><h2>지금 많이 보는 상품</h2><button data-action="pc-ranking">더보기</button></div><div class="mobile-product-row">${products.slice(0,3).map((product,index)=>`<article><div class="mobile-product-visual tone-${index+1}"><span>${['SKIN','CALM','AQUA'][index]}</span></div><small>${escapeHtml(product.brand)}</small><strong>${escapeHtml(product.name.replace(/^테스트 /,''))}</strong><p>${product.volume}ml · ${escapeHtml(product.texture)}</p><button data-home-concern="${product.concerns[0] || 'moisture'}">비교하기</button></article>`).join('')}</div></section></div>`);
+      mobileShopHome.querySelector('.mobile-search-prompt')?.insertAdjacentHTML('afterend', DOMPurify.sanitize(`<div class="mobile-shopping-home" data-mobile-shopping-home="true"><section class="mobile-shop-categories"><div><h2>카테고리</h2><button data-action="pc-ranking">전체보기</button></div><nav><button data-home-concern="moisture"><span>01</span><strong>스킨케어</strong><small>보습·진정</small></button><button data-home-concern="sun"><span>02</span><strong>선케어</strong><small>매일 보호</small></button><button data-home-concern="tone"><span>03</span><strong>메이크업</strong><small>톤·윤기</small></button><button data-home-concern="soothing"><span>04</span><strong>바디·헤어</strong><small>순한 케어</small></button></nav></section><section class="mobile-shopping-event"><span>WEEKLY BEAUTY PICK</span><h2>수분 장벽 케어<br>기획전</h2><p>제형·마무리감·확인할 점을 나란히 비교하세요.</p><button data-home-concern="moisture">기획전 보러가기 →</button></section><section class="mobile-shop-products"><div><h2>지금 많이 보는 상품</h2><button data-action="pc-ranking">더보기</button></div><div class="mobile-product-row">${products.slice(0,3).map((product,index)=>`<article><div class="mobile-product-visual tone-${index+1}"><span>${['SKIN','CALM','AQUA'][index]}</span></div><small>${escapeHtml(product.brand)}</small><strong>${escapeHtml(product.name.replace(/^테스트 /,''))}</strong><p>${product.volume}ml · ${escapeHtml(product.texture)}</p><button data-home-concern="${product.concerns[0] || 'moisture'}">비교하기</button></article>`).join('')}</div></section></div>`,{RETURN_TRUSTED_TYPE:true}));
     }
     document.querySelector('.service-mobile-home .mobile-hero [data-action="pc-start-quiz"]')?.setAttribute('data-mobile-primary','true');
     document.body.dataset.ready='true';
@@ -3422,7 +3423,7 @@ import { createDecisionClient } from './assets/decision-client.mjs';
     else if(action==='decision-delete-request'){state.pendingDeleteDecisionId=button.dataset.decision;render();document.querySelector('[data-decision-delete-form] input')?.focus();}
     else if(action==='decision-delete-cancel'){state.pendingDeleteDecisionId=null;render();}
     else if(action==='select'){const p=state.candidates.find((item)=>item.id===button.dataset.product)||state.alternatives.find((item)=>item.id===button.dataset.product)||products.find((item)=>item.id===button.dataset.product);if(p)await saveDecision({...p,role:state.candidates.find((c)=>c.id===p.id)?.role||p.role,reasons:state.candidates.find((c)=>c.id===p.id)?.reasons||p.reasons});}
-    else if(action==='choose-bridge'){state.bridgeMatch=state.bridgeMatches[Number(button.dataset.bridgeIndex)];document.querySelector('#bridge-result').innerHTML=bridgeMatchCard(state.bridgeMatch);}
+    else if(action==='choose-bridge'){state.bridgeMatch=state.bridgeMatches[Number(button.dataset.bridgeIndex)];document.querySelector('#bridge-result').innerHTML=DOMPurify.sanitize(bridgeMatchCard(state.bridgeMatch),{RETURN_TRUSTED_TYPE:true});}
     else if(action==='bridge-candidates'){state.answers={concern:state.bridgeMatch.concern,skin:'unknown',avoid:'none',budget:String(state.bridgeMatch.priceBand),texture:state.bridgeMatch.texture==='젤'?'light':'rich'};await loadCandidates(state.bridgeMode||'existing_product');}
     else if(action==='library'||action==='pc-library'){await loadLibrary();}
     else if(action==='retention-review'){state.reviewDecisionId=button.dataset.decision;state.route='retention-review';render();}
@@ -3494,14 +3495,14 @@ import { createDecisionClient } from './assets/decision-client.mjs';
     }
     if(event.target.id==='pc-home-search'||event.target.id==='global-search-form'){
       event.preventDefault();const inputId=event.target.id==='global-search-form'?'#global-search-input':'#pc-home-search-input';const rawQuery=document.querySelector(inputId).value.trim();const query=normalizeSearchQuery(rawQuery);if(!query){toast('제품명이나 브랜드, 고민을 입력해 주세요.');return;}
-      const result=await decisionApi.bridge(query);state.bridgeMatches=result.matches||[];state.bridgeMatch=state.bridgeMatches.length===1?state.bridgeMatches[0]:null;state.route='bridge';track('decision_start',{entry_path:'home_search'});track('bridge_submit',{input_type:/^\d+$/.test(query)?'gtin':'name',matched:state.bridgeMatches.length>0,confidence:result.match_state==='exact'?'high':result.match_state==='zero'?'low':'mid'});render();document.querySelector('#bridge-query').value=query;document.querySelector('#bridge-result').innerHTML=bridgeResult(result);return;
+      const result=await decisionApi.bridge(query);state.bridgeMatches=result.matches||[];state.bridgeMatch=state.bridgeMatches.length===1?state.bridgeMatches[0]:null;state.route='bridge';track('decision_start',{entry_path:'home_search'});track('bridge_submit',{input_type:/^\d+$/.test(query)?'gtin':'name',matched:state.bridgeMatches.length>0,confidence:result.match_state==='exact'?'high':result.match_state==='zero'?'low':'mid'});render();document.querySelector('#bridge-query').value=query;document.querySelector('#bridge-result').innerHTML=DOMPurify.sanitize(bridgeResult(result),{RETURN_TRUSTED_TYPE:true});return;
     }
     if(event.target.id!=='bridge-form')return; event.preventDefault();
     const query=normalizeSearchQuery(document.querySelector('#bridge-query').value);
     const result=await decisionApi.bridge(query);
     state.bridgeMatches=result.matches||[]; state.bridgeMatch=state.bridgeMatches.length===1?state.bridgeMatches[0]:null;
     track('bridge_submit',{input_type:/^\d+$/.test(query)?'gtin':'name',matched:state.bridgeMatches.length>0,confidence:result.match_state==='exact'?'high':result.match_state==='zero'?'low':'mid'});
-    document.querySelector('#bridge-result').innerHTML=bridgeResult(result);
+    document.querySelector('#bridge-result').innerHTML=DOMPurify.sanitize(bridgeResult(result),{RETURN_TRUSTED_TYPE:true});
   });
 
   document.addEventListener('change',async(event) => {

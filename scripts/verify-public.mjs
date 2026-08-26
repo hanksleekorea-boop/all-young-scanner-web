@@ -5,11 +5,11 @@ const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 const required = [
-  'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', '.well-known/security.txt',
+  'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
-  'assets/local-records.mjs', 'assets/decision-client.mjs',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json',
+  'assets/local-records.mjs', 'assets/decision-client.mjs', 'assets/dompurify.min.js',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -26,6 +26,7 @@ const support = read('support.html');
 const sitemap = read('sitemap.xml');
 
 assert(html.includes('<link rel="manifest" href="manifest.webmanifest">'), '정적 manifest 연결 없음');
+assert(html.includes('<script src="./assets/dompurify.min.js"></script>') && html.includes('DOMPurify.sanitize(view'), 'DOM 출력 정화기 연결 누락');
 assert(!html.includes('data:application/manifest+json'), 'data URL manifest가 남아 있음');
 assert(/const MARKET_CONTEXTS = Object\.freeze\(\{\s*KR:\{/.test(html), '한국 출시 범위 없음');
 assert(!/\n\s+(US|JP|TH|SG|AU|GB|DE|FR|CA):\{/.test(html), '지원하지 않는 국가가 선택 가능함');
@@ -45,14 +46,14 @@ assert(privacy.includes('광고 대상으로 사용하지 않습니다'), '민�
 assert(terms.includes('수수료는 추천 순서에 영향을 주지 않습니다'), '약관 제휴 중립성 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.icons.length >= 2, 'PWA manifest 계약 실패');
 assert(sw.includes(`const RELEASE_VERSION = '${readiness.release_id}'`) && html.includes(`const RELEASE_VERSION = '${readiness.release_id}'`), '서비스 워커 판 불일치');
-assert(required.filter((path) => !['robots.txt', 'sitemap.xml', 'og-service-v2.svg', 'scripts/verify-public.mjs'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['sw.js'].includes(path)), '오프라인 핵심 파일 누락');
+assert(required.filter((path) => !['robots.txt', 'sitemap.xml', 'og-service-v2.svg', 'scripts/verify-public.mjs', '.nojekyll'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['sw.js'].includes(path)), '오프라인 핵심 파일 누락');
 assert(governance.commercial_catalog_connected === false && governance.public_real_product_count === 0, '실상품 연결 상태가 거짓임');
 assert(governance.synthetic_products.public_as_real_product === false, '합성 자료가 실상품으로 공개됨');
 assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === readiness.stage_one.passed && new Set(readiness.stage_one.done).size === readiness.stage_one.passed, 'v3 완료율 분모 오류');
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.20 responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.21 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
@@ -60,7 +61,7 @@ assert(evidence.android.checks.offline_reload === 'pass' && evidence.android.che
 assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 기기 일련번호가 포함됨');
 assert(evidence.automatic.required_files === 16, '이전판 증거는 역사 기록으로 보존');
 assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기록 누락');
-assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 28, '현재판 증거와 검사 수 불일치');
+assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 29, '현재판 증거와 검사 수 불일치');
 assert(currentEvidence.server.public_api_connected === false && currentEvidence.commercial.startsWith('blocked_'), '운영 연결 상태를 자동 통과로 잘못 표시함');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
