@@ -28,7 +28,7 @@
     "status": "partial_pass",
     "tested_widths": [360],
     "horizontal_overflow": false,
-    "visible_controls": 40,
+    "visible_control_samples": {"home": [31, 29], "account": [39]},
     "visible_controls_below_44px": 0,
     "manifest_linked": true,
     "service_worker_controlled": true,
@@ -45,7 +45,7 @@
     "checks": {
       "public_home_360px": "pass",
       "horizontal_overflow": "pass",
-      "touch_target_sample": "pass_40_of_40",
+      "touch_target_sample": "pass_home_29_and_31_account_39_all_visible_controls",
       "manifest": "pass",
       "service_worker_control": "pass",
       "official_auth_sdk": "pass",

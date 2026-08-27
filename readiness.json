@@ -33,7 +33,7 @@
   "mobile": {
     "claim": "not_99",
     "current_release_device_test": "partial_pass",
-    "reason": "지정 A56 한 대에서 공개 홈 360px·가로 넘침 없음·40개 보이는 조작부 터치 크기·manifest·서비스 워커·공식 SDK·Apple 미노출·Google 설정 대기 안전 상태를 확인; 오프라인·카메라·설치·로그인·백업 왕복은 미실시",
+    "reason": "지정 A56 한 대에서 공개 홈 360px·가로 넘침 없음·홈 29/31개와 계정 39개 보이는 조작부의 터치 크기·manifest·서비스 워커·공식 SDK·Apple 미노출·Google 설정 대기 안전 상태를 확인; 오프라인·카메라·설치·로그인·백업 왕복은 미실시",
     "ios_devices_verified": 0
   },
   "pc_web": {
