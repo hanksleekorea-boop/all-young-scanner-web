@@ -8,9 +8,9 @@ const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
-  'assets/local-records.mjs', 'assets/decision-client.mjs', 'assets/auth-sync.mjs', 'assets/dompurify.min.js',
+  'assets/local-records.mjs', 'assets/local-transaction.mjs', 'assets/decision-client.mjs', 'assets/auth-sync.mjs', 'assets/dompurify.min.js',
   'assets/supabase-sdk-2.112.4.js', 'assets/supabase-sdk-LICENSE.txt', 'auth-config.json',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json', 'evidence-v022.json', 'evidence-v023.json', 'evidence-v024.json', 'evidence-v025.json',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json', 'evidence-v022.json', 'evidence-v023.json', 'evidence-v024.json', 'evidence-v025.json', 'evidence-v026.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -56,7 +56,7 @@ assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === r
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.25 responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.26 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
@@ -64,7 +64,7 @@ assert(evidence.android.checks.offline_reload === 'pass' && evidence.android.che
 assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 기기 일련번호가 포함됨');
 assert(evidence.automatic.required_files === 16, '이전판 증거는 역사 기록으로 보존');
 assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기록 누락');
-assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 35 && currentEvidence.automatic.account_sync_contract_tests === 9, '현재판 증거와 검사 수 불일치');
+assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 38 && currentEvidence.automatic.account_sync_contract_tests === 9 && currentEvidence.automatic.local_transaction_tests === 3, '현재판 증거와 검사 수 불일치');
 assert(currentEvidence.server.public_api_connected === false && currentEvidence.commercial.startsWith('blocked_'), '운영 연결 상태를 자동 통과로 잘못 표시함');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
@@ -74,6 +74,7 @@ assert(!sitemap.includes('progress.html'), '운영 대시보드가 소비자 sit
 assert(progress.includes(`${readiness.stage_one.passed} / 26 DONE`) && progress.includes(`${readiness.stage_one.percent.toFixed(1)}%`) && progress.includes('미실시'), '현재 v3 분모 또는 증거 경계 오류');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href)) return'), '다른 앱 임시 저장·API 응답 보호 누락');
 assert(html.includes("import * as recordStore from './assets/local-records.mjs'"), '안전 기록 모듈 누락');
+assert(html.includes("import * as localTransaction from './assets/local-transaction.mjs'") && html.includes('localTransaction.writeJsonTransaction') && html.includes('recordStore.saveRecords(localStorage,decisionSnapshot,next.decisions,{replace:true})'), '계정 저장본 되돌리기 안전 계약 누락');
 assert(html.includes("import { createDecisionClient } from './assets/decision-client.mjs'"), 'v2 진단 연결 모듈 누락');
 assert(html.includes("import * as accountSync from './assets/auth-sync.mjs'") && html.includes('account-login-google') && html.includes('Google로 로그인·무료 가입'), 'Google 계정 로그인 경로 누락');
 assert(!html.includes('data-action="account-login-apple"'), '보류한 Apple 로그인 버튼이 사용자 화면에 남아 있음');

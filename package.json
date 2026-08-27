@@ -1,10 +1,10 @@
 {
   "name": "all-young-scanner-web",
   "private": true,
-  "version": "0.25.0",
+  "version": "0.26.0",
   "type": "module",
   "scripts": {
-    "verify": "node scripts/verify-public.mjs && node --test scripts/local-records.test.mjs scripts/service-worker.test.mjs scripts/decision-client.test.mjs scripts/auth-sync.test.mjs",
+    "verify": "node scripts/verify-public.mjs && node --test scripts/local-records.test.mjs scripts/local-transaction.test.mjs scripts/service-worker.test.mjs scripts/decision-client.test.mjs scripts/auth-sync.test.mjs",
     "verify:live": "node scripts/verify-live.mjs",
     "preview": "node scripts/serve-preview.mjs"
   },

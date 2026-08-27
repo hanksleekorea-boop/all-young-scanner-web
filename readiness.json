@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-27-service-v0.25",
+  "release_id": "2026-08-27-service-v0.26",
   "updated_at": "2026-08-27",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
@@ -38,7 +38,7 @@
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.25 responsive service routes, sanitized DOM output, official SDK Google-only account state and configuration boundary, account preference metadata contract, policy links, general issue intake, private vulnerability intake and document CSP; real Google login and real catalog journey not run",
+    "browser_evidence_scope": "v0.26 responsive service routes, sanitized DOM output, official SDK Google-only account state and configuration boundary, explicit account preference and rollback-safe restore contract, policy links, general issue intake, private vulnerability intake and document CSP; real Google login and real catalog journey not run",
     "tested_widths": [
       360,
       390,
@@ -57,7 +57,7 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
-  "evidence_file": "evidence-v025.json",
+  "evidence_file": "evidence-v026.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

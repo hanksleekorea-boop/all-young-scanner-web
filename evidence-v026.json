@@ -1,0 +1,40 @@
+{
+  "release_id": "2026-08-27-service-v0.26",
+  "verified_at": "2026-08-27",
+  "automatic": {
+    "public_tests": 38,
+    "local_record_tests": 16,
+    "local_transaction_tests": 3,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "account_sync_contract_tests": 9,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "auth_sdk": "Supabase JavaScript 2.112.4 official UMD build",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core, local storage, explicit rollback-safe restore, official SDK wiring and Google-only account contracts; not real Google OAuth, real users, real products, full browser interaction, or complete device journeys"
+  },
+  "server": {
+    "source_commit": "9d913ed",
+    "full_run": "latest_main_success",
+    "status": "partial_user_sync_schema_applied",
+    "expanded_status": "계정 환경설정과 명시적 저장본은 자동 검증; 저장본 복원은 설정 되돌리기와 결정 기록 복구 사본을 강제하며 실제 OAuth 제공자는 미설정",
+    "production_database_applied": "user_sync_snapshot_only",
+    "public_api_connected": false,
+    "account_sync_schema_prepared": true,
+    "oauth_provider_configured": false
+  },
+  "browser": {
+    "status": "pending_v026_device_retest",
+    "limitation": "v0.26 공개 후 지정 A56 재검사 전"
+  },
+  "android": {
+    "status": "pending_v026_device_retest",
+    "reason": "v0.25의 부분 통과 증거는 보존하며, v0.26 공개 후 같은 지정 A56에서 최신판을 다시 확인한다",
+    "serial_recorded": false
+  },
+  "ios": {"status": "not_run"},
+  "real_users": {"status": "not_run", "count": 0},
+  "commercial": "blocked_google_oauth_operator_identity_policy_retention_real_catalog_and_complete_real_device_evidence"
+}

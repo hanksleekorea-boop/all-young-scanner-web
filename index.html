@@ -1636,6 +1636,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   <script src="./assets/supabase-sdk-2.112.4.js"></script>
   <script type="module">
 import * as recordStore from './assets/local-records.mjs';
+import * as localTransaction from './assets/local-transaction.mjs';
 import { createDecisionClient } from './assets/decision-client.mjs';
 import * as accountSync from './assets/auth-sync.mjs';
 (function attachRetentionCore(root) {
@@ -1886,7 +1887,7 @@ import * as accountSync from './assets/auth-sync.mjs';
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
-  const RELEASE_VERSION = '2026-08-27-service-v0.25';
+  const RELEASE_VERSION = '2026-08-27-service-v0.26';
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const productionDecisionClient = API_BASE ? createDecisionClient({ baseUrl:API_BASE }) : null;
@@ -2361,15 +2362,38 @@ import * as accountSync from './assets/auth-sync.mjs';
         ? {ok:true,preferences:state.accountPreferences}
         : accountSync.normalizeAccountPreferences(snapshot.account_preferences);
       if (!checkedAccountPreferences.ok) throw new Error(checkedAccountPreferences.reason);
-      state.decisions=checked.records;
-      state.watchlist=(Array.isArray(snapshot.watchlist)?snapshot.watchlist:[]).filter((id)=>products.some((product)=>product.id===id)).slice(0,20);
-      state.alertPreferences={enabled:snapshot.alert_preferences?.enabled===true};
-      state.accessibility=normalizeAccessibilityPreferences(snapshot.accessibility||{}); applyAccessibilityPreferences();
-      state.accountPreferences=checkedAccountPreferences.preferences;
-      state.familyWorkspace=snapshot.family_workspace&&typeof snapshot.family_workspace==='object'?snapshot.family_workspace:{profiles:[],activeProfileId:null,drafts:{}};
-      if (!safeWrite(STORAGE_KEY,state.decisions) || !safeWrite(WATCHLIST_KEY,state.watchlist) || !safeWrite(ALERT_PREFERENCES_KEY,state.alertPreferences) || !safeWrite(ACCESSIBILITY_PREFERENCES_KEY,state.accessibility) || !safeWrite(ACCOUNT_PREFERENCES_KEY,state.accountPreferences) || !safeWrite(FAMILY_WORKSPACE_KEY,state.familyWorkspace)) throw new Error('storage_failed');
+      if (storageReadOnly) throw new Error('storage_read_only');
+      const next={
+        decisions:checked.records,
+        watchlist:(Array.isArray(snapshot.watchlist)?snapshot.watchlist:[]).filter((id)=>products.some((product)=>product.id===id)).slice(0,20),
+        alertPreferences:{enabled:snapshot.alert_preferences?.enabled===true},
+        accessibility:normalizeAccessibilityPreferences(snapshot.accessibility||{}),
+        accountPreferences:checkedAccountPreferences.preferences,
+        familyWorkspace:snapshot.family_workspace&&typeof snapshot.family_workspace==='object'?snapshot.family_workspace:{profiles:[],activeProfileId:null,drafts:{}},
+      };
+      const preferencesTransaction=localTransaction.writeJsonTransaction(localStorage,{
+        [WATCHLIST_KEY]:next.watchlist,
+        [ALERT_PREFERENCES_KEY]:next.alertPreferences,
+        [ACCESSIBILITY_PREFERENCES_KEY]:next.accessibility,
+        [ACCOUNT_PREFERENCES_KEY]:next.accountPreferences,
+        [FAMILY_WORKSPACE_KEY]:next.familyWorkspace,
+      });
+      if (!preferencesTransaction.ok) throw new Error('preferences_storage_failed');
+      const savedRecords=recordStore.saveRecords(localStorage,decisionSnapshot,next.decisions,{replace:true});
+      if (!savedRecords.ok) {
+        preferencesTransaction.rollback();
+        throw new Error(savedRecords.issue || 'decision_storage_failed');
+      }
+      decisionSnapshot=savedRecords.raw;
+      state.decisions=savedRecords.records;
+      state.watchlist=next.watchlist;
+      state.alertPreferences=next.alertPreferences;
+      state.accessibility=next.accessibility; applyAccessibilityPreferences();
+      state.accountPreferences=next.accountPreferences;
+      state.familyWorkspace=next.familyWorkspace;
+      storageMode='persistent';
       render(); toast('계정 저장본으로 이 기기의 기록을 바꾸고 다시 확인했어요.');
-    } catch { toast('계정 저장본을 가져오지 못했어요. 이 기기의 기록은 바꾸지 않았습니다.'); }
+    } catch { toast('계정 저장본을 이 기기에 적용하지 못했어요. 기존 기기 상태를 유지합니다.'); }
   }
 
   async function deleteAccountSnapshot() {
