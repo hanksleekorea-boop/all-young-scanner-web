@@ -1633,6 +1633,7 @@ html[data-ays-motion="reduce"] *::after { animation:none !important; transition:
   <div id="app"></div>
   <div id="toast" role="status" aria-live="polite"></div>
   <script src="./assets/dompurify.min.js"></script>
+  <script src="./assets/supabase-sdk-2.112.4.js"></script>
   <script type="module">
 import * as recordStore from './assets/local-records.mjs';
 import { createDecisionClient } from './assets/decision-client.mjs';
@@ -1873,6 +1874,7 @@ import * as accountSync from './assets/auth-sync.mjs';
   const SHARE_VOTE_KEY = 'ays-alpha-share-votes-v01';
   const SYNC_CONSENT_KEY = 'ays-alpha-sync-consent-v01';
   const ACCESSIBILITY_PREFERENCES_KEY = 'ays-alpha-accessibility-v01';
+  const ACCOUNT_PREFERENCES_KEY = 'ays-account-preferences-v01';
   const WATCHLIST_KEY = 'ays-alpha-watchlist-v01';
   const ALERT_PREFERENCES_KEY = 'ays-alpha-alert-preferences-v01';
   const FAMILY_WORKSPACE_KEY = 'ays-alpha-family-workspace-v01';
@@ -1884,7 +1886,7 @@ import * as accountSync from './assets/auth-sync.mjs';
   });
   const PUBLIC_APP_URL = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
   const PUBLIC_DASHBOARD_URL = `${PUBLIC_APP_URL}progress.html`;
-  const RELEASE_VERSION = '2026-08-26-service-v0.23';
+  const RELEASE_VERSION = '2026-08-27-service-v0.24';
   const PUBLIC_QR_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQMAAAAyqmuAAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADNUlEQVR4nO3dPZLqMBBGUU0ROGQJLMVLM0tjKV4CIcEU/abVUrslm6oJJnig+0VGtg5Zl/4MKf1dFmnysNZZ7umkn6/psrVpntpl/fl4ajv+tEFBQUG9D3VLHu32JWJU0kvLt90+223l8zdtHTMPBQUFNSh1tg6h+GpKQU5pMmqOxTcZZW1PKCgoKKhKlSqsFTcOYbsifYeCgoKCelWQJQ51vTZr8u0FCgoK6gMoj1dR45+1rczeQ9tvFwegoKCgPp5qEtZFfSyaZ/TGt+uiTaCgoKCGpI5i975roS1tWrgnvWHU7wIFBQX14dSylVR9pESLb9mY92HtLFILcrLb+txla4OCgoJ6Hyqsi3rmbbDpY9GQNaVtRj/VNigoKKgBKc15e+j4kKds66ISCrImFGQoKCioIalZpFbcNYWcrNtFwlF53493Sgvys15CQUFBDUd1e/T5WTV8d0mLdBnh9i8h2cWj9oaCgoJ6JyqPMesmujTHjjRT7X2vXdYUZvSFX6GgoKBGpTxlel5TDnTK4RA2F+lbpa5pV9uhoKCgxqCaQjvVYW04njQdzujF1k/XOKOHgoKCGo4KUTXP9ANlBVkOdpzCUmrYqIKCgoJ6B2qRkNV662V/PKm+ne7PlRm9D19XKCgoqDGp2+6sUSqJx5O6t4RyuuPzUFBQUANS4XjStRL62P3F8SQ54PcnnaCgoKDGoUIutjhgefnzm4GfX6wzQEFBQf3XVLOxXkqitG05tW62W0K7GT0UFBTUkJSPO/1dy9LNni1Hkc6xXufoc4+2IENBQUGNSYXjST7Lr8NaT3/IU7avhIKCghqWOtd10aYg9yedPIuErLVthYKCgnobapc8Pb8lL5PleJJ9eFS+HImfoaCgoAanFmni71ruj8XbjN5vlx0n/SapM3ooKCioAanbVoy7PXrp9uM1z64ge1YoKCioUSn/ceKwOND/Bp21hZNOLuQsUFBQUG9PNZlqN/9RD02Z5a/1NhQUFBRUoWri8SS9PEsYi5a2i3Qb61BQUFDDUZ6G8uNJ/T+yXbMa2qCgoKBGppr4sDb8WVD/2mb4pjkvDny93qiCgoKC+nDq7/IPw9pA6gczbSkAAAAASUVORK5CYII=';
   const API_BASE = document.querySelector('meta[name="ays-api-base"]')?.content.replace(/\/$/, '') || '';
   const productionDecisionClient = API_BASE ? createDecisionClient({ baseUrl:API_BASE }) : null;
@@ -1956,7 +1958,7 @@ import * as accountSync from './assets/auth-sync.mjs';
     guideDecisionId:null, reviewDecisionId:null, pcCandidateIndex:0, pcHelpOpen:false, market:'KR', entryPath:'', bridgeMode:'existing_product', libraryQuery:'', libraryFilter:'all', syncConsent:false,
     online:navigator.onLine, offlineSince:null, connectionRecovered:false, migrationNotice:null, pendingDeleteDecisionId:null,
     accessibility:{textSize:'default',contrast:'default',motion:'system'}, watchlist:[], alertPreferences:{enabled:false}, familyWorkspace:{profiles:[],activeProfileId:null,drafts:{}}, releaseUpdateReady:false,
-    account:{status:'local',message:'계정 연결 준비 중'},
+    account:{status:'checking',message:'계정 연결 상태 확인 중'}, accountPreferences:{language:'ko-KR',dailyGoal:10},
   };
 
   const won = (n) => `${n.toLocaleString('ko-KR')}원`;
@@ -2174,6 +2176,8 @@ import * as accountSync from './assets/auth-sync.mjs';
     state.market = MARKET_CONTEXTS[storedMarket] ? storedMarket : 'KR';
     state.syncConsent = safeRead(SYNC_CONSENT_KEY, false) === true;
     state.accessibility = normalizeAccessibilityPreferences(safeRead(ACCESSIBILITY_PREFERENCES_KEY, {}));
+    const accountPreferences=safeRead(ACCOUNT_PREFERENCES_KEY,{});
+    state.accountPreferences={language:'ko-KR',dailyGoal:[5,10,15,20,30].includes(Number(accountPreferences?.dailyGoal))?Number(accountPreferences.dailyGoal):10};
     const storedWatchlist=safeRead(WATCHLIST_KEY,[]);
     state.watchlist = (Array.isArray(storedWatchlist)?storedWatchlist:[]).filter((id) => products.some((product) => product.id === id)).slice(0,20);
     state.alertPreferences = {enabled:safeRead(ALERT_PREFERENCES_KEY,{enabled:false})?.enabled === true};
@@ -2284,7 +2288,9 @@ import * as accountSync from './assets/auth-sync.mjs';
   }
 
   let accountConfigResult = {ok:false,reason:'config_pending'};
+  let accountClient = null;
   let accountSession = null;
+  let stopAccountObserver = null;
 
   function accountSnapshot() {
     return {
@@ -2299,46 +2305,54 @@ import * as accountSync from './assets/auth-sync.mjs';
   }
 
   function accountStatusMessage() {
-    if (!accountConfigResult.ok) return '계정 연결 준비 중 · 이 기기 저장은 계속 사용할 수 있어요.';
+    if (state.account.status === 'checking') return '계정 연결 상태 확인 중 · 이 기기 저장은 계속 사용할 수 있어요.';
+    if (state.account.status === 'signingIn') return 'Google 로그인 화면을 여는 중입니다.';
+    if (state.account.status === 'configurationError') return 'Google 로그인 설정 대기 중 · 이 기기 저장은 계속 사용할 수 있어요.';
+    if (state.account.status === 'recoverableError') return '계정 연결을 확인하지 못했어요. 기기 기록은 그대로입니다.';
     if (!accountSession) return '로그인 전 · 기록은 아직 이 기기에만 있습니다.';
     return '계정 연결됨 · 동기화 버튼을 누를 때만 저장을 시도합니다.';
   }
 
-  async function startAccountLogin(provider) {
+  async function startAccountLogin() {
     if (!accountConfigResult.ok) { toast('계정 연결 설정이 아직 완료되지 않았어요. 이 기기 저장은 그대로 사용할 수 있어요.'); return; }
-    try { location.assign(accountSync.oauthUrl(accountConfigResult.config,provider)); }
-    catch { toast('로그인을 시작하지 못했어요. 연결 설정을 다시 확인해 주세요.'); }
+    if (state.account.status === 'signingIn') return;
+    state.account={status:'signingIn',message:'Google 로그인 화면을 여는 중입니다.'};render();
+    try { await accountSync.signInWithGoogle(accountClient,accountConfigResult.config.redirectUrl); }
+    catch { state.account={status:'recoverableError',message:'로그인을 시작하지 못했어요. 다시 시도해 주세요.'};render();toast('로그인을 시작하지 못했어요. 연결 설정을 다시 확인해 주세요.'); }
   }
 
   async function initializeAccount() {
+    state.account={status:'checking',message:'계정 연결 상태 확인 중'};
     accountConfigResult = await accountSync.loadConfig();
-    const incoming = accountSync.sessionFromHash(location.hash);
-    if (incoming) {
-      accountSync.saveSession(incoming);
-      accountSession = incoming;
-      history.replaceState(null,'',`${location.pathname}${location.search}`);
-    } else accountSession = accountSync.loadStoredSession();
-    if (accountConfigResult.ok && accountSession && (!Number.isFinite(accountSession.expiresAt) || accountSession.expiresAt < Date.now()+60_000)) {
-      try { accountSession = await accountSync.refreshSession(accountConfigResult.config,accountSession); accountSync.saveSession(accountSession); }
-      catch { accountSync.clearSession(); accountSession=null; }
+    if (!accountConfigResult.ok) {
+      state.account={status:'configurationError',message:'Google 로그인 설정 대기 중 · 기기 저장은 사용할 수 있어요.'};
+      return;
     }
-    state.account={status:accountSession?'connected':accountConfigResult.ok?'available':'local',message:accountStatusMessage()};
+    accountClient=accountSync.createAuthClient(accountConfigResult.config);
+    accountSession=await accountSync.initializeAuthState(accountClient);
+    stopAccountObserver?.();
+    stopAccountObserver=accountSync.subscribeAuthState(accountClient,({session})=>{
+      accountSession=session;
+      state.account={status:session?'signedIn':'signedOut',message:session?'계정 연결됨 · 저장은 버튼을 누를 때만 실행합니다.':'로그인 전 · 기록은 이 기기에만 있습니다.'};
+      render();
+    });
+    state.account={status:accountSession?'signedIn':'signedOut',message:accountSession?'계정 연결됨 · 저장은 버튼을 누를 때만 실행합니다.':'로그인 전 · 기록은 이 기기에만 있습니다.'};
   }
 
   async function saveAccountSnapshot() {
-    if (!accountConfigResult.ok || !accountSession) { toast('먼저 Google 또는 Apple 계정으로 로그인해 주세요.'); return; }
+    if (!accountClient || !accountSession) { toast('먼저 Google 계정으로 로그인해 주세요.'); return; }
     try {
-      await accountSync.saveSnapshot(accountConfigResult.config,accountSession,accountSnapshot());
+      await accountSync.saveSnapshot(accountClient,accountSnapshot());
       state.syncConsent=true; safeWrite(SYNC_CONSENT_KEY,true);
-      state.account={status:'connected',message:accountStatusMessage()}; render();
+      state.account={status:'signedIn',message:accountStatusMessage()}; render();
       toast('이 기기의 결정·관심 목록·보기 설정을 내 계정 저장소에 보관했어요.');
     } catch { toast('계정 저장에 실패했어요. 이 기기의 기록은 그대로 유지됩니다.'); }
   }
 
   async function loadAccountSnapshot() {
-    if (!accountConfigResult.ok || !accountSession) { toast('먼저 계정으로 로그인해 주세요.'); return; }
+    if (!accountClient || !accountSession) { toast('먼저 계정으로 로그인해 주세요.'); return; }
     try {
-      const saved = await accountSync.readSnapshot(accountConfigResult.config,accountSession);
+      const saved = await accountSync.readSnapshot(accountClient);
       if (!saved) { toast('계정에 저장된 기록이 아직 없어요. 먼저 이 기기 기록을 저장해 주세요.'); return; }
       const snapshot=saved.payload;
       const checked=recordStore.previewImport([],snapshot.decisions,'replace');
@@ -2353,16 +2367,19 @@ import * as accountSync from './assets/auth-sync.mjs';
   }
 
   async function deleteAccountSnapshot() {
-    if (!accountConfigResult.ok || !accountSession) { toast('로그인된 계정이 없어요.'); return; }
-    try { await accountSync.deleteSnapshot(accountConfigResult.config,accountSession); render(); toast('계정에 저장된 서비스 기록을 삭제했어요. 이 기기 기록은 그대로입니다.'); }
+    if (!accountClient || !accountSession) { toast('로그인된 계정이 없어요.'); return; }
+    try { await accountSync.deleteSnapshot(accountClient); render(); toast('계정에 저장된 서비스 기록을 삭제했어요. 이 기기 기록은 그대로입니다.'); }
     catch { toast('계정 저장본을 삭제하지 못했어요. 이 기기 기록은 그대로입니다.'); }
   }
 
-  function signOutAccount() {
-    accountSync.clearSession(); accountSession=null;
-    state.syncConsent=false; safeWrite(SYNC_CONSENT_KEY,false);
-    state.account={status:accountConfigResult.ok?'available':'local',message:accountStatusMessage()}; render();
-    toast('이 기기에서 로그아웃했어요. 계정 저장본은 삭제되지 않았습니다.');
+  async function signOutAccount() {
+    if (!accountClient) return;
+    try {
+      await accountSync.signOut(accountClient);accountSession=null;
+      state.syncConsent=false; safeWrite(SYNC_CONSENT_KEY,false);
+      state.account={status:'signedOut',message:'로그인 전 · 기록은 이 기기에만 있습니다.'}; render();
+      toast('이 기기에서 로그아웃했어요. 계정 저장본은 삭제되지 않았습니다.');
+    } catch { state.account={status:'recoverableError',message:'로그아웃 상태를 확인하지 못했어요.'};render();toast('로그아웃을 확인하지 못했어요. 다시 시도해 주세요.'); }
   }
 
   async function withApiFallback(remote, local) {
@@ -2952,9 +2969,11 @@ import * as accountSync from './assets/auth-sync.mjs';
   function accountPanelView() {
     const accountReady = accountConfigResult.ok;
     const accountConnected = Boolean(accountSession);
-    if (!accountReady) return `<section class="form-card privacy-choice" data-account-sync="pending"><h2>계정 저장</h2><p>Google 로그인 연결 설정을 준비하고 있습니다. 현재는 어떤 기록도 외부로 보내지 않습니다.</p><p class="muted">${escapeHtml(state.account.message)}</p></section>`;
-    if (!accountConnected) return `<section class="form-card privacy-choice" data-account-sync="available"><h2>계정 저장</h2><p>로그인 후에도 기록은 자동으로 보내지 않습니다. 이 기기의 결정·관심 목록·보기 설정을 저장하려면 다음 단계에서 다시 확인해 주세요.</p><div class="toolbar"><button class="primary-btn" data-action="account-login-google">Google로 로그인·무료 가입</button></div><p class="muted">${escapeHtml(state.account.message)} · ${state.online?'연결됨':'오프라인'}</p></section>`;
-    return `<section class="form-card privacy-choice" data-account-sync="connected"><h2>계정 저장</h2><p>이 기기의 결정·관심 목록·보기 설정만 계정 저장소에 보관할 수 있습니다. 진단을 시작하거나 화면을 보는 행동만으로는 저장하지 않습니다.</p><div class="toolbar"><button class="primary-btn" data-action="account-sync-save">이 기기 기록 저장</button><button class="secondary-btn" data-action="account-sync-load">계정 저장본 가져오기</button><button class="ghost-btn" data-action="account-sync-delete">계정 저장본 삭제</button><button class="ghost-btn" data-action="account-sign-out">이 기기 로그아웃</button></div><p class="muted">${escapeHtml(state.account.message)} · 계정 저장본 삭제는 서버 기록만 지우며, 이 기기 기록은 지우지 않습니다.</p></section>`;
+    if (!accountReady) return `<section class="form-card privacy-choice" data-account-sync="configurationError"><h2>내 계정</h2><p>Google 로그인 연결 설정을 기다리고 있습니다. 현재는 어떤 기록도 외부로 보내지 않으며 기기 저장은 계속 사용할 수 있습니다.</p><p class="muted">${escapeHtml(state.account.message)}</p><div class="toolbar"><a class="secondary-btn" href="./privacy.html">개인정보 처리방침</a><a class="ghost-btn" href="./support.html">도움말</a></div></section>`;
+    if (!accountConnected) return `<section class="form-card privacy-choice" data-account-sync="${escapeHtml(state.account.status)}"><h2>내 계정</h2><p>Google 계정으로 무료 가입하거나 로그인할 수 있습니다. 로그인만으로 기기 기록을 자동 전송하지 않습니다.</p><div class="toolbar"><button class="primary-btn" data-action="account-login-google" ${state.account.status==='signingIn'?'disabled':''}>Google로 로그인·무료 가입</button></div><p class="muted">${escapeHtml(state.account.message)} · ${state.online?'연결됨':'오프라인'}</p><div class="toolbar"><a class="secondary-btn" href="./privacy.html">개인정보 처리방침</a><a class="ghost-btn" href="./terms.html">이용약관</a><a class="ghost-btn" href="./support.html">도움말</a></div></section>`;
+    const displayName=accountSync.displayNameFromUser(accountSession.user);
+    const goal=state.accountPreferences.dailyGoal;
+    return `<section class="form-card privacy-choice" data-account-sync="signedIn"><h2>내 계정</h2><dl><div><dt>로그인 방식</dt><dd>Google</dd></div><div><dt>계정 식별정보</dt><dd>보호를 위해 숨김</dd></div></dl><form id="account-preferences-form"><label>표시 이름<input name="displayName" maxlength="40" value="${escapeHtml(displayName)}" autocomplete="nickname" required></label><label>지원 언어<select name="language"><option value="ko-KR" selected>한국어</option></select></label><label>하루 둘러보기 목표<select name="dailyGoal">${[5,10,15,20,30].map((minutes)=>`<option value="${minutes}"${goal===minutes?' selected':''}>${minutes}분</option>`).join('')}</select></label><button class="secondary-btn" type="submit">계정 설정 저장</button></form><hr><h3>내 기록 백업</h3><p>이 기기의 결정·관심 목록·보기 설정만 직접 선택할 때 저장합니다. 자동 업로드·자동 복원·자동 병합은 하지 않습니다.</p><div class="toolbar"><button class="primary-btn" data-action="account-sync-save">이 기기 기록 저장</button><button class="secondary-btn" data-action="account-sync-load">계정 저장본 가져오기</button><button class="ghost-btn" data-action="account-sync-delete">계정 저장본 삭제</button><button class="ghost-btn" data-action="privacy">암호화 파일 백업</button></div><div class="toolbar"><a class="secondary-btn" href="./privacy.html">개인정보 처리방침</a><a class="ghost-btn" href="./terms.html">이용약관</a><a class="ghost-btn" href="./support.html">도움말</a><button class="ghost-btn" data-action="account-sign-out">이 기기 로그아웃</button></div><p class="muted">${escapeHtml(state.account.message)} · 계정 저장본 삭제는 서버 기록만 지우며, 이 기기 기록은 지우지 않습니다.</p></section>`;
   }
 
   function privacyView() {
@@ -3425,12 +3444,11 @@ import * as accountSync from './assets/auth-sync.mjs';
     else if(action==='method'){state.route='method';render();}
     else if(action==='correction'){state.route='correction';render();}
     else if(action==='privacy'){state.route='privacy';render();}
-    else if(action==='account-login-google'){await startAccountLogin('google');}
-    else if(action==='account-login-apple'){await startAccountLogin('apple');}
+    else if(action==='account-login-google'){await startAccountLogin();}
     else if(action==='account-sync-save'){await saveAccountSnapshot();}
     else if(action==='account-sync-load'){await loadAccountSnapshot();}
     else if(action==='account-sync-delete'){await deleteAccountSnapshot();}
-    else if(action==='account-sign-out'){signOutAccount();}
+    else if(action==='account-sign-out'){await signOutAccount();}
     else if(action==='recovery-guide'){state.route='recovery-guide';render();}
     else if(action==='accessibility'){state.route='accessibility';render();}
     else if(action==='pc-readiness'){state.route='pc-readiness';render();}
@@ -3549,6 +3567,23 @@ import * as accountSync from './assets/auth-sync.mjs';
   });
 
   document.addEventListener('submit',async(event) => {
+    if(event.target.id==='account-preferences-form'){
+      event.preventDefault();
+      if(!accountClient||!accountSession){toast('먼저 Google 계정으로 로그인해 주세요.');return;}
+      const form=new FormData(event.target);
+      const displayName=String(form.get('displayName')||'').trim();
+      const language=String(form.get('language')||'');
+      const dailyGoal=Number(form.get('dailyGoal'));
+      if(!displayName||displayName.length>40||language!=='ko-KR'||![5,10,15,20,30].includes(dailyGoal)){toast('계정 설정을 다시 확인해 주세요.');return;}
+      try {
+        const user=await accountSync.updateDisplayName(accountClient,displayName);
+        if(user)accountSession={...accountSession,user};
+        state.accountPreferences={language,dailyGoal};
+        if(!safeWrite(ACCOUNT_PREFERENCES_KEY,state.accountPreferences))throw new Error('preferences_storage_failed');
+        render();toast('계정 설정을 저장했어요.');
+      } catch {toast('계정 설정을 저장하지 못했어요. 기존 설정은 유지됩니다.');}
+      return;
+    }
     if(event.target.id==='correction-draft-form'){
       event.preventDefault();downloadCorrectionDraft(event.target);return;
     }
@@ -3561,7 +3596,7 @@ import * as accountSync from './assets/auth-sync.mjs';
     }
     if(event.target.id==='delete-local-records'){
       event.preventDefault();if(new FormData(event.target).get('confirmation')!=='모든 기록 삭제'){toast('확인 문구가 맞지 않아 기록을 유지합니다.');return;}
-      const keys=[STORAGE_KEY,LOCAL_COMPAT_BACKUP_KEY,recordStore.REPLACEMENT_KEY,LOCAL_SCHEMA_KEY,EVENT_KEY,SHARE_VOTE_KEY,SYNC_CONSENT_KEY,ACCESSIBILITY_PREFERENCES_KEY,WATCHLIST_KEY,ALERT_PREFERENCES_KEY,FAMILY_WORKSPACE_KEY,'ays-alpha-market-v01'];
+      const keys=[STORAGE_KEY,LOCAL_COMPAT_BACKUP_KEY,recordStore.REPLACEMENT_KEY,LOCAL_SCHEMA_KEY,EVENT_KEY,SHARE_VOTE_KEY,SYNC_CONSENT_KEY,ACCESSIBILITY_PREFERENCES_KEY,ACCOUNT_PREFERENCES_KEY,WATCHLIST_KEY,ALERT_PREFERENCES_KEY,FAMILY_WORKSPACE_KEY,'ays-alpha-market-v01'];
       try{if(!recordStore.deleteKnownKeys(localStorage,keys).ok)throw new Error('verification');memory.clear();pendingImport=null;decisionSnapshot=null;state.decisions=[];state.events=[];state.syncConsent=false;state.watchlist=[];state.alertPreferences={enabled:false};state.familyWorkspace={profiles:[],activeProfileId:null,drafts:{}};state.accessibility=normalizeAccessibilityPreferences({});applyAccessibilityPreferences();storageMode='persistent';storageReadOnly=false;storageIssue='';state.migrationNotice=null;render();toast('이 서비스의 기기 기록과 원본 사본이 삭제되었음을 확인했습니다.');}
       catch{toast('일부 기록이 남아 있을 수 있습니다. 삭제 완료가 아닙니다. 브라우저의 사이트 저장 공간을 확인해 주세요.');}return;
     }
@@ -3630,7 +3665,7 @@ import * as accountSync from './assets/auth-sync.mjs';
   window.addEventListener('hashchange',()=>{if(loadSharedCardFromHash())render();});
 
   initStorage(); loadSharedCardFromHash(); setupManifest(); render();
-  initializeAccount().then(()=>render()).catch(()=>{state.account={status:'local',message:'계정 연결 상태를 확인하지 못했어요. 기기 저장은 계속 사용할 수 있어요.'};render();});
+  initializeAccount().then(()=>render()).catch(()=>{state.account={status:'recoverableError',message:'계정 연결 상태를 확인하지 못했어요. 기기 저장은 계속 사용할 수 있어요.'};render();});
 })();
 </script>
 </body>

@@ -1,13 +1,18 @@
-const SESSION_KEY = 'ays-account-session-v01';
 const MAX_SNAPSHOT_BYTES = 196_608;
-const PROVIDERS = new Set(['google', 'apple']);
+const AUTH_STORAGE_KEY = 'ays-account-auth-v02';
 
 function plainObject(value) {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 }
 
-function validJwtLike(value) {
-  return typeof value === 'string' && value.split('.').length === 3 && value.length < 20_000;
+function checkedClient(client) {
+  if (!client?.auth || typeof client.from !== 'function') throw new Error('auth_client_unavailable');
+  return client;
+}
+
+function throwIfError(result, fallback) {
+  if (result?.error) throw new Error(result.error.message || fallback);
+  return result?.data;
 }
 
 export function validateConfig(value, currentOrigin = globalThis.location?.origin || '') {
@@ -38,55 +43,44 @@ export async function loadConfig(fetcher = fetch, currentOrigin = globalThis.loc
   }
 }
 
-export function sessionFromHash(hash) {
-  const params = new URLSearchParams(String(hash || '').replace(/^#/, ''));
-  const accessToken = params.get('access_token') || '';
-  const refreshToken = params.get('refresh_token') || '';
-  const expiresIn = Number(params.get('expires_in') || 0);
-  if (!validJwtLike(accessToken) || !refreshToken || !Number.isFinite(expiresIn) || expiresIn <= 0) return null;
-  return {
-    accessToken,
-    refreshToken,
-    expiresAt: Date.now() + Math.min(expiresIn, 86_400) * 1_000,
-    providerToken: params.get('provider_token') || null,
-  };
-}
-
-export function loadStoredSession(store = globalThis.localStorage) {
-  try {
-    const value = JSON.parse(store.getItem(SESSION_KEY) || 'null');
-    if (!plainObject(value) || !validJwtLike(value.accessToken) || typeof value.refreshToken !== 'string' || !value.refreshToken) return null;
-    return { accessToken:value.accessToken, refreshToken:value.refreshToken, expiresAt:Number(value.expiresAt || 0), providerToken:null };
-  } catch { return null; }
-}
-
-export function saveSession(session, store = globalThis.localStorage) {
-  if (!session?.accessToken || !session?.refreshToken) throw new Error('session_invalid');
-  store.setItem(SESSION_KEY, JSON.stringify({ accessToken:session.accessToken, refreshToken:session.refreshToken, expiresAt:session.expiresAt }));
-}
-
-export function clearSession(store = globalThis.localStorage) {
-  try { store.removeItem(SESSION_KEY); } catch { /* storage can be unavailable */ }
-}
-
-export function oauthUrl(config, provider) {
-  if (!config?.supabaseUrl || !PROVIDERS.has(provider)) throw new Error('oauth_unavailable');
-  const url = new URL('/auth/v1/authorize', config.supabaseUrl);
-  url.searchParams.set('provider', provider);
-  url.searchParams.set('redirect_to', config.redirectUrl);
-  return url.href;
-}
-
-export async function refreshSession(config, session, fetcher = fetch) {
-  if (!config?.supabaseUrl || !session?.refreshToken) throw new Error('refresh_unavailable');
-  const response = await fetcher(`${config.supabaseUrl}/auth/v1/token?grant_type=refresh_token`, {
-    method:'POST',
-    headers:{apikey:config.supabaseAnonKey, authorization:`Bearer ${config.supabaseAnonKey}`, 'content-type':'application/json'},
-    body:JSON.stringify({refresh_token:session.refreshToken}),
+export function createAuthClient(config, sdk = globalThis.supabase) {
+  if (!config?.supabaseUrl || !config?.supabaseAnonKey || typeof sdk?.createClient !== 'function') throw new Error('auth_sdk_unavailable');
+  return sdk.createClient(config.supabaseUrl, config.supabaseAnonKey, {
+    auth:{persistSession:true, autoRefreshToken:true, detectSessionInUrl:true, flowType:'pkce', storageKey:AUTH_STORAGE_KEY},
   });
-  const body = await response.json().catch(() => null);
-  if (!response.ok || !body?.access_token || !body?.refresh_token) throw new Error('refresh_failed');
-  return { accessToken:body.access_token, refreshToken:body.refresh_token, expiresAt:Date.now() + Number(body.expires_in || 3600) * 1_000, providerToken:null };
+}
+
+export async function initializeAuthState(client) {
+  const data = throwIfError(await checkedClient(client).auth.getSession(), 'session_read_failed');
+  return data?.session || null;
+}
+
+export function subscribeAuthState(client, listener) {
+  if (typeof listener !== 'function') throw new Error('auth_listener_required');
+  const result = checkedClient(client).auth.onAuthStateChange((event, session) => listener({event, session:session || null}));
+  const subscription = result?.data?.subscription;
+  return () => subscription?.unsubscribe?.();
+}
+
+export async function signInWithGoogle(client, redirectUrl) {
+  const redirect = new URL(String(redirectUrl));
+  if (redirect.protocol !== 'https:' && redirect.hostname !== 'localhost') throw new Error('redirect_insecure');
+  return throwIfError(await checkedClient(client).auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href}}), 'oauth_start_failed');
+}
+
+export async function signOut(client) {
+  throwIfError(await checkedClient(client).auth.signOut(), 'sign_out_failed');
+}
+
+export function displayNameFromUser(user) {
+  return String(user?.user_metadata?.display_name || '').trim().slice(0, 40);
+}
+
+export async function updateDisplayName(client, displayName) {
+  const value = String(displayName || '').trim();
+  if (!value || value.length > 40) throw new Error('display_name_invalid');
+  const data = throwIfError(await checkedClient(client).auth.updateUser({data:{display_name:value}}), 'profile_update_failed');
+  return data?.user || null;
 }
 
 export function validateSnapshot(snapshot) {
@@ -96,39 +90,27 @@ export function validateSnapshot(snapshot) {
   return { ok:true, snapshot:JSON.parse(text) };
 }
 
-function authHeaders(config, session, extra = {}) {
-  return { apikey:config.supabaseAnonKey, authorization:`Bearer ${session.accessToken}`, ...extra };
-}
-
-export async function saveSnapshot(config, session, snapshot, fetcher = fetch) {
+export async function saveSnapshot(client, snapshot) {
   const checked = validateSnapshot(snapshot);
   if (!checked.ok) throw new Error(checked.reason);
-  const response = await fetcher(`${config.supabaseUrl}/rest/v1/user_sync_snapshot?on_conflict=user_id`, {
-    method:'POST',
-    headers:authHeaders(config, session, {'content-type':'application/json', prefer:'resolution=merge-duplicates,return=representation'}),
-    body:JSON.stringify({ schema_version:1, payload:checked.snapshot, client_updated_at:new Date().toISOString() }),
-  });
-  if (!response.ok) throw new Error(`snapshot_save_${response.status}`);
-  return (await response.json().catch(() => []))[0] || null;
+  const query = checkedClient(client).from('user_sync_snapshot').upsert({schema_version:1,payload:checked.snapshot,client_updated_at:new Date().toISOString()}, {onConflict:'user_id'}).select('schema_version,payload,client_updated_at,updated_at').single();
+  return throwIfError(await query, 'snapshot_save_failed') || null;
 }
 
-export async function readSnapshot(config, session, fetcher = fetch) {
-  const response = await fetcher(`${config.supabaseUrl}/rest/v1/user_sync_snapshot?select=schema_version,payload,client_updated_at,updated_at&limit=1`, {
-    headers:authHeaders(config, session),
-  });
-  if (!response.ok) throw new Error(`snapshot_read_${response.status}`);
-  const row = (await response.json().catch(() => []))[0];
+export async function readSnapshot(client) {
+  const query = checkedClient(client).from('user_sync_snapshot').select('schema_version,payload,client_updated_at,updated_at').limit(1).maybeSingle();
+  const row = throwIfError(await query, 'snapshot_read_failed');
   if (!row) return null;
   const checked = validateSnapshot(row.payload);
   if (!checked.ok) throw new Error(checked.reason);
-  return { ...row, payload:checked.snapshot };
+  return {...row, payload:checked.snapshot};
 }
 
-export async function deleteSnapshot(config, session, fetcher = fetch) {
-  const response = await fetcher(`${config.supabaseUrl}/rest/v1/user_sync_snapshot`, {
-    method:'DELETE', headers:authHeaders(config, session, {prefer:'return=minimal'}),
-  });
-  if (!response.ok) throw new Error(`snapshot_delete_${response.status}`);
+export async function deleteSnapshot(client) {
+  const userData = throwIfError(await checkedClient(client).auth.getUser(), 'user_read_failed');
+  if (!userData?.user?.id) throw new Error('user_missing');
+  const result = await client.from('user_sync_snapshot').delete().eq('user_id', userData.user.id);
+  throwIfError(result, 'snapshot_delete_failed');
 }
 
-export { MAX_SNAPSHOT_BYTES, SESSION_KEY };
+export { AUTH_STORAGE_KEY, MAX_SNAPSHOT_BYTES };

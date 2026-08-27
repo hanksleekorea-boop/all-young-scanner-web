@@ -1,0 +1,41 @@
+{
+  "release_id": "2026-08-27-service-v0.24",
+  "verified_at": "2026-08-27",
+  "automatic": {
+    "public_tests": 33,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "account_sync_contract_tests": 7,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "auth_sdk": "Supabase JavaScript 2.112.4 official UMD build",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core, local storage, official SDK wiring and Google-only account contract tests; not real Google OAuth, real users, real products, browser interaction, or full device journeys"
+  },
+  "server": {
+    "source_commit": "6349c77",
+    "full_run": "pending_source_ci",
+    "status": "partial_user_sync_schema_applied",
+    "production_database_applied": "user_sync_snapshot_only",
+    "public_api_connected": false,
+    "account_sync_schema_prepared": true,
+    "oauth_provider_configured": false
+  },
+  "browser": {
+    "status": "not_run_for_v0.24",
+    "planned_widths": [360, 390, 1440],
+    "document_csp": true,
+    "dom_output_sanitized": true,
+    "account_sync_ui": "google_only_official_sdk_configuration_pending_no_external_transfer"
+  },
+  "android": {
+    "status": "not_run_for_v0.24",
+    "reason": "Google OAuth provider and public account configuration are not configured; no Android device was connected at verification time",
+    "not_verified": ["Google OAuth", "account preference save", "account snapshot save", "account snapshot restore", "account snapshot deletion", "PWA install"]
+  },
+  "ios": {"status": "not_run"},
+  "real_users": {"status": "not_run", "count": 0},
+  "commercial": "blocked_google_oauth_operator_identity_policy_retention_real_catalog_and_real_device_evidence"
+}

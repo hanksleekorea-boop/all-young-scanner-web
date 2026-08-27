@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-26-service-v0.23",
-  "updated_at": "2026-08-26",
+  "release_id": "2026-08-27-service-v0.24",
+  "updated_at": "2026-08-27",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
   "scope": "KR/ko-KR/KRW",
@@ -38,7 +38,7 @@
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.23 responsive service routes, sanitized DOM output, Google-only account-sync configuration boundary, policy links, general issue intake, private vulnerability intake and document CSP; not real catalog journey",
+    "browser_evidence_scope": "v0.24 responsive service routes, sanitized DOM output, official SDK Google-only account state and configuration boundary, policy links, general issue intake, private vulnerability intake and document CSP; browser interaction and real catalog journey not run",
     "tested_widths": [
       360,
       390,
@@ -57,7 +57,7 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
-  "evidence_file": "evidence-v023.json",
+  "evidence_file": "evidence-v024.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

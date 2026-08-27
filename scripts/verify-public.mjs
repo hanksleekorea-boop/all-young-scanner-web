@@ -8,8 +8,9 @@ const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
-  'assets/local-records.mjs', 'assets/decision-client.mjs', 'assets/auth-sync.mjs', 'assets/dompurify.min.js', 'auth-config.json',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json', 'evidence-v022.json', 'evidence-v023.json',
+  'assets/local-records.mjs', 'assets/decision-client.mjs', 'assets/auth-sync.mjs', 'assets/dompurify.min.js',
+  'assets/supabase-sdk-2.112.4.js', 'assets/supabase-sdk-LICENSE.txt', 'auth-config.json',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json', 'evidence-v022.json', 'evidence-v023.json', 'evidence-v024.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -27,6 +28,7 @@ const sitemap = read('sitemap.xml');
 
 assert(html.includes('<link rel="manifest" href="manifest.webmanifest">'), '정적 manifest 연결 없음');
 assert(html.includes('<script src="./assets/dompurify.min.js"></script>') && html.includes('DOMPurify.sanitize(view'), 'DOM 출력 정화기 연결 누락');
+assert(html.includes('<script src="./assets/supabase-sdk-2.112.4.js"></script>'), '공식 Supabase SDK 연결 누락');
 assert(!html.includes('data:application/manifest+json'), 'data URL manifest가 남아 있음');
 assert(/const MARKET_CONTEXTS = Object\.freeze\(\{\s*KR:\{/.test(html), '한국 출시 범위 없음');
 assert(!/\n\s+(US|JP|TH|SG|AU|GB|DE|FR|CA):\{/.test(html), '지원하지 않는 국가가 선택 가능함');
@@ -53,7 +55,7 @@ assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === r
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.23 responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.24 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
@@ -74,6 +76,10 @@ assert(html.includes("import * as recordStore from './assets/local-records.mjs'"
 assert(html.includes("import { createDecisionClient } from './assets/decision-client.mjs'"), 'v2 진단 연결 모듈 누락');
 assert(html.includes("import * as accountSync from './assets/auth-sync.mjs'") && html.includes('account-login-google') && html.includes('Google로 로그인·무료 가입'), 'Google 계정 로그인 경로 누락');
 assert(!html.includes('data-action="account-login-apple"'), '보류한 Apple 로그인 버튼이 사용자 화면에 남아 있음');
+const accountModule=read('assets/auth-sync.mjs');
+assert(accountModule.includes("provider:'google'") && accountModule.includes("flowType:'pkce'") && accountModule.includes('onAuthStateChange'), '공식 Google PKCE 로그인 상태 연결 누락');
+assert(!accountModule.includes('sessionFromHash') && !accountModule.includes('refresh_token') && !accountModule.includes('ays-account-session-v01'), '수동 토큰·세션 처리가 남아 있음');
+assert(html.includes('account-preferences-form') && html.includes('하루 둘러보기 목표') && html.includes('계정 설정 저장'), '내 계정 설정 화면 누락');
 assert(read('auth-config.json').includes('supabaseUrl') && privacy.includes('계정 저장본 삭제') && support.includes('계정에 저장한 기록 삭제하기'), '계정 저장 설정·삭제 안내 누락');
 assert(html.includes("dataset.apiContract = productionDecisionClient ? 'v2-ready' : 'awaiting-endpoint'"), '운영 API 연결 상태 구분 누락');
 assert(!html.includes('24개 모두 review 상태') && !html.includes('불편하면 멈추는 내부 검수용 가이드'), '사용 화면에 내부 검수 문구가 남아 있음');
