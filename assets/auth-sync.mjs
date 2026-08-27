@@ -76,10 +76,41 @@ export function displayNameFromUser(user) {
   return String(user?.user_metadata?.display_name || '').trim().slice(0, 40);
 }
 
+export function normalizeAccountPreferences(value) {
+  if (!plainObject(value)) return { ok:false, reason:'account_preferences_invalid' };
+  const language = String(value.language || '');
+  const dailyGoal = Number(value.dailyGoal);
+  if (language !== 'ko-KR' || ![5, 10, 15, 20, 30].includes(dailyGoal)) return { ok:false, reason:'account_preferences_invalid' };
+  return { ok:true, preferences:{language, dailyGoal} };
+}
+
+export function accountPreferencesFromUser(user) {
+  const metadata = plainObject(user?.user_metadata) ? user.user_metadata : {};
+  const checked = normalizeAccountPreferences({language:metadata.language, dailyGoal:metadata.daily_goal_minutes});
+  return {
+    displayName:displayNameFromUser(user),
+    ...(checked.ok ? checked.preferences : {}),
+    hasRemotePreferences:checked.ok,
+  };
+}
+
 export async function updateDisplayName(client, displayName) {
   const value = String(displayName || '').trim();
   if (!value || value.length > 40) throw new Error('display_name_invalid');
   const data = throwIfError(await checkedClient(client).auth.updateUser({data:{display_name:value}}), 'profile_update_failed');
+  return data?.user || null;
+}
+
+export async function updateAccountProfile(client, value) {
+  const displayName = String(value?.displayName || '').trim();
+  const checked = normalizeAccountPreferences(value);
+  if (!displayName || displayName.length > 40) throw new Error('display_name_invalid');
+  if (!checked.ok) throw new Error(checked.reason);
+  const data = throwIfError(await checkedClient(client).auth.updateUser({data:{
+    display_name:displayName,
+    language:checked.preferences.language,
+    daily_goal_minutes:checked.preferences.dailyGoal,
+  }}), 'profile_update_failed');
   return data?.user || null;
 }
 

@@ -1,0 +1,66 @@
+{
+  "release_id": "2026-08-27-service-v0.25",
+  "verified_at": "2026-08-27",
+  "automatic": {
+    "public_tests": 35,
+    "local_record_tests": 16,
+    "service_worker_isolation_tests": 6,
+    "decision_client_contract_tests": 4,
+    "account_sync_contract_tests": 9,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "auth_sdk": "Supabase JavaScript 2.112.4 official UMD build",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Synthetic policy, decision-core, local storage, official SDK wiring, Google-only account and explicit profile-preference contracts; not real Google OAuth, real users, real products, full browser interaction, or complete device journeys"
+  },
+  "server": {
+    "source_commit": "6349c77",
+    "full_run": "latest_main_success",
+    "status": "partial_user_sync_schema_applied",
+    "expanded_status": "계정 환경설정은 공식 인증 메타데이터와 명시적 저장본 계약까지 자동 검증; 실제 OAuth 제공자는 미설정",
+    "production_database_applied": "user_sync_snapshot_only",
+    "public_api_connected": false,
+    "account_sync_schema_prepared": true,
+    "oauth_provider_configured": false
+  },
+  "browser": {
+    "status": "partial_pass",
+    "tested_widths": [360],
+    "horizontal_overflow": false,
+    "visible_controls": 40,
+    "visible_controls_below_44px": 0,
+    "manifest_linked": true,
+    "service_worker_controlled": true,
+    "official_auth_sdk_ready": true,
+    "account_configuration_boundary": "configuration_error_safe_local_storage_available",
+    "apple_login_visible": false,
+    "email_identity_visible": false,
+    "limitation": "Android Chrome remote inspection of the public release; not a real Google sign-in, account round trip, offline reload, install prompt, or real catalog journey"
+  },
+  "android": {
+    "status": "partial_pass",
+    "device_count": 1,
+    "device_alias": "user-designated A56",
+    "checks": {
+      "public_home_360px": "pass",
+      "horizontal_overflow": "pass",
+      "touch_target_sample": "pass_40_of_40",
+      "manifest": "pass",
+      "service_worker_control": "pass",
+      "official_auth_sdk": "pass",
+      "safe_unconfigured_google_state": "pass",
+      "apple_login_absent": "pass",
+      "visible_email_identity_absent": "pass",
+      "offline_reload": "not_verified_command_timeout_network_restored",
+      "barcode_camera": "not_reachable_real_catalog_blocked",
+      "pwa_install": "not_run",
+      "google_oauth": "not_run_provider_unconfigured",
+      "account_snapshot_round_trip": "not_run_provider_unconfigured"
+    },
+    "serial_recorded": false
+  },
+  "ios": {"status": "not_run"},
+  "real_users": {"status": "not_run", "count": 0},
+  "commercial": "blocked_google_oauth_operator_identity_policy_retention_real_catalog_and_complete_real_device_evidence"
+}

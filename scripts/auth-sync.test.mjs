@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
-  AUTH_STORAGE_KEY, createAuthClient, deleteSnapshot, displayNameFromUser,
+  AUTH_STORAGE_KEY, accountPreferencesFromUser, createAuthClient, deleteSnapshot, displayNameFromUser,
   initializeAuthState, readSnapshot, saveSnapshot, signInWithGoogle, signOut,
-  subscribeAuthState, updateDisplayName, validateConfig, validateSnapshot,
+  subscribeAuthState, updateAccountProfile, updateDisplayName, validateConfig, validateSnapshot,
+  normalizeAccountPreferences,
 } from '../assets/auth-sync.mjs';
 
 test('only accepts a secure Supabase endpoint and this site as redirect', () => {
@@ -53,6 +54,22 @@ test('updates an explicit display name and never exposes identity by default', a
   await updateDisplayName(client,'Beauty Fan');
   assert.deepEqual(input,{data:{display_name:'Beauty Fan'}});
   await assert.rejects(()=>updateDisplayName(client,'  '),/display_name_invalid/);
+});
+
+test('validates only supported account language and daily goals', () => {
+  assert.deepEqual(normalizeAccountPreferences({language:'ko-KR',dailyGoal:15}),{ok:true,preferences:{language:'ko-KR',dailyGoal:15}});
+  assert.equal(normalizeAccountPreferences({language:'en-US',dailyGoal:15}).ok,false);
+  assert.equal(normalizeAccountPreferences({language:'ko-KR',dailyGoal:12}).ok,false);
+});
+
+test('saves explicit profile preferences through official user metadata', async () => {
+  let input;
+  const client={auth:{updateUser:async(value)=>{input=value;return {data:{user:{user_metadata:value.data}},error:null};}},from(){}};
+  const user=await updateAccountProfile(client,{displayName:'Beauty Fan',language:'ko-KR',dailyGoal:20});
+  assert.deepEqual(input,{data:{display_name:'Beauty Fan',language:'ko-KR',daily_goal_minutes:20}});
+  assert.deepEqual(accountPreferencesFromUser(user),{displayName:'Beauty Fan',language:'ko-KR',dailyGoal:20,hasRemotePreferences:true});
+  assert.equal(accountPreferencesFromUser({user_metadata:{display_name:'Local Only'}}).hasRemotePreferences,false);
+  await assert.rejects(()=>updateAccountProfile(client,{displayName:'Beauty Fan',language:'ko-KR',dailyGoal:12}),/account_preferences_invalid/);
 });
 
 test('rejects malformed and oversized account snapshots', () => {

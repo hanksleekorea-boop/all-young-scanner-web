@@ -10,7 +10,7 @@ const required = [
   'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
   'assets/local-records.mjs', 'assets/decision-client.mjs', 'assets/auth-sync.mjs', 'assets/dompurify.min.js',
   'assets/supabase-sdk-2.112.4.js', 'assets/supabase-sdk-LICENSE.txt', 'auth-config.json',
-  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json', 'evidence-v022.json', 'evidence-v023.json', 'evidence-v024.json',
+  'evidence-v015.json', 'evidence-v016.json', 'evidence-v017.json', 'evidence-v018.json', 'evidence-v019.json', 'evidence-v020.json', 'evidence-v021.json', 'evidence-v022.json', 'evidence-v023.json', 'evidence-v024.json', 'evidence-v025.json',
 ];
 
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
@@ -32,8 +32,9 @@ assert(html.includes('<script src="./assets/supabase-sdk-2.112.4.js"></script>')
 assert(!html.includes('data:application/manifest+json'), 'data URL manifest가 남아 있음');
 assert(/const MARKET_CONTEXTS = Object\.freeze\(\{\s*KR:\{/.test(html), '한국 출시 범위 없음');
 assert(!/\n\s+(US|JP|TH|SG|AU|GB|DE|FR|CA):\{/.test(html), '지원하지 않는 국가가 선택 가능함');
-assert(html.includes("'BarcodeDetector' in window") && html.includes('navigator.mediaDevices?.getUserMedia'), '실제 카메라 바코드 경로 누락');
+assert(html.includes("'BarcodeDetector' in window") && html.includes('navigator.mediaDevices?.getUserMedia'), '보존된 카메라 모듈 안전 계약 누락');
 assert(html.includes('숫자를 직접 입력해 주세요'), '카메라 미지원 대체 경로 누락');
+assert(html.includes("else if (['quiz','candidates','compare','bridge','barcode','alternatives','card','share-preview','friend-card'].includes(state.route)) view = catalogAvailabilityView();"), '검증 전 상품·바코드 경로 상용 차단 누락');
 assert(/\.mobile-service-actions \.entry\.primary \.entry-index,[\s\S]*?color: #fff; opacity: 1;/.test(html), '모바일 핵심 버튼 글자 대비 보호 규칙 누락');
 assert(/\.mobile-curated,\.mobile-shopping-home,\.service-footer[\s\S]*?content-visibility: auto;/.test(html), '모바일 아래 영역 렌더링 지연 규칙 누락');
 assert(/\.pc-home-v2 > \.service-concerns,[\s\S]*?contain-intrinsic-size: auto 520px;/.test(html), 'PC 아래 영역 렌더링 지연 규칙 누락');
@@ -55,7 +56,7 @@ assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === r
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
-assert(readiness.pc_web.browser_evidence_scope.includes('v0.24 responsive'), '브라우저 증거 범위 누락');
+assert(readiness.pc_web.browser_evidence_scope.includes('v0.25 responsive'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
 const currentEvidence = JSON.parse(read(readiness.evidence_file));
 assert(evidence.android.status === 'partial_pass' && evidence.android.current_release === true && evidence.android.device_count === 1, '현재 Android 부분 시험 증거 누락');
@@ -63,7 +64,7 @@ assert(evidence.android.checks.offline_reload === 'pass' && evidence.android.che
 assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 기기 일련번호가 포함됨');
 assert(evidence.automatic.required_files === 16, '이전판 증거는 역사 기록으로 보존');
 assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기록 누락');
-assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 33, '현재판 증거와 검사 수 불일치');
+assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 35 && currentEvidence.automatic.account_sync_contract_tests === 9, '현재판 증거와 검사 수 불일치');
 assert(currentEvidence.server.public_api_connected === false && currentEvidence.commercial.startsWith('blocked_'), '운영 연결 상태를 자동 통과로 잘못 표시함');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
@@ -80,6 +81,8 @@ const accountModule=read('assets/auth-sync.mjs');
 assert(accountModule.includes("provider:'google'") && accountModule.includes("flowType:'pkce'") && accountModule.includes('onAuthStateChange'), '공식 Google PKCE 로그인 상태 연결 누락');
 assert(!accountModule.includes('sessionFromHash') && !accountModule.includes('refresh_token') && !accountModule.includes('ays-account-session-v01'), '수동 토큰·세션 처리가 남아 있음');
 assert(html.includes('account-preferences-form') && html.includes('하루 둘러보기 목표') && html.includes('계정 설정 저장'), '내 계정 설정 화면 누락');
+assert(accountModule.includes('updateAccountProfile') && accountModule.includes('daily_goal_minutes') && html.includes('account_preferences:state.accountPreferences'), '계정 환경설정 명시적 저장 계약 누락');
+assert(!html.includes('applyRemoteAccountPreferences'), '로그인만으로 계정 설정을 자동 복원하면 안 됨');
 assert(read('auth-config.json').includes('supabaseUrl') && privacy.includes('계정 저장본 삭제') && support.includes('계정에 저장한 기록 삭제하기'), '계정 저장 설정·삭제 안내 누락');
 assert(html.includes("dataset.apiContract = productionDecisionClient ? 'v2-ready' : 'awaiting-endpoint'"), '운영 API 연결 상태 구분 누락');
 assert(!html.includes('24개 모두 review 상태') && !html.includes('불편하면 멈추는 내부 검수용 가이드'), '사용 화면에 내부 검수 문구가 남아 있음');
