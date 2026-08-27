@@ -26,12 +26,42 @@
     "oauth_provider_configured": false
   },
   "browser": {
-    "status": "pending_v026_device_retest",
-    "limitation": "v0.26 공개 후 지정 A56 재검사 전"
+    "status": "partial_pass",
+    "tested_widths": [360],
+    "home_visible_controls": 30,
+    "account_visible_controls": 39,
+    "visible_controls_below_44px": 0,
+    "horizontal_overflow": false,
+    "manifest_linked": true,
+    "service_worker_controlled": true,
+    "official_auth_sdk_ready": true,
+    "account_configuration_boundary": "configuration_error_safe_local_storage_available",
+    "apple_login_visible": false,
+    "email_identity_visible": false,
+    "limitation": "Android Chrome remote inspection of the public v0.26 release; not a real Google sign-in, account round trip, offline reload, install prompt, or real catalog journey"
   },
   "android": {
-    "status": "pending_v026_device_retest",
-    "reason": "v0.25의 부분 통과 증거는 보존하며, v0.26 공개 후 같은 지정 A56에서 최신판을 다시 확인한다",
+    "status": "partial_pass",
+    "device_count": 1,
+    "device_alias": "user-designated A56",
+    "checks": {
+      "public_home_360px": "pass",
+      "horizontal_overflow": "pass",
+      "touch_target_sample": "pass_home_30_account_39_all_visible_controls",
+      "manifest": "pass",
+      "service_worker_control": "pass",
+      "official_auth_sdk": "pass",
+      "safe_unconfigured_google_state": "pass",
+      "apple_login_absent": "pass",
+      "visible_email_identity_absent": "pass",
+      "barcode_action_absent": "pass",
+      "synthetic_product_marker_absent": "pass",
+      "unverified_popularity_promotion_absent": "pass",
+      "offline_reload": "not_run",
+      "pwa_install": "not_run",
+      "google_oauth": "not_run_excluded_by_current_request",
+      "account_snapshot_round_trip": "not_run_google_oauth_unconfigured"
+    },
     "serial_recorded": false
   },
   "ios": {"status": "not_run"},
