@@ -34,6 +34,19 @@
     "human_editorial_signoff": "not_run",
     "rights_cleared_real_products": 0
   },
+  "stage2_foundation": {
+    "official_done": 0,
+    "official_total": 12,
+    "foundation_ready": 11,
+    "foundation_total": 12,
+    "source_commit": "4cda79eb087cd8a2c92ae199eb7404401a0a7807",
+    "node_tests": 8,
+    "operation_drills_prepared": 5,
+    "load_fixture_products": 2000,
+    "load_fixture_sellers": 5,
+    "load_fixture_reviews": 5000,
+    "limitation": "Generated load fixtures verify scale and safety only; they are not real products, approved sellers, real reviews, human editorial approval, real users, or commercial completion."
+  },
   "server": {
     "source_commit": "7be481622272ab136a113325864a62a818d11621",
     "status": "public_pages_deployed",

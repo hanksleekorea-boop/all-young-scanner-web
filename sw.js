@@ -5,7 +5,7 @@ const CORE = [
   './', './index.html', './progress.html', './offline.html',
   './privacy.html', './terms.html', './support.html', './.well-known/security.txt',
   './manifest.webmanifest', './icon.svg', './icon-192.svg', './icon-512.svg',
-  './readiness.json', './catalog-governance.json', './evidence-v013.json',
+  './readiness.json', './stage2-readiness.json', './catalog-governance.json', './evidence-v013.json',
   './guides/index.html', './content/usage-guides.json',
   './assets/local-records.mjs', './assets/local-transaction.mjs', './assets/decision-client.mjs', './assets/auth-sync.mjs', './assets/dompurify.min.js',
   './assets/supabase-sdk-2.112.4.js', './assets/supabase-sdk-LICENSE.txt', './auth-config.json',

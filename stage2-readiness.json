@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-29",
+  "stage": 2,
+  "official_status": "BLOCKED_BY_STAGE_ONE_AND_EXTERNAL_EVIDENCE",
+  "calculation": "DONE / 12 official P2 cards; foundation readiness is separate",
+  "minimums": {
+    "real_products": 2000,
+    "approved_sellers": 5,
+    "real_reviews": 5000,
+    "category_hubs": 15,
+    "concern_guides": 40,
+    "usage_routines": 60,
+    "ingredient_explainers": 150,
+    "direct_comparisons": 100
+  },
+  "current_actual": {
+    "real_products": 0,
+    "approved_sellers": 0,
+    "real_reviews": 0,
+    "human_reviewed_english": 0,
+    "stage_one_release_gate_done": false
+  },
+  "official": {"total": 12, "done": 0, "percent": 0},
+  "foundation": {"total": 12, "ready": 11, "percent": 91.7},
+  "foundation_evidence": {
+    "input_templates": 4,
+    "node_tests": 8,
+    "load_fixture_products": 2000,
+    "load_fixture_sellers": 5,
+    "load_fixture_reviews": 5000,
+    "operation_drills_prepared": 5,
+    "warning": "Load fixtures are generated test data and are never counted as real products, sellers or reviews."
+  },
+  "blockers": [
+    "P1-16 stage-one release gate",
+    "2,000 rights-approved real products",
+    "five approved sellers with price history",
+    "5,000 rights-approved real reviews",
+    "human-reviewed English information content",
+    "real Android and iOS account-alert journeys",
+    "real operators and users"
+  ]
+}

@@ -7,7 +7,7 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
 const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js',
-  'robots.txt', 'sitemap.xml', 'readiness.json', 'catalog-governance.json', 'evidence-v013.json',
+  'robots.txt', 'sitemap.xml', 'readiness.json', 'stage2-readiness.json', 'catalog-governance.json', 'evidence-v013.json',
   'guides/index.html', 'content/usage-guides.json',
   'assets/local-records.mjs', 'assets/local-transaction.mjs', 'assets/decision-client.mjs', 'assets/auth-sync.mjs', 'assets/dompurify.min.js',
   'assets/supabase-sdk-2.112.4.js', 'assets/supabase-sdk-LICENSE.txt', 'auth-config.json',
@@ -20,6 +20,7 @@ const html = read('index.html');
 const sw = read('sw.js');
 const manifest = JSON.parse(read('manifest.webmanifest'));
 const readiness = JSON.parse(read('readiness.json'));
+const stage2 = JSON.parse(read('stage2-readiness.json'));
 const governance = JSON.parse(read('catalog-governance.json'));
 const progress = read('progress.html');
 const privacy = read('privacy.html');
@@ -58,6 +59,12 @@ assert(governance.synthetic_products.public_as_real_product === false, '합성 �
 assert(readiness.stage_one.total === 26 && readiness.stage_one.done.length === readiness.stage_one.passed && new Set(readiness.stage_one.done).size === readiness.stage_one.passed, 'v3 완료율 분모 오류');
 assert(readiness.stage_one.passed+readiness.stage_one.in_progress+readiness.stage_one.verifying+readiness.stage_one.blocked===26, 'v3 상태 합계 오류');
 assert(readiness.stage_one.percent === Math.round(readiness.stage_one.passed/readiness.stage_one.total*1000)/10, '진척률 산식 오류');
+assert(stage2.official.total === 12 && stage2.official.done === 0 && stage2.official.percent === 0, '2단계 공식 완료율 오류');
+assert(stage2.foundation.total === 12 && stage2.foundation.ready === 11 && stage2.foundation.percent === 91.7, '2단계 기반 준비율 오류');
+assert(readiness.stage_two.total === stage2.official.total && readiness.stage_two.done === stage2.official.done && readiness.stage_two.percent === stage2.official.percent, '2단계 공식 현황 대조 실패');
+assert(readiness.stage_two.foundation_ready === stage2.foundation.ready && readiness.stage_two.foundation_percent === stage2.foundation.percent, '2단계 기반 현황 대조 실패');
+assert(stage2.current_actual.real_products === 0 && stage2.current_actual.approved_sellers === 0 && stage2.current_actual.real_reviews === 0 && stage2.current_actual.human_reviewed_english === 0, '시험값이 2단계 실자료로 계산됨');
+assert(stage2.foundation_evidence.node_tests === 8 && stage2.foundation_evidence.warning.includes('generated test data'), '2단계 시험 증거 경계 누락');
 assert(readiness.commercial.claim === 'blocked', '외부 조건 없이 상용 완료 주장');
 assert(readiness.pc_web.browser_evidence_scope.includes('v0.27 automatic static content'), '브라우저 증거 범위 누락');
 const evidence = JSON.parse(read('evidence-v013.json'));
@@ -68,6 +75,8 @@ assert(!read('evidence-v013.json').includes('R5CY32TNJFM'), '공개 증거에 �
 assert(evidence.automatic.required_files === 16, '이전판 증거는 역사 기록으로 보존');
 assert(existsSync(resolve(root,readiness.evidence_file)), '현재판 검사 기록 누락');
 assert(currentEvidence.release_id === readiness.release_id && currentEvidence.automatic.public_tests === 45 && currentEvidence.automatic.account_sync_contract_tests === 9 && currentEvidence.automatic.local_transaction_tests === 3 && currentEvidence.automatic.content_page_tests === 6, '현재판 증거와 검사 수 불일치');
+assert(currentEvidence.stage2_foundation.official_done === 0 && currentEvidence.stage2_foundation.foundation_ready === 11 && currentEvidence.stage2_foundation.node_tests === 8, '2단계 소스 증거 대조 실패');
+assert(currentEvidence.stage2_foundation.source_commit === '4cda79eb087cd8a2c92ae199eb7404401a0a7807' && currentEvidence.stage2_foundation.limitation.includes('not real products'), '2단계 소스 커밋 또는 시험값 한계 누락');
 assert(currentEvidence.server.public_api_connected === false && currentEvidence.commercial.startsWith('blocked_'), '운영 연결 상태를 자동 통과로 잘못 표시함');
 assert(evidence.automatic.lighthouse.mobile.accessibility === 100 && evidence.automatic.lighthouse.desktop.accessibility === 100, '현재 공개판 접근성 측정 증거 누락');
 assert(evidence.automatic.lighthouse.limitation.includes('not Android'), '자동 측정과 실기기 증거 경계 누락');
@@ -75,6 +84,8 @@ assert(!progress.includes('<strong>95%</strong>') && !progress.includes('A56 격
 assert(progress.includes('noindex,nofollow'), '운영 대시보드 검색·링크 추적 차단 누락');
 assert(!sitemap.includes('progress.html'), '운영 대시보드가 소비자 sitemap에 포함됨');
 assert(progress.includes(`${readiness.stage_one.passed} / 26 DONE`) && progress.includes(`${readiness.stage_one.percent.toFixed(1)}%`) && progress.includes('미실시'), '현재 v3 분모 또는 증거 경계 오류');
+assert(progress.includes('2단계 공식 완료율') && progress.includes('0 / 12 DONE') && progress.includes('11 / 12 기반 준비'), '2단계 공식·기반 현황 표시 누락');
+assert(!progress.includes('2단계 상용화 91.7%') && !progress.includes('2단계 완료 91.7%'), '기반 준비율을 2단계 상용 완료로 표시함');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href) && !isGuidePage) return'), '다른 앱 임시 저장·API 응답 보호 누락');
 assert(html.includes("import * as recordStore from './assets/local-records.mjs'"), '안전 기록 모듈 누락');
 assert(html.includes("import * as localTransaction from './assets/local-transaction.mjs'") && html.includes('localTransaction.writeJsonTransaction') && html.includes('recordStore.saveRecords(localStorage,decisionSnapshot,next.decisions,{replace:true})'), '계정 저장본 되돌리기 안전 계약 누락');
