@@ -35,8 +35,13 @@
     "rights_cleared_real_products": 0
   },
   "server": {
-    "source_commit": "pending_release_commit",
-    "status": "static_content_release_ready",
+    "source_commit": "7be481622272ab136a113325864a62a818d11621",
+    "status": "public_pages_deployed",
+    "pages_deployment": "success",
+    "public_service_workflow": "success",
+    "codeql": "success",
+    "live_http_verification": "pass",
+    "live_http_checked": ["index.html", "progress.html", "offline.html", "privacy.html", "terms.html", "support.html", "manifest.webmanifest", "readiness.json", "catalog-governance.json", "guides/", "guides/morning-three-step-start/", "content/usage-guides.json"],
     "production_database_applied": "user_sync_snapshot_only",
     "public_api_connected": false,
     "account_sync_schema_prepared": true,
