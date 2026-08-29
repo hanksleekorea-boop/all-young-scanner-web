@@ -45,6 +45,11 @@ test('valid online core response is cached within this release only',async()=>{
   const h=harness();assert.equal(await (await h.request('index.html')).text(),'network');
   assert.deepEqual(h.writes,[scope+'index.html']);assert.ok(h.storage.has('unrelated-app'));
 });
+test('public guide pages are cached on first visit without opening the API boundary',async()=>{
+  const h=harness();assert.equal(await (await h.request('guides/morning-three-step-start/')).text(),'network');
+  assert.deepEqual(h.writes,[scope+'guides/morning-three-step-start/']);
+  assert.equal(await h.request('guides/morning-three-step-start/?private=1'),null);
+});
 test('cache quota failure does not discard a successful network response',async()=>{
   const h=harness({quota:true});assert.equal(await (await h.request('index.html')).text(),'network');
 });

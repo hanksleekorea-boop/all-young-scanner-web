@@ -6,8 +6,11 @@ const types={'.html':'text/html; charset=utf-8','.mjs':'text/javascript; charset
 const server=createServer(async(req,res)=>{
   try {
     const path=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
-    if(!/^\/(?:[a-zA-Z0-9_-]+\.(?:html|json|js|svg|png|webmanifest|txt|xml)|assets\/[a-zA-Z0-9_.-]+)?$/.test(path)){res.writeHead(404);res.end();return;}
-    const file=path==='/'?'index.html':path.slice(1);
+    let file;
+    if(path==='/')file='index.html';
+    else if(/^\/guides\/(?:[a-z0-9-]+\/)?$/.test(path))file=`${path.slice(1)}index.html`;
+    else if(/^\/(?:[a-zA-Z0-9_-]+\.(?:html|json|js|svg|png|webmanifest|txt|xml)|(?:assets|content)\/[a-zA-Z0-9_.-]+)$/.test(path))file=path.slice(1);
+    else {res.writeHead(404);res.end();return;}
     const body=await readFile(resolve(root,file));
     res.writeHead(200,{'Content-Type':types[extname(file)]||'text/plain','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(body);
   }catch{res.writeHead(404);res.end();}

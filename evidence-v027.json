@@ -1,0 +1,63 @@
+{
+  "release_id": "2026-08-29-service-v0.27",
+  "verified_at": "2026-08-29",
+  "automatic": {
+    "public_tests": 45,
+    "local_record_tests": 16,
+    "local_transaction_tests": 3,
+    "service_worker_isolation_tests": 7,
+    "decision_client_contract_tests": 4,
+    "account_sync_contract_tests": 9,
+    "content_page_tests": 6,
+    "automated_layout_views": 6,
+    "automated_layout_widths": [360, 390, 1440],
+    "automated_layout_horizontal_overflow": 0,
+    "automated_layout_clipped_controls": 0,
+    "published_usage_guides": 24,
+    "connected_content_sources": 7,
+    "sitemap_urls": 29,
+    "dom_output_sanitizer": "DOMPurify 3.4.14",
+    "dependency_vulnerabilities": 0,
+    "decision_core_persona_cases": 1000,
+    "critical_persona_defects": 0,
+    "limitation": "Static content completeness, source linkage, local storage, service worker isolation and client contracts; not real users, real products, human editorial sign-off, complete browser interaction, or a current-release device journey"
+  },
+  "content": {
+    "status": "automatic_complete_for_published_usage_guide_set",
+    "guides": 24,
+    "sources": 7,
+    "reviewed_at": "2026-08-29",
+    "review_due_at": "2027-02-25",
+    "independent_pages": 24,
+    "searchable_index": true,
+    "machine_readable_export": true,
+    "human_editorial_signoff": "not_run",
+    "rights_cleared_real_products": 0
+  },
+  "server": {
+    "source_commit": "pending_release_commit",
+    "status": "static_content_release_ready",
+    "production_database_applied": "user_sync_snapshot_only",
+    "public_api_connected": false,
+    "account_sync_schema_prepared": true,
+    "oauth_provider_configured": false
+  },
+  "browser": {
+    "status": "local_automated_pass",
+    "tested_widths": [360, 390, 1440],
+    "tested_views": 6,
+    "horizontal_overflow": false,
+    "clipped_controls": 0,
+    "previous_release": "2026-08-27-service-v0.26",
+    "limitation": "Local automated Edge rendering of the guide index and one representative detail page; not a deployed public-browser journey or manual assistive-technology review."
+  },
+  "android": {
+    "status": "not_run_current_release",
+    "device_count": 0,
+    "previous_release": "2026-08-27-service-v0.26",
+    "serial_recorded": false
+  },
+  "ios": {"status": "not_run"},
+  "real_users": {"status": "not_run", "count": 0},
+  "commercial": "blocked_operator_identity_human_support_real_catalog_rights_approved_sellers_production_api_and_complete_real_device_evidence"
+}

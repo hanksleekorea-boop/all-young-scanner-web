@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-27-service-v0.26",
-  "updated_at": "2026-08-27",
+  "release_id": "2026-08-29-service-v0.27",
+  "updated_at": "2026-08-29",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
   "scope": "KR/ko-KR/KRW",
@@ -32,13 +32,13 @@
   },
   "mobile": {
     "claim": "not_99",
-    "current_release_device_test": "partial_pass",
-    "reason": "지정 A56 한 대에서 공개 v0.26 홈 360px·가로 넘침 없음·홈 30개와 계정 39개 보이는 조작부의 터치 크기·manifest·서비스 워커·공식 SDK·Apple·이메일형 식별정보·바코드·합성 상품/인기/기획전 문구 미노출·Google 설정 대기 안전 상태를 확인; 오프라인·설치·로그인·백업 왕복은 미실시",
+    "current_release_device_test": "not_run",
+    "reason": "v0.27 자동 검사는 통과했으나 현재판 실제 기기 시험은 공개 후 별도 확인이 필요함; v0.26 지정 A56 한 대의 360px·가로 넘침·터치 크기·manifest·서비스 워커 확인은 역사 증거로만 보존",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.26 responsive service routes, sanitized DOM output, official SDK Google-only account state and configuration boundary, explicit account preference and rollback-safe restore contract, policy links, general issue intake, private vulnerability intake and document CSP; real Google login and real catalog journey not run",
+    "browser_evidence_scope": "v0.27 automatic static content, metadata, source linkage, PWA cache boundary, sanitized DOM output and local Edge rendering of guide index/detail at 360/390/1440px with zero horizontal overflow or clipped controls; deployed live journey, real login and real catalog journey not run",
     "tested_widths": [
       360,
       390,
@@ -57,7 +57,15 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
-  "evidence_file": "evidence-v026.json",
+  "content": {
+    "published_usage_guides": 24,
+    "connected_sources": 7,
+    "searchable_guide_index": true,
+    "independent_guide_pages": 24,
+    "human_editorial_signoff": "not_run",
+    "rights_cleared_real_products": 0
+  },
+  "evidence_file": "evidence-v027.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",
