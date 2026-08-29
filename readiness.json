@@ -60,13 +60,13 @@
   "free_advanced": {
     "status_file": "free-advanced-readiness.json",
     "code_total": 16,
-    "code_live": 0,
-    "code_verified": 15,
-    "code_percent": 93.8,
+    "code_live": 16,
+    "code_verified": 16,
+    "code_percent": 100,
     "operations_total": 4,
     "operations_done": 0,
     "operations_percent": 0,
-    "claim": "code_verified_awaiting_live"
+    "claim": "code_complete_operations_blocked"
   },
   "content": {
     "published_usage_guides": 24,

@@ -22,7 +22,18 @@
     "journey":"routine_to_save_to_checkin_to_delete_pass",
     "limitation":"Local automated Edge; not a current-release Android or iOS device test."
   },
-  "server": {"status":"pending_deployment","public_http":"pending","codeql":"pending"},
+  "server": {
+    "status":"deployed",
+    "source_commit":"7285a80742b11c207a88bb47b58ae689a354eeef",
+    "verification_fix_commit":"83cd960e2d8f0a7b35c4ca9d3244a335f9270fcd",
+    "pages_run":33256821982,
+    "pages":"success",
+    "codeql_run":33256822446,
+    "codeql":"success",
+    "public_verify_run":33256911440,
+    "public_verify":"success",
+    "public_http":"pass_10_paths"
+  },
   "android": {"status":"not_run","device_count":0},
   "ios": {"status":"not_run","device_count":0},
   "human_editorial_signoff": "not_run",
