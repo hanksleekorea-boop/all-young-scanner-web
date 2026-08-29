@@ -1,7 +1,21 @@
 const base = process.env.AYS_PUBLIC_BASE ?? 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
+const expectedRelease = '2026-08-29-service-v0.28';
 const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'evidence-v028.json'];
 const results = [];
+
+for (let attempt = 0; attempt < 20; attempt += 1) {
+  try {
+    const [readinessResponse, freeResponse] = await Promise.all([
+      fetch(new URL('readiness.json', base), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
+      fetch(new URL('free-advanced-readiness.json', base), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
+    ]);
+    const [candidateReadiness, candidateFree] = await Promise.all([readinessResponse.json(), freeResponse.json()]);
+    if (readinessResponse.ok && freeResponse.ok && candidateReadiness.release_id === expectedRelease && candidateFree.release_id === expectedRelease) break;
+  } catch { /* Pages may still be publishing the new release. */ }
+  if (attempt === 19) throw new Error(`공개 주소가 ${expectedRelease}로 갱신되지 않음`);
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+}
 
 for (const path of paths) {
   const url = new URL(path, base);
