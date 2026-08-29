@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-29-service-v0.27",
+  "release_id": "2026-08-29-service-v0.28",
   "updated_at": "2026-08-29",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
@@ -57,6 +57,17 @@
     "server_cors_tests": 2,
     "production_endpoint_connected": false
   },
+  "free_advanced": {
+    "status_file": "free-advanced-readiness.json",
+    "code_total": 16,
+    "code_live": 0,
+    "code_verified": 15,
+    "code_percent": 93.8,
+    "operations_total": 4,
+    "operations_done": 0,
+    "operations_percent": 0,
+    "claim": "code_verified_awaiting_live"
+  },
   "content": {
     "published_usage_guides": 24,
     "connected_sources": 7,
@@ -75,7 +86,7 @@
     "claim": "blocked",
     "reason": "1단계 출시 관문, 실상품 2,000개, 판매처 5곳, 실제 후기 5,000건, 영어 사람 검토, 실기기·실사용자·운영 증거가 없음"
   },
-  "evidence_file": "evidence-v027.json",
+  "evidence_file": "evidence-v028.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

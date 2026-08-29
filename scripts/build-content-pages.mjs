@@ -14,12 +14,8 @@ const escapeHtml = (value = '') => String(value)
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#39;');
 
-const html = await readFile(path.join(root, 'index.html'), 'utf8');
-const startMarker = '<script id="usage-content" type="application/json">';
-const start = html.indexOf(startMarker);
-const end = html.indexOf('</script>', start + startMarker.length);
-if (start < 0 || end < 0) throw new Error('index.html에서 usage-content를 찾지 못했습니다.');
-const usage = JSON.parse(html.slice(start + startMarker.length, end));
+const currentContent = JSON.parse(await readFile(path.join(root, 'content', 'usage-guides.json'), 'utf8'));
+const usage = { sources: currentContent.sources, cards: currentContent.guides };
 
 if (!Array.isArray(usage.sources) || usage.sources.length < 7) throw new Error('출처가 7개보다 적습니다.');
 if (!Array.isArray(usage.cards) || usage.cards.length !== 24) throw new Error('공개 사용 가이드는 정확히 24개여야 합니다.');

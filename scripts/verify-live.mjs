@@ -1,6 +1,6 @@
 const base = process.env.AYS_PUBLIC_BASE ?? 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
-const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'manifest.webmanifest', 'readiness.json', 'catalog-governance.json'];
+const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'evidence-v028.json'];
 const results = [];
 
 for (const path of paths) {
@@ -15,13 +15,14 @@ for (const path of paths) {
 
 const index = await (await fetch(base, { signal: AbortSignal.timeout(15_000) })).text();
 const readiness = await (await fetch(new URL('readiness.json', base), { signal: AbortSignal.timeout(15_000) })).json();
-const governance = await (await fetch(new URL('catalog-governance.json', base), { signal: AbortSignal.timeout(15_000) })).json();
+const free = await (await fetch(new URL('free-advanced-readiness.json', base), { signal: AbortSignal.timeout(15_000) })).json();
 const headers = await fetch(base, { method: 'HEAD', signal: AbortSignal.timeout(15_000) });
 
 assert(index.includes('올영스캐너') && !/ShoppingScanner|쇼핑스캐너/.test(index), '다른 제품 또는 옛 이름이 공개됨');
-assert(index.includes(`const RELEASE_VERSION = '${readiness.release_id}'`), '공개 HTML과 readiness 릴리스가 다름');
+assert(index.includes('무료 · 로그인 없이 · 기기 안 저장') && index.includes('free-advanced-bootstrap.mjs'), '무료 고급 현재판 홈이 공개되지 않음');
+assert(readiness.release_id === free.release_id && free.code.total === 16, '공개 HTML과 readiness 릴리스가 다름');
 assert(readiness.commercial?.claim === 'blocked', '외부 조건 없이 상용 완료를 주장함');
-assert(governance.commercial_catalog_connected === false && governance.public_real_product_count === 0, '실상품 연결 상태가 거짓임');
+assert(free.operations.done === 0, '외부 운영 증거 없이 완료를 주장함');
 assert(Boolean(headers.headers.get('strict-transport-security')), '공개 호스트 HSTS 누락');
 
 console.log(JSON.stringify({

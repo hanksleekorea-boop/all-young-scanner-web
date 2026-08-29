@@ -1,0 +1,31 @@
+{
+  "release_id": "2026-08-29-service-v0.28",
+  "verified_at": "2026-08-29",
+  "product": "advanced free content, routine and local record PWA",
+  "automatic": {
+    "free_advanced_unit_tests": 8,
+    "service_worker_tests": 7,
+    "content_page_tests": 6,
+    "published_usage_guides": 24,
+    "connected_content_sources": 7,
+    "layout_widths": [360, 390, 1440],
+    "external_scripts": 0,
+    "account_required": false,
+    "server_side_personal_data": false
+  },
+  "browser": {
+    "status":"local_automated_pass",
+    "views":11,
+    "widths":[360,390,1440],
+    "horizontal_overflow":0,
+    "small_or_clipped_controls":0,
+    "journey":"routine_to_save_to_checkin_to_delete_pass",
+    "limitation":"Local automated Edge; not a current-release Android or iOS device test."
+  },
+  "server": {"status":"pending_deployment","public_http":"pending","codeql":"pending"},
+  "android": {"status":"not_run","device_count":0},
+  "ios": {"status":"not_run","device_count":0},
+  "human_editorial_signoff": "not_run",
+  "operator_identity": "not_confirmed",
+  "commercial_operation": "blocked_external_evidence"
+}

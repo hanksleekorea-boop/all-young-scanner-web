@@ -2,23 +2,24 @@
   "id": "/all-young-scanner-web/",
   "name": "올영스캐너",
   "short_name": "올영스캐너",
-  "description": "고르기 전에 이유와 확인할 점을 함께 비교하는 뷰티 결정 서비스",
+  "description": "출처가 연결된 K-뷰티 사용 가이드로 내 루틴을 만들고 기기에 기록하는 무료 독립 정보 서비스",
   "lang": "ko-KR",
   "dir": "ltr",
-  "start_url": "./?source=pwa",
+  "start_url": "./#home",
   "scope": "./",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "any",
-  "background_color": "#f8f7f1",
-  "theme_color": "#123f34",
-  "categories": ["shopping", "lifestyle", "beauty"],
+  "background_color": "#fbf8fa",
+  "theme_color": "#8f2856",
+  "categories": ["lifestyle", "beauty", "education"],
   "icons": [
     { "src": "icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
     { "src": "icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
   ],
   "shortcuts": [
-    { "name": "제품 찾기", "short_name": "찾기", "url": "./#find" },
-    { "name": "내 결정", "short_name": "내 결정", "url": "./#library" }
+    { "name": "내 루틴 만들기", "short_name": "내 루틴", "url": "./#routine" },
+    { "name": "사용 가이드", "short_name": "가이드", "url": "./#guides" },
+    { "name": "내 기록", "short_name": "내 기록", "url": "./#records" }
   ]
 }
