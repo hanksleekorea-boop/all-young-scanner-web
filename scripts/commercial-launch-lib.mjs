@@ -23,7 +23,7 @@ function scanSecrets(value, path = '$', failures = []) {
 export function evaluateCommercialLaunch(input = {}) {
   const structuralFailures = scanSecrets(input);
   if (input.schema_version !== 1) structuralFailures.push('schema_version must be 1');
-  if (input.release_id !== '2026-08-30-service-v0.32') structuralFailures.push('release_id must match the current public release');
+  if (input.release_id !== '2026-08-30-service-v0.33') structuralFailures.push('release_id must match the current public release');
   const ads = input.adsense || {};
   const slots = ads.slot_ids || {};
   const approverNames = [...new Set((input.approvers?.names || []).map((name) => String(name).trim()).filter(Boolean))];

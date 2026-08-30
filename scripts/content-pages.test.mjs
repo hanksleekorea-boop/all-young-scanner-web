@@ -45,17 +45,20 @@ test('각 상세 페이지에는 검색 메타데이터·검토일·안전 경�
     const page = await readFile(path.join(root, 'guides', guide.slug, 'index.html'), 'utf8');
     assert.ok(page.includes(`<link rel="canonical" href="https://hanksleekorea-boop.github.io/all-young-scanner-web/guides/${guide.slug}/">`));
     assert.ok(page.includes('<meta name="description"'));
-    assert.ok(page.includes('최근 검토 2026-08-29'));
-    assert.ok(page.includes('다음 검토 2027-02-25'));
+    assert.ok(page.includes('최근 검토 2026-08-30'));
+    assert.ok(page.includes('다음 검토 2027-02-26'));
     assert.ok(page.includes('의료 진단이나 치료'));
     assert.ok(page.includes('data-ad-slot="guide-detail-context"'));
     assert.ok(page.includes('data-page-kind="guide-detail"'));
+    assert.ok(page.includes('함께 읽기'));
+    assert.ok(page.includes('application/ld+json'));
   }
 });
 
-test('사이트맵은 앱·정책·가이드 목록·24개 상세 페이지를 모두 포함한다', () => {
-  assert.equal((sitemap.match(/<url>/g) || []).length, 33);
+test('사이트맵은 앱·영문·정책·가이드 목록·24개 상세 페이지를 모두 포함한다', () => {
+  assert.equal((sitemap.match(/<url>/g) || []).length, 34);
   assert.ok(sitemap.includes('/guides/'));
+  assert.ok(sitemap.includes('/en/'));
   for (const page of ['about.html', 'cookies.html', 'advertising.html', 'privacy-choices.html']) assert.ok(sitemap.includes(`/${page}`));
   for (const guide of content.guides) assert.ok(sitemap.includes(`/guides/${guide.slug}/`));
 });

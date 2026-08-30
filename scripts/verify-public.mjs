@@ -7,8 +7,8 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
 const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js', 'robots.txt', 'sitemap.xml',
-  'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'stage2-readiness.json', 'catalog-governance.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'commercial-launch-readiness.json', 'commercial-launch-evidence.json', 'commercial-launch-evidence.template.json', 'evidence-v032.json',
-  'guides/index.html', 'content/usage-guides.json', 'assets/free-advanced-app.mjs', 'assets/free-advanced-bootstrap.mjs', 'assets/ad-policy.mjs', 'assets/consent-gate.mjs', 'assets/ad-router.mjs', 'assets/ad-metrics.mjs', 'assets/ad-optimizer.mjs', 'assets/ad-loader.mjs', 'assets/ad-stage1.css', 'assets/privacy-choices-page.mjs', 'assets/ad-operations-page.mjs', 'assets/ad-governance-page.mjs',
+  'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'stage2-readiness.json', 'catalog-governance.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'commercial-launch-readiness.json', 'commercial-launch-evidence.json', 'commercial-launch-evidence.template.json', 'evidence-v033.json',
+  'guides/index.html', 'en/index.html', 'content/usage-guides.json', 'content/usage-guides.en.json', 'assets/free-advanced-app.mjs', 'assets/free-advanced-bootstrap.mjs', 'assets/ad-policy.mjs', 'assets/consent-gate.mjs', 'assets/ad-router.mjs', 'assets/ad-metrics.mjs', 'assets/ad-optimizer.mjs', 'assets/ad-loader.mjs', 'assets/ad-stage1.css', 'assets/privacy-choices-page.mjs', 'assets/ad-operations-page.mjs', 'assets/ad-governance-page.mjs',
 ];
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
 
@@ -23,6 +23,8 @@ const plus = JSON.parse(read(readiness.plus_no_payment.status_file));
 const evidence = JSON.parse(read(readiness.evidence_file));
 const content = JSON.parse(read('content/usage-guides.json'));
 const guideIndex = read('guides/index.html');
+const englishIndex = read('en/index.html');
+const englishContent = JSON.parse(read('content/usage-guides.en.json'));
 const progress = read('progress.html');
 const privacy = read('privacy.html');
 const terms = read('terms.html');
@@ -56,17 +58,18 @@ assert(['selectRoutineSlugs', 'filterGuides', 'upsertCheckin', 'makeBackup', 'pa
 assert(html.includes('결제 없이 전체 공개') && !/stripe|checkout|paymentIntent|subscription/i.test(app) && !/₩|구매하기/.test(html), '결제 제외·무료 권리 경계 오류');
 assert(bootstrap.includes('serviceWorker.register') && bootstrap.includes('mountFreeAdvancedApp'), '앱 시작 또는 서비스 워커 등록 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.start_url === './#home' && manifest.shortcuts.length === 3, '무료 고급 PWA 정보 불일치');
-assert(sw.includes("const RELEASE_VERSION = '2026-08-30-service-v0.32'") && readiness.release_id === '2026-08-30-service-v0.32', '공개 판번호 불일치');
+assert(sw.includes("const RELEASE_VERSION = '2026-08-30-service-v0.33'") && readiness.release_id === '2026-08-30-service-v0.33', '공개 판번호 불일치');
 assert(required.filter((path) => !['robots.txt', 'sitemap.xml', '.nojekyll', 'sw.js', 'commercial-launch-evidence.template.json'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['progress.html'].includes(path)), '오프라인 핵심 파일 누락');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href) && !isGuidePage) return'), '다른 앱·API 임시 저장 보호 누락');
 assert(content.counts.guides === 24 && content.counts.sources === 7 && content.guides.every((guide) => guide.steps.length > 0 && guide.source_refs.length > 0), '완결 콘텐츠 수 또는 출처 연결 오류');
-assert((guideIndex.match(/class="guide-card"/g) || []).length === 24 && (sitemap.match(/<url>/g) || []).length === 33, '가이드 목록 또는 사이트맵 수 불일치');
+assert((guideIndex.match(/class="guide-card"/g) || []).length === 24 && (englishIndex.match(/class="guide-card"/g) || []).length === 24 && (sitemap.match(/<url>/g) || []).length === 34, '한국어·영문 가이드 목록 또는 사이트맵 수 불일치');
+assert(englishContent.status === 'ai_draft_human_review_pending' && englishContent.reviewed_by_human === false && englishContent.guides.length === 24 && englishIndex.includes('not operated, sponsored, or endorsed by Olive Young or another retailer'), '영문 탐색 초안 또는 독립성 경계 오류');
 assert(free.code.total === 16 && free.code.verified === 16 && free.code.percent === 100 && free.code.cards.every((card) => ['VERIFIED','LIVE'].includes(card.status)), '무료 고급 코드 16/16 검증 상태 오류');
 assert(free.operations.total === 4 && free.operations.done === 0 && free.operations.cards.every((card) => card.status === 'BLOCKED_EXTERNAL'), '외부 운영 증거를 자동 완료함');
 assert(readiness.free_advanced.code_verified === free.code.verified && readiness.free_advanced.code_live === free.code.live && readiness.free_advanced.code_percent === free.code.percent, '전체 진척과 무료 고급 현황 대조 실패');
 assert(plus.code.total === 12 && plus.code.verified === 12 && plus.code.percent === 100 && plus.payment.included === false && plus.payment.checkout_paths === 0 && plus.code.cards.every((card) => ['VERIFIED','LIVE'].includes(card.status)), '결제 제외 Plus 코드 12/12 상태 오류');
 assert(readiness.plus_no_payment.code_verified === plus.code.verified && readiness.plus_no_payment.code_live === plus.code.live && readiness.plus_no_payment.payment_included === false, '전체 진척과 Plus 현황 대조 실패');
-assert(evidence.release_id === readiness.release_id && evidence.automatic.total_tests === 86 && evidence.automatic.commercial_launch_gate_tests === 5 && evidence.automatic.android_device_selection_tests === 3 && evidence.automatic.free_advanced_unit_tests === 8 && evidence.automatic.plus_unit_tests === 14 && evidence.automatic.virtual_personas === 1000 && evidence.automatic.ad_safety_personas === 1000 && evidence.automatic.ad_stage2_regional_personas === 2000 && evidence.automatic.ad_stage3_advanced_scenarios === 20000 && evidence.automatic.account_required === false, '현재판 자동 증거 불일치');
+assert(evidence.release_id === readiness.release_id && evidence.automatic.total_tests === 97 && evidence.automatic.link_audit_tests === 2 && evidence.automatic.publisher_quality_tests === 5 && evidence.automatic.cmp_signal_harness_tests === 4 && evidence.automatic.commercial_launch_gate_tests === 5 && evidence.automatic.android_device_selection_tests === 3 && evidence.automatic.free_advanced_unit_tests === 8 && evidence.automatic.plus_unit_tests === 14 && evidence.automatic.virtual_personas === 1000 && evidence.automatic.ad_safety_personas === 1000 && evidence.automatic.ad_stage2_regional_personas === 2000 && evidence.automatic.ad_stage3_advanced_scenarios === 20000 && evidence.automatic.account_required === false, '현재판 자동 증거 불일치');
 assert(['pending','success'].includes(evidence.server.pages) && ['pending','success'].includes(evidence.server.codeql) && ['pending','success'].includes(evidence.server.public_verify), '현재판 공개 증거 상태 오류');
 assert(privacy.includes('계정 로그인·분석 추적·서버 기록 저장을 제공하지 않으며') && privacy.includes('이름·이메일·전화번호·생년월일·자유서술은 받지 않습니다'), '현재 개인정보 처리 상태 누락');
 assert(terms.includes('송출 중인 외부 광고') && terms.includes('제품 추천·실시간 가격·평점·인기 순위를 제공하지 않습니다'), '현재 무료판 수익·상품 경계 누락');

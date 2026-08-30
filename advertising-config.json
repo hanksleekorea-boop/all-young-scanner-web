@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "release_id": "2026-08-30-service-v0.32",
+  "release_id": "2026-08-30-service-v0.33",
   "provider": "google-adsense",
   "enabled": false,
   "publisher_id": "ca-pub-2476023536699107",

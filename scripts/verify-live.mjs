@@ -1,7 +1,7 @@
 const base = process.env.AYS_PUBLIC_BASE ?? 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
-const expectedRelease = '2026-08-30-service-v0.32';
-const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'commercial-launch-readiness.json', 'commercial-launch-evidence.json', 'evidence-v032.json'];
+const expectedRelease = '2026-08-30-service-v0.33';
+const paths = ['', 'en/', 'guides/', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', 'robots.txt', 'sitemap.xml', 'manifest.webmanifest', 'content/usage-guides.en.json', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'commercial-launch-readiness.json', 'commercial-launch-evidence.json', 'evidence-v033.json'];
 const results = [];
 const freshUrl = (path = '') => { const url = new URL(path, base); url.searchParams.set('ays_verify', `${Date.now()}-${Math.random()}`); return url; };
 

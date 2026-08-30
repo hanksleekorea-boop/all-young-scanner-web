@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-30-service-v0.32",
+  "release_id": "2026-08-30-service-v0.33",
   "updated_at": "2026-08-30",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
@@ -33,12 +33,12 @@
   "mobile": {
     "claim": "previous_android_verified_current_release_not_run_ios_not_run",
     "current_release_device_test": "not_run",
-    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.32 광고 3단계판은 실기기 재시험 미실시; iOS 기기는 없음",
+    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.33 글로벌 품질판은 실기기 재시험 미실시; iOS 기기는 없음",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "live_verified",
-    "browser_evidence_scope": "v0.32 local Edge rendered 15 views at 360/390/640(200% reflow)/1440px with zero horizontal overflow, clipped or unnamed controls or external ad network requests; first Tab skip link, reduced motion, free, Plus, advertising transparency and supply-chain journeys pass; public live and device evidence remain separate",
+    "browser_evidence_scope": "v0.33 local Edge rendered 17 views including English at 360/390/640(200% reflow)/1440px with zero horizontal overflow, clipped or unnamed controls or external ad network requests; first Tab skip link, reduced motion, free, Plus, advertising transparency and supply-chain journeys pass; public live and device evidence remain separate",
     "tested_widths": [
       360,
       390,
@@ -140,7 +140,7 @@
     "claim": "blocked",
     "reason": "1단계 출시 관문, 실상품 2,000개, 판매처 5곳, 실제 후기 5,000건, 영어 사람 검토, 실기기·실사용자·운영 증거가 없음"
   },
-  "evidence_file": "evidence-v032.json",
+  "evidence_file": "evidence-v033.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

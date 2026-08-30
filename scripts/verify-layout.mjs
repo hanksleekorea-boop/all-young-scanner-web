@@ -48,11 +48,18 @@ async function ready(send) {
 }
 
 async function inspect(send, width, url) {
+  const targetUrl = new URL(url);
+  const isAppView = targetUrl.pathname === '/' && Boolean(targetUrl.hash);
   await send('Emulation.setDeviceMetricsOverride', { width, height: width < 700 ? 844 : 1000, deviceScaleFactor: 1, mobile: width < 700 });
   await send('Page.navigate', { url });
   await ready(send);
+  for (let i = 0; i < 100; i += 1) {
+    const location = await send('Runtime.evaluate', { expression: '({pathname:location.pathname,hash:location.hash})', returnByValue: true });
+    if (location.result.value.pathname === targetUrl.pathname && location.result.value.hash === targetUrl.hash) break;
+    await wait(50);
+  }
   await wait(120);
-  if (!url.includes('/guides/')) {
+  if (isAppView) {
     for (let i = 0; i < 100; i += 1) {
       const app = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.appReady === 'true'", returnByValue: true });
       if (app.result.value) break;
@@ -67,6 +74,7 @@ async function inspect(send, width, url) {
   const result = await send('Runtime.evaluate', {
     expression: `(() => ({
       title: document.title,
+      lang: document.documentElement.lang,
       innerWidth: window.innerWidth,
       scrollWidth: document.documentElement.scrollWidth,
       h1: document.querySelector('h1')?.textContent?.trim() || '',
@@ -77,6 +85,10 @@ async function inspect(send, width, url) {
         const box=node.getBoundingClientRect(); const style=getComputedStyle(node);
         return style.display!=='none' && style.visibility!=='hidden' && box.width>0 && (box.height < 44 || box.width < 44);
       }).length,
+      smallTargetDetails: [...document.querySelectorAll('button,a,input,select')].filter((node) => {
+        const box=node.getBoundingClientRect(); const style=getComputedStyle(node);
+        return style.display!=='none' && style.visibility!=='hidden' && box.width>0 && (box.height < 44 || box.width < 44);
+      }).map((node)=>{const box=node.getBoundingClientRect();return {tag:node.tagName,text:(node.textContent||'').trim().slice(0,40),href:node.getAttribute('href')||'',width:Math.round(box.width),height:Math.round(box.height)}}),
       internalCopy: /내부 검수|개발 진척|올영스캐너 알파/.test(document.body.innerText),
       clipped: [...document.querySelectorAll('a,button,input')].filter((node) => {
         const box=node.getBoundingClientRect(); const style=getComputedStyle(node);
@@ -95,7 +107,7 @@ async function inspect(send, width, url) {
   assert.ok(value.scrollWidth <= width, `${url}: 가로 넘침 ${value.scrollWidth}/${width}`);
   assert.equal(value.clipped, 0, `${url}: 화면 밖 조작 요소 ${value.clipped}개`);
   assert.equal(value.internalCopy, false, `${url}: 내부 개발 문구 노출`);
-  if (!url.includes('/guides/')) {
+  if (isAppView) {
     assert.equal(value.appReady, 'true', `${url}: 무료 고급 앱 시작 실패`);
     assert.equal(value.visibleViews, 1, `${url}: 핵심 화면 표시 수 오류`);
     assert.equal(value.smallTargets, 0, `${url}: 44px 미만 조작 요소 ${value.smallTargets}개`);
@@ -128,6 +140,13 @@ try {
   for (const view of ['routine','guides','records','plus']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/')) });
   for (const width of [360, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/morning-three-step-start/')) });
+  const englishMobile = await inspect(send, 360, 'http://127.0.0.1:4179/en/');
+  const englishDesktop = await inspect(send, 1440, 'http://127.0.0.1:4179/en/');
+  results.push({ width: 360, ...englishMobile }, { width: 1440, ...englishDesktop });
+  assert.equal(englishMobile.lang, 'en', '영문 정보판 언어 선언 오류');
+  assert.equal(englishDesktop.lang, 'en', '영문 정보판 PC 언어 선언 오류');
+  assert.equal(englishMobile.smallTargets, 0, `영문 정보판 44px 미만 조작 요소 ${JSON.stringify(englishMobile.smallTargetDetails)}`);
+  assert.equal(englishDesktop.smallTargets, 0, `영문 정보판 PC 44px 미만 조작 요소 ${JSON.stringify(englishDesktop.smallTargetDetails)}`);
   await send('Emulation.setDeviceMetricsOverride', { width: 360, height: 844, deviceScaleFactor: 1, mobile: true });
   await send('Page.navigate', { url: 'http://127.0.0.1:4179/ad-operations.html' });
   await ready(send); await wait(150);
@@ -148,7 +167,7 @@ try {
   assert.ok(governance.result.value.scrollWidth <= governance.result.value.width, '광고 공급망·안전 운영 가로 넘침');
   assert.equal(governance.result.value.smallLinks, 0, '광고 공급망·안전 운영 44px 미만 링크');
   assert.equal(governance.result.value.internal, false, '광고 공급망·안전 운영에 내부 개발 문구 노출');
-  assert.ok(results.filter((row) => row.cards === 24).length === 3, '가이드 목록 24개가 모든 폭에서 유지되지 않음');
+  assert.ok(results.filter((row) => row.cards === 24).length >= 5, '한국어·영문 가이드 목록 24개가 모든 폭에서 유지되지 않음');
   for (const row of results.filter((item) => item.adSlots > 0)) {
     assert.equal(row.houseSlots, row.adSlots, '기본 비활성 상태에서 자체 안내 대체 화면 누락');
     assert.equal(row.providerAds, 0, '기본 비활성 상태에서 외부 광고 요소가 생성됨');

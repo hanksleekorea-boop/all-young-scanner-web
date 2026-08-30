@@ -8,7 +8,7 @@ const server=createServer(async(req,res)=>{
     const path=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
     let file;
     if(path==='/')file='index.html';
-    else if(/^\/guides\/(?:[a-z0-9-]+\/)?$/.test(path))file=`${path.slice(1)}index.html`;
+    else if(/^\/(?:guides\/(?:[a-z0-9-]+\/)?|en\/)$/.test(path))file=`${path.slice(1)}index.html`;
     else if(/^\/(?:[a-zA-Z0-9_-]+\.(?:html|json|js|svg|png|webmanifest|txt|xml)|(?:assets|content)\/[a-zA-Z0-9_.-]+)$/.test(path))file=path.slice(1);
     else {res.writeHead(404);res.end();return;}
     const body=await readFile(resolve(root,file));
