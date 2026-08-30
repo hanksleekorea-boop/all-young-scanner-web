@@ -42,14 +42,14 @@
   "server": {
     "status": "public_release_verified",
     "functional_commit": "e7a568f58056f29cce1f4faff60f33474368bfbf",
-    "release_state_commit": "5184f1d0bfe64f15c583c9311e661f8a269a347d",
-    "pages_run": 33311547742,
+    "release_state_commit": "426c4362ed7bcdd09d7a679d9a74db8a730468e3",
+    "pages_run": 33315425919,
     "pages": "success",
-    "codeql_run": 33311548475,
+    "codeql_run": 33315426225,
     "codeql": "success",
-    "public_verify_run": 33311548530,
+    "public_verify_run": 33315426215,
     "public_verify": "success",
-    "public_http": "pass_22_https_paths"
+    "public_http": "pass_24_https_paths"
   },
   "android": {"status": "not_run_current_release", "previous_release": "v0.29 A56 pass"},
   "ios": {"status": "not_run", "device_count": 0},
