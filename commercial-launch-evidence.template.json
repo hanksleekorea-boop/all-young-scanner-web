@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.32",
+  "operator": { "legal_name": "", "public_contact": "", "privacy_contact": "", "verified_at": "", "evidence_url": "" },
+  "editorial": { "approved_guides": 0, "reviewer": "", "approved_at": "", "evidence_url": "" },
+  "android": { "release_id": "", "device_model": "", "journeys_passed": 0, "completed_at": "", "evidence_url": "" },
+  "ios": { "release_id": "", "device_model": "", "journeys_passed": 0, "completed_at": "", "evidence_url": "" },
+  "users": { "consenting_users": 0, "core_task_success_percent": 0, "critical_defects": 0, "brand_confusion_cases": 0, "completed_at": "", "evidence_url": "" },
+  "site": { "hostname": "", "operator_controlled": false, "html_editable": false, "https_verified": false, "adsense_registered": false, "verified_at": "", "evidence_url": "" },
+  "adsense": { "account_approved": false, "site_approved": false, "publisher_id": "", "slot_ids": { "home-context": "", "guide-index-context": "", "guide-detail-context": "" }, "approved_at": "", "evidence_url": "" },
+  "cmp": { "google_certified": false, "platform_name": "", "tcf_verified": false, "gpp_verified": false, "verified_at": "", "evidence_url": "" },
+  "ads_txt": { "root_url": "", "authorized_seller_rows": 0, "publisher_match": false, "verified_at": "", "evidence_url": "" },
+  "policy_review": { "privacy_reviewer": "", "advertising_reviewer": "", "completed_at": "", "evidence_url": "" },
+  "approvers": { "names": [], "approved_at": "", "evidence_url": "" },
+  "limited_rollout": { "country_group": "", "provider": "", "placement": "", "allocation_percent": 0, "sample_size": 0, "policy_violations": 0, "critical_defects": 0, "completed_at": "", "evidence_url": "" }
+}

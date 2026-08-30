@@ -3,7 +3,7 @@
   "release_id": "2026-08-30-service-v0.32",
   "provider": "google-adsense",
   "enabled": false,
-  "publisher_id": "",
+  "publisher_id": "ca-pub-2476023536699107",
   "certified_cmp_ready": false,
   "operator_identity_confirmed": false,
   "default_mode": "off",
@@ -63,8 +63,10 @@
       "rollback_fingerprint": ""
     },
     "supply_chain": {
-      "owner_domain": "",
-      "ads_txt_entries": [],
+      "owner_domain": "hanksleekorea-boop.github.io",
+      "ads_txt_entries": [
+        { "advertising_system": "google.com", "seller_id": "pub-2476023536699107", "relationship": "DIRECT", "certification_authority_id": "f08c47fec0942fa0" }
+      ],
       "sellers_json_entries": [],
       "schain_nodes": [],
       "verified": false

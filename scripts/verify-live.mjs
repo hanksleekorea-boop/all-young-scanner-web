@@ -1,7 +1,7 @@
 const base = process.env.AYS_PUBLIC_BASE ?? 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 const expectedRelease = '2026-08-30-service-v0.32';
-const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'evidence-v032.json'];
+const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'commercial-launch-readiness.json', 'commercial-launch-evidence.json', 'evidence-v032.json'];
 const results = [];
 const freshUrl = (path = '') => { const url = new URL(path, base); url.searchParams.set('ays_verify', `${Date.now()}-${Math.random()}`); return url; };
 
@@ -46,9 +46,9 @@ assert(index.includes('data-ad-slot="home-context"') && index.includes('assets/a
 assert(readiness.release_id === free.release_id && free.release_id === plus.release_id && free.code.total === 16 && plus.code.total === 12 && plus.payment.included === false, '공개 HTML과 readiness 릴리스가 다름');
 assert(readiness.commercial?.claim === 'blocked', '외부 조건 없이 상용 완료를 주장함');
 assert(free.operations.done === 0, '외부 운영 증거 없이 완료를 주장함');
-assert(adConfig.enabled === false && adConfig.publisher_id === '' && adReadiness.code.verified === 16 && adReadiness.external_activation.done === 0, '광고 코드 준비와 외부 광고 승인을 섞음');
-assert(adConfig.schema_version === 3 && adConfig.stage_two.enabled === false && adStageTwo.code.verified === 24 && adStageTwo.code.live === 24 && adStageTwo.external_activation.done === 0 && adStageTwo.active_providers.external === 0, '광고 2단계 코드 공개와 실제 다중 제공자 운영을 섞음');
-assert(adConfig.stage_three.enabled === false && adConfig.stage_three.mode === 'shadow-only' && adStageThree.code.verified === 32 && adStageThree.code.live === 32 && adStageThree.external_activation.done === 0 && adStageThree.supply_chain.done === 0 && adStageThree.active_operations.live_allocation_percent === 0, '광고 3단계 코드 공개와 실제 고급 광고 운영을 섞음');
+assert(adConfig.enabled === false && adConfig.publisher_id === 'ca-pub-2476023536699107' && adReadiness.code.verified === 16 && adReadiness.external_activation.done === 1, '광고 코드 준비와 확인된 게시자·ads.txt 상태 대조 실패');
+assert(adConfig.schema_version === 3 && adConfig.stage_two.enabled === false && adStageTwo.code.verified === 24 && adStageTwo.code.live === 24 && adStageTwo.external_activation.done === 1 && adStageTwo.active_providers.external === 0, '광고 2단계 코드·ads.txt와 실제 다중 제공자 운영을 섞음');
+assert(adConfig.stage_three.enabled === false && adConfig.stage_three.mode === 'shadow-only' && adStageThree.code.verified === 32 && adStageThree.code.live === 32 && adStageThree.external_activation.done === 1 && adStageThree.supply_chain.done === 1 && adStageThree.active_operations.live_allocation_percent === 0, '광고 3단계 코드·ads.txt와 실제 고급 광고 운영을 섞음');
 assert(Boolean(headers.headers.get('strict-transport-security')), '공개 호스트 HSTS 누락');
 
 console.log(JSON.stringify({

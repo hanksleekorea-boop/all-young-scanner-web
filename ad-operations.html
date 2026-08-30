@@ -1,1 +1,42 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>광고 투명성 현황 | 올영스캐너</title><meta name="description" content="올영스캐너의 현재 광고 제공자, 지역 선택, 기기 안 운영 기록 상태를 설명합니다."><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="strict-origin-when-cross-origin"><style>:root{--ink:#1d2433;--muted:#667085;--line:#e6e9ef;--ok:#176744}*{box-sizing:border-box}body{margin:0;background:#fafbfc;color:var(--ink);font-family:system-ui,sans-serif;line-height:1.65}.wrap{width:min(860px,calc(100% - 32px));margin:auto}header,footer{padding:22px 0;background:#fff;border-bottom:1px solid var(--line)}footer{border-top:1px solid var(--line);border-bottom:0;color:var(--muted)}main{padding:42px 0 72px}.status{padding:16px;border-radius:14px;background:#eefbf5;color:var(--ok);font-weight:800}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0}.card{padding:20px;background:#fff;border:1px solid var(--line);border-radius:18px}.card strong{display:block;font-size:1.8rem}.card span,.muted{color:var(--muted)}button{min-height:48px;padding:0 18px;border:0;border-radius:14px;background:var(--ink);color:#fff;font-weight:800}a{color:inherit}@media(max-width:640px){.grid{grid-template-columns:1fr}}</style></head><body><header><div class="wrap"><strong>올영스캐너</strong></div></header><main><div class="wrap"><h1>광고 투명성 현황</h1><p class="status">현재 외부 광고 선택 체계: <span id="routing-state">확인 중</span></p><div class="grid"><article class="card"><span>실행 중인 외부 제공자</span><strong id="external-provider-count">0</strong></article><article class="card"><span>자체 안내 제공자</span><strong id="house-provider-count">1</strong></article><article class="card"><span>외부 활성화 조건</span><strong id="external-condition-count">0/9</strong></article></div><section class="card"><h2>지역별 보호</h2><p>정확한 국가를 추측하지 않습니다. 인증 동의 플랫폼 또는 운영 서버가 검증된 큰 지역 묶음을 제공하지 않으면 외부 광고를 차단합니다. 유럽 대상 신호, 미국 주 단위 신호, 그 밖의 문맥형 선택은 서로 구분합니다.</p></section><section class="card"><h2>광고 제공자 선택</h2><p>계약과 공식 연결 방식이 확인된 제공자만 등록할 수 있습니다. 허용 지역·광고 종류·최저 예상 단가·오류 상태를 통과한 제공자 중 한 슬롯에 한 곳만 선택하며 자동 재시도하지 않습니다.</p></section><section class="card"><h2>이 기기의 운영 기록</h2><p>실제 광고를 켤 경우 요청·표시·오류·걸린 시간 같은 최소 운영 수치만 이 기기에 최대 200건 저장합니다. 검색어, 피부 상태, 루틴과 개인식별 정보는 기록하지 않습니다.</p><div class="grid"><div><span>요청·표시 사건</span><strong id="local-event-count">0</strong></div><div><span>표시 비율</span><strong id="local-fill-rate">0%</strong></div><div><span>오류 비율</span><strong id="local-error-rate">0%</strong></div></div><button id="clear-ad-operations" type="button">이 기기 광고 운영 기록 삭제</button><p id="operations-status" role="status" class="muted"></p></section><p><a href="advertising.html">광고 운영 원칙</a> · <a href="privacy-choices.html">광고 선택</a> · <a href="./">서비스로 돌아가기</a></p></div></main><footer><div class="wrap">최근 갱신 2026-08-30 · 이 화면은 광고회사 승인 완료를 의미하지 않습니다.</div></footer><script type="module" src="assets/ad-operations-page.mjs"></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>광고 투명성 현황 | 올영스캐너</title>
+  <meta name="description" content="올영스캐너의 현재 광고 제공자, 지역 선택, 기기 안 운영 기록 상태를 설명합니다.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <style>
+    :root{--ink:#1d2433;--muted:#667085;--line:#e6e9ef;--ok:#176744}
+    *{box-sizing:border-box}body{margin:0;background:#fafbfc;color:var(--ink);font-family:system-ui,sans-serif;line-height:1.65}
+    .wrap{width:min(860px,calc(100% - 32px));margin:auto}header,footer{padding:22px 0;background:#fff;border-bottom:1px solid var(--line)}
+    footer{border-top:1px solid var(--line);border-bottom:0;color:var(--muted)}main{padding:42px 0 72px}.status{padding:16px;border-radius:14px;background:#eefbf5;color:var(--ok);font-weight:800}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0}.card{padding:20px;background:#fff;border:1px solid var(--line);border-radius:18px}
+    .card strong{display:block;font-size:1.8rem}.card span,.muted{color:var(--muted)}button{min-height:48px;padding:0 18px;border:0;border-radius:14px;background:var(--ink);color:#fff;font-weight:800}a{color:inherit}
+    @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><strong>올영스캐너</strong></div></header>
+  <main><div class="wrap">
+    <h1>광고 투명성 현황</h1>
+    <p class="status">현재 외부 광고 선택 체계: <span id="routing-state">확인 중</span></p>
+    <div class="grid">
+      <article class="card"><span>실행 중인 외부 제공자</span><strong id="external-provider-count">0</strong></article>
+      <article class="card"><span>자체 안내 제공자</span><strong id="house-provider-count">1</strong></article>
+      <article class="card"><span>외부 활성화 조건</span><strong id="external-condition-count">1/9</strong></article>
+    </div>
+    <section class="card"><h2>지역별 보호</h2><p>정확한 국가를 추측하지 않습니다. 인증 동의 플랫폼 또는 운영 서버가 검증된 큰 지역 묶음을 제공하지 않으면 외부 광고를 차단합니다. 유럽 대상 신호, 미국 주 단위 신호, 그 밖의 문맥형 선택은 서로 구분합니다.</p></section>
+    <section class="card"><h2>광고 제공자 선택</h2><p>계약과 공식 연결 방식이 확인된 제공자만 등록할 수 있습니다. 허용 지역·광고 종류·최저 예상 단가·오류 상태를 통과한 제공자 중 한 슬롯에 한 곳만 선택하며 자동 재시도하지 않습니다.</p></section>
+    <section class="card">
+      <h2>이 기기의 운영 기록</h2><p>실제 광고를 켤 경우 요청·표시·오류·걸린 시간 같은 최소 운영 수치만 이 기기에 최대 200건 저장합니다. 검색어, 피부 상태, 루틴과 개인식별 정보는 기록하지 않습니다.</p>
+      <div class="grid"><div><span>요청·표시 사건</span><strong id="local-event-count">0</strong></div><div><span>표시 비율</span><strong id="local-fill-rate">0%</strong></div><div><span>오류 비율</span><strong id="local-error-rate">0%</strong></div></div>
+      <button id="clear-ad-operations" type="button">이 기기 광고 운영 기록 삭제</button><p id="operations-status" role="status" class="muted"></p>
+    </section>
+    <p><a href="advertising.html">광고 운영 원칙</a> · <a href="privacy-choices.html">광고 선택</a> · <a href="./">서비스로 돌아가기</a></p>
+  </div></main>
+  <footer><div class="wrap">최근 갱신 2026-08-30 · 이 화면은 광고회사 승인 완료를 의미하지 않습니다.</div></footer>
+  <script type="module" src="assets/ad-operations-page.mjs"></script>
+</body>
+</html>

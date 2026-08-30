@@ -9,14 +9,15 @@
     "live": 16,
     "percent": 100,
     "cards": [
-      "provider configuration", "default-off gate", "publisher validation", "slot validation", "certified CMP gate", "operator identity gate", "page allowlist", "forbidden page block", "sensitive context stripping", "manual home slot", "manual guide slots", "house fallback", "privacy choice", "advertising disclosure", "cookie disclosure", "ads.txt placeholder"
+      "provider configuration", "default-off gate", "publisher validation", "slot validation", "certified CMP gate", "operator identity gate", "page allowlist", "forbidden page block", "sensitive context stripping", "manual home slot", "manual guide slots", "house fallback", "privacy choice", "advertising disclosure", "cookie disclosure", "ads.txt authorized seller record"
     ]
   },
   "external_activation": {
     "total": 5,
-    "done": 0,
-    "percent": 0,
-    "blocked": ["verified publisher and slot IDs", "certified CMP configuration", "operator legal identity and responsible contact", "root-domain ads.txt seller record", "Google review and approval"]
+    "done": 1,
+    "percent": 20,
+    "verified": ["root-domain ads.txt seller record"],
+    "blocked": ["verified publisher and slot IDs", "certified CMP configuration", "operator legal identity and responsible contact", "Google review and approval"]
   },
   "data_boundary": {
     "personalized_ads": false,

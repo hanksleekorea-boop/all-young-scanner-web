@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.32",
+  "scope": "content-first free commercial service with contextual advertising after approval",
+  "evidence_file": "commercial-launch-evidence.json",
+  "technical": {
+    "total": 12,
+    "verified": 12,
+    "percent": 100,
+    "cards": [
+      "24 original guide pages with source links",
+      "searchable guide index and sitemap",
+      "routine, check-in, backup, restore and delete",
+      "installable offline PWA",
+      "360, 390, 640 and 1440 responsive checks",
+      "accessible names, skip link and reduced motion",
+      "privacy, terms, cookies, support and advertising disclosures",
+      "contextual-only privacy choice",
+      "fail-closed advertising loader",
+      "manual ad placements away from records and policy pages",
+      "ads.txt placeholder and supply-chain validators",
+      "automated public, security and release verification"
+    ]
+  },
+  "external": {
+    "total": 12,
+    "done": 2,
+    "percent": 16.7,
+    "cards": [
+      { "id": "operator", "status": "BLOCKED_EXTERNAL", "label": "legal operator identity and responsible contact" },
+      { "id": "editorial", "status": "BLOCKED_EXTERNAL", "label": "human approval of all 24 guides" },
+      { "id": "android", "status": "BLOCKED_EXTERNAL", "label": "current-release Android device journeys" },
+      { "id": "ios", "status": "BLOCKED_EXTERNAL", "label": "current-release iOS device journeys" },
+      { "id": "users", "status": "BLOCKED_EXTERNAL", "label": "five consenting launch users" },
+      { "id": "site", "status": "VERIFIED_EXTERNAL", "label": "operator-controlled HTTPS site registered in AdSense" },
+      { "id": "adsense", "status": "BLOCKED_EXTERNAL", "label": "approved AdSense account, site, publisher and slots" },
+      { "id": "cmp", "status": "BLOCKED_EXTERNAL", "label": "Google-certified consent management platform" },
+      { "id": "ads_txt", "status": "VERIFIED_EXTERNAL", "label": "authorized root ads.txt seller row" },
+      { "id": "policy_review", "status": "BLOCKED_EXTERNAL", "label": "human privacy and advertising review" },
+      { "id": "approvers", "status": "BLOCKED_EXTERNAL", "label": "two distinct named advertising approvers" },
+      { "id": "limited_rollout", "status": "BLOCKED_EXTERNAL", "label": "one-country, one-provider, one-slot limited rollout observation" }
+    ]
+  },
+  "claim": "technical_launch_pack_complete_external_commercial_activation_blocked",
+  "advertising": {
+    "default_external_requests": 0,
+    "personalized_ads": false,
+    "first_live_mode": "contextual",
+    "maximum_initial_allocation_percent": 5
+  }
+}

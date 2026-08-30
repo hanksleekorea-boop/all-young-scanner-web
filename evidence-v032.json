@@ -3,7 +3,8 @@
   "verified_at": "2026-08-30",
   "product": "advanced free service, no-payment Plus, advertising stages one through three with advanced operations disabled by default",
   "automatic": {
-    "total_tests": 81,
+    "total_tests": 86,
+    "commercial_launch_gate_tests": 5,
     "android_device_selection_tests": 3,
     "free_advanced_unit_tests": 8,
     "plus_unit_tests": 14,
@@ -54,8 +55,8 @@
   "ios": {"status": "not_run", "device_count": 0},
   "advertising_stage_three": {
     "code": "verified_32_of_32",
-    "external_activation": "blocked_0_of_14",
-    "supply_chain": "unverified_0_of_4",
+    "external_activation": "blocked_1_of_14",
+    "supply_chain": "partially_verified_1_of_4",
     "active_external_providers": 0,
     "active_direct_campaigns": 0,
     "live_allocation_percent": 0,

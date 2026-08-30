@@ -14,10 +14,11 @@
   },
   "external_activation": {
     "total": 9,
-    "done": 0,
-    "percent": 0,
+    "done": 1,
+    "percent": 11.1,
+    "verified": ["root ads.txt verified seller rows"],
     "blocked": [
-      "operator legal identity and responsible contact", "AdSense publisher approval and identifiers", "secondary provider contract and official integration specification", "third provider contract and official integration specification", "certified CMP with normalized TCF and GPP signals", "trusted coarse region resolver", "root ads.txt verified seller rows", "human privacy and advertising policy review", "production revenue and performance monitoring baseline"
+      "operator legal identity and responsible contact", "AdSense publisher approval and identifiers", "secondary provider contract and official integration specification", "third provider contract and official integration specification", "certified CMP with normalized TCF and GPP signals", "trusted coarse region resolver", "human privacy and advertising policy review", "production revenue and performance monitoring baseline"
     ]
   },
   "active_providers": { "external": 0, "house": 1 },

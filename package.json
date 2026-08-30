@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "content:build": "node scripts/build-content-pages.mjs",
-    "verify": "npm run content:build && node scripts/verify-public.mjs && node --test scripts/free-advanced.test.mjs scripts/plus.test.mjs scripts/plus-personas.test.mjs scripts/service-worker.test.mjs scripts/content-pages.test.mjs scripts/ad-stage1.test.mjs scripts/ad-personas.test.mjs scripts/ad-stage2.test.mjs scripts/ad-stage2-personas.test.mjs scripts/ad-stage3.test.mjs scripts/ad-stage3-personas.test.mjs scripts/android-device.test.mjs",
-    "verify:layout": "node scripts/verify-layout.mjs",
+    "verify": "npm run content:build && node scripts/verify-public.mjs && node --test scripts/free-advanced.test.mjs scripts/plus.test.mjs scripts/plus-personas.test.mjs scripts/service-worker.test.mjs scripts/content-pages.test.mjs scripts/ad-stage1.test.mjs scripts/ad-personas.test.mjs scripts/ad-stage2.test.mjs scripts/ad-stage2-personas.test.mjs scripts/ad-stage3.test.mjs scripts/ad-stage3-personas.test.mjs scripts/android-device.test.mjs scripts/commercial-launch.test.mjs",
+    "verify:commercial": "node --test scripts/commercial-launch.test.mjs && node scripts/verify-commercial-launch.mjs commercial-launch-evidence.template.json --expect-incomplete",
+    "verify:layout": "node scripts/run-layout-verification.mjs",
     "verify:a56": "node scripts/run-a56-live.mjs",
     "verify:live": "node scripts/verify-live.mjs",
     "preview": "node scripts/serve-preview.mjs"

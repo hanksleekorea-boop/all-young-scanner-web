@@ -84,8 +84,8 @@
     "code_live": 16,
     "code_percent": 100,
     "external_total": 5,
-    "external_done": 0,
-    "external_percent": 0,
+    "external_done": 1,
+    "external_percent": 20,
     "claim": "code_complete_external_activation_blocked"
   },
   "advertising_stage_two": {
@@ -95,8 +95,8 @@
     "code_live": 24,
     "code_percent": 100,
     "external_total": 9,
-    "external_done": 0,
-    "external_percent": 0,
+    "external_done": 1,
+    "external_percent": 11.1,
     "claim": "code_complete_multi_provider_activation_blocked"
   },
   "advertising_stage_three": {
@@ -106,11 +106,21 @@
     "code_live": 32,
     "code_percent": 100,
     "supply_chain_total": 4,
-    "supply_chain_done": 0,
+    "supply_chain_done": 1,
     "external_total": 14,
-    "external_done": 0,
-    "external_percent": 0,
+    "external_done": 1,
+    "external_percent": 7.1,
     "claim": "code_complete_advanced_operations_activation_blocked"
+  },
+  "commercial_launch": {
+    "status_file": "commercial-launch-readiness.json",
+    "technical_total": 12,
+    "technical_verified": 12,
+    "technical_percent": 100,
+    "external_total": 12,
+    "external_done": 2,
+    "external_percent": 16.7,
+    "claim": "technical_launch_pack_complete_external_commercial_activation_blocked"
   },
   "content": {
     "published_usage_guides": 24,

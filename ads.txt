@@ -1,1 +1,2 @@
-# External advertising is disabled. Add a verified seller record only after publisher ownership is confirmed.
+# External advertising is disabled while site review is getting ready. The authoritative file is at the site root.
+google.com, pub-2476023536699107, DIRECT, f08c47fec0942fa0

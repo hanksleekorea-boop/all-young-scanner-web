@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.32",
+  "operator": { "legal_name": "", "public_contact": "", "privacy_contact": "", "verified_at": "", "evidence_url": "" },
+  "editorial": { "approved_guides": 0, "reviewer": "", "approved_at": "", "evidence_url": "" },
+  "android": { "release_id": "", "device_model": "", "journeys_passed": 0, "completed_at": "", "evidence_url": "" },
+  "ios": { "release_id": "", "device_model": "", "journeys_passed": 0, "completed_at": "", "evidence_url": "" },
+  "users": { "consenting_users": 0, "core_task_success_percent": 0, "critical_defects": 0, "brand_confusion_cases": 0, "completed_at": "", "evidence_url": "" },
+  "site": {
+    "hostname": "hanksleekorea-boop.github.io",
+    "operator_controlled": true,
+    "html_editable": true,
+    "https_verified": true,
+    "adsense_registered": true,
+    "adsense_status": "getting_ready",
+    "verified_at": "2026-08-30",
+    "evidence_url": "https://github.com/hanksleekorea-boop/hanksleekorea-boop.github.io"
+  },
+  "adsense": {
+    "account_approved": false,
+    "site_approved": false,
+    "site_status": "getting_ready",
+    "publisher_id": "ca-pub-2476023536699107",
+    "slot_ids": { "home-context": "", "guide-index-context": "", "guide-detail-context": "" },
+    "approved_at": "",
+    "evidence_url": ""
+  },
+  "cmp": { "google_certified": false, "platform_name": "", "tcf_verified": false, "gpp_verified": false, "verified_at": "", "evidence_url": "" },
+  "ads_txt": {
+    "root_url": "https://hanksleekorea-boop.github.io/ads.txt",
+    "authorized_seller_rows": 1,
+    "publisher_match": true,
+    "adsense_status": "authorized",
+    "verified_at": "2026-08-30",
+    "evidence_url": "https://hanksleekorea-boop.github.io/ads.txt"
+  },
+  "policy_review": { "privacy_reviewer": "", "advertising_reviewer": "", "completed_at": "", "evidence_url": "" },
+  "approvers": { "names": [], "approved_at": "", "evidence_url": "" },
+  "limited_rollout": { "country_group": "", "provider": "", "placement": "", "allocation_percent": 0, "sample_size": 0, "policy_violations": 0, "critical_defects": 0, "completed_at": "", "evidence_url": "" }
+}
