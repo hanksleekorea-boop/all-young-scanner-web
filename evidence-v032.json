@@ -34,13 +34,13 @@
     "limitation": "External providers and direct campaigns remain disabled."
   },
   "server": {
-    "status": "pending",
-    "functional_commit": null,
+    "status": "functional_release_published_verification_pending",
+    "functional_commit": "e7a568f58056f29cce1f4faff60f33474368bfbf",
     "release_state_commit": null,
-    "pages_run": null,
-    "pages": "pending",
-    "codeql_run": null,
-    "codeql": "pending",
+    "pages_run": 33304912165,
+    "pages": "success",
+    "codeql_run": 33304912609,
+    "codeql": "success",
     "public_verify_run": null,
     "public_verify": "pending",
     "public_http": "pending"

@@ -103,7 +103,7 @@
     "status_file": "ad-stage3-readiness.json",
     "code_total": 32,
     "code_verified": 32,
-    "code_live": 0,
+    "code_live": 32,
     "code_percent": 100,
     "supply_chain_total": 4,
     "supply_chain_done": 0,

@@ -6,7 +6,7 @@
   "code": {
     "total": 32,
     "verified": 32,
-    "live": 0,
+    "live": 32,
     "percent": 100,
     "cards": [
       "shadow-only default", "fail-closed activation", "two-person approval gate", "signed configuration gate", "rollback fingerprint", "ads.txt parser", "owner domain directive", "sellers.json cross-check", "SupplyChain node cross-check", "direct campaign registry", "contract and approval gate", "campaign date gate", "region placement and format gate", "daily impression and spend pacing", "session frequency cap", "placement frequency cap", "minimum interval cap", "automation traffic exclusion", "test traffic exclusion", "event sequence validation", "repeat burst detection", "minimum viewability gate", "portfolio value score", "ten-percent holdout", "five-percent live ceiling", "one-thousand sample floor", "core journey guardrail", "revenue and complaint stop loss", "sanitized aggregate rows", "thirty-day five-hundred-row retention", "operator governance page", "twenty-thousand advanced scenarios"
