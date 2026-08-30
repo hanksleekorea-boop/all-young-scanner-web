@@ -8,21 +8,21 @@
   "code": {
     "total": 12,
     "verified": 12,
-    "live": 0,
+    "live": 12,
     "percent": 100,
     "cards": [
-      {"id":"PLUS-01","name":"saved routines up to 10","status":"VERIFIED"},
-      {"id":"PLUS-02","name":"two-routine comparison","status":"VERIFIED"},
-      {"id":"PLUS-03","name":"30 and 90 day statistics","status":"VERIFIED"},
-      {"id":"PLUS-04","name":"deterministic safety insights","status":"VERIFIED"},
-      {"id":"PLUS-05","name":"record window filter","status":"VERIFIED"},
-      {"id":"PLUS-06","name":"advanced guide search aliases","status":"VERIFIED"},
-      {"id":"PLUS-07","name":"personal collections up to 5","status":"VERIFIED"},
-      {"id":"PLUS-08","name":"privacy-free calendar file","status":"VERIFIED"},
-      {"id":"PLUS-09","name":"printable 30-day report","status":"VERIFIED"},
-      {"id":"PLUS-10","name":"AES-GCM encrypted backup","status":"VERIFIED"},
-      {"id":"PLUS-11","name":"full free and Plus data transfer","status":"VERIFIED"},
-      {"id":"PLUS-12","name":"free rights and no-payment boundary","status":"VERIFIED"}
+      {"id":"PLUS-01","name":"saved routines up to 10","status":"LIVE"},
+      {"id":"PLUS-02","name":"two-routine comparison","status":"LIVE"},
+      {"id":"PLUS-03","name":"30 and 90 day statistics","status":"LIVE"},
+      {"id":"PLUS-04","name":"deterministic safety insights","status":"LIVE"},
+      {"id":"PLUS-05","name":"record window filter","status":"LIVE"},
+      {"id":"PLUS-06","name":"advanced guide search aliases","status":"LIVE"},
+      {"id":"PLUS-07","name":"personal collections up to 5","status":"LIVE"},
+      {"id":"PLUS-08","name":"privacy-free calendar file","status":"LIVE"},
+      {"id":"PLUS-09","name":"printable 30-day report","status":"LIVE"},
+      {"id":"PLUS-10","name":"AES-GCM encrypted backup","status":"LIVE"},
+      {"id":"PLUS-11","name":"full free and Plus data transfer","status":"LIVE"},
+      {"id":"PLUS-12","name":"free rights and no-payment boundary","status":"LIVE"}
     ]
   }
 }

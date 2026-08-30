@@ -25,8 +25,18 @@
     "journeys":["routine_to_save_to_checkin_to_delete_pass","plus_save_compare_collection_pass"],
     "limitation":"Local automated Edge; current-release Android test follows publication; iOS not available."
   },
-  "server": { "status":"pending_public_verification", "pages":"pending", "codeql":"pending", "public_verify":"pending", "public_http":"pending" },
-  "android": {"status":"not_run","approved_target":"A56_only"},
+  "server": {
+    "status":"deployed",
+    "functional_commit":"5103cca29fe350ad6d663a2e5db505b197573b24",
+    "pages_run":33293766118,
+    "pages":"success",
+    "codeql_run":33293766507,
+    "codeql":"success",
+    "public_verify_run":33293766511,
+    "public_verify":"success",
+    "public_http":"pass_11_paths"
+  },
+  "android": {"status":"pass","approved_target":"A56_only","model":"SM-A5660","css_width":360,"device_pixel_ratio":2,"journey":"home_routine_plus_two_saved_compare_collection","horizontal_overflow":0,"small_or_clipped_controls":0,"manifest":true,"service_worker":true,"existing_local_data_restored":true},
   "ios": {"status":"not_run","device_count":0},
   "human_editorial_signoff": "not_run",
   "operator_identity": "not_confirmed",
