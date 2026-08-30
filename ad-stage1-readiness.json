@@ -14,10 +14,10 @@
   },
   "external_activation": {
     "total": 5,
-    "done": 1,
-    "percent": 20,
-    "verified": ["root-domain ads.txt seller record"],
-    "blocked": ["verified publisher and slot IDs", "certified CMP configuration", "operator legal identity and responsible contact", "Google review and approval"]
+    "done": 2,
+    "percent": 40,
+    "verified": ["root-domain ads.txt seller record", "Google Privacy & Messaging EU and US-state messages published"],
+    "blocked": ["verified publisher and slot IDs", "operator legal identity and responsible contact", "Google review and approval"]
   },
   "data_boundary": {
     "personalized_ads": false,

@@ -84,8 +84,8 @@
     "code_live": 16,
     "code_percent": 100,
     "external_total": 5,
-    "external_done": 1,
-    "external_percent": 20,
+    "external_done": 2,
+    "external_percent": 40,
     "claim": "code_complete_external_activation_blocked"
   },
   "advertising_stage_two": {
@@ -95,8 +95,8 @@
     "code_live": 24,
     "code_percent": 100,
     "external_total": 9,
-    "external_done": 1,
-    "external_percent": 11.1,
+    "external_done": 2,
+    "external_percent": 22.2,
     "claim": "code_complete_multi_provider_activation_blocked"
   },
   "advertising_stage_three": {
@@ -108,8 +108,8 @@
     "supply_chain_total": 4,
     "supply_chain_done": 1,
     "external_total": 14,
-    "external_done": 1,
-    "external_percent": 7.1,
+    "external_done": 2,
+    "external_percent": 14.3,
     "claim": "code_complete_advanced_operations_activation_blocked"
   },
   "commercial_launch": {
@@ -118,8 +118,8 @@
     "technical_verified": 12,
     "technical_percent": 100,
     "external_total": 12,
-    "external_done": 2,
-    "external_percent": 16.7,
+    "external_done": 3,
+    "external_percent": 25,
     "claim": "technical_launch_pack_complete_external_commercial_activation_blocked"
   },
   "content": {

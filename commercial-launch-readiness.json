@@ -24,8 +24,8 @@
   },
   "external": {
     "total": 12,
-    "done": 2,
-    "percent": 16.7,
+    "done": 3,
+    "percent": 25,
     "cards": [
       { "id": "operator", "status": "BLOCKED_EXTERNAL", "label": "legal operator identity and responsible contact" },
       { "id": "editorial", "status": "BLOCKED_EXTERNAL", "label": "human approval of all 24 guides" },
@@ -34,7 +34,7 @@
       { "id": "users", "status": "BLOCKED_EXTERNAL", "label": "five consenting launch users" },
       { "id": "site", "status": "VERIFIED_EXTERNAL", "label": "operator-controlled HTTPS site registered in AdSense" },
       { "id": "adsense", "status": "BLOCKED_EXTERNAL", "label": "approved AdSense account, site, publisher and slots" },
-      { "id": "cmp", "status": "BLOCKED_EXTERNAL", "label": "Google-certified consent management platform" },
+      { "id": "cmp", "status": "VERIFIED_EXTERNAL", "label": "Google Privacy & Messaging with published EU and US-state messages" },
       { "id": "ads_txt", "status": "VERIFIED_EXTERNAL", "label": "authorized root ads.txt seller row" },
       { "id": "policy_review", "status": "BLOCKED_EXTERNAL", "label": "human privacy and advertising review" },
       { "id": "approvers", "status": "BLOCKED_EXTERNAL", "label": "two distinct named advertising approvers" },

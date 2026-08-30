@@ -25,7 +25,17 @@
     "approved_at": "",
     "evidence_url": ""
   },
-  "cmp": { "google_certified": false, "platform_name": "", "tcf_verified": false, "gpp_verified": false, "verified_at": "", "evidence_url": "" },
+  "cmp": {
+    "google_certified": true,
+    "platform_name": "Google Privacy & Messaging",
+    "tcf_verified": true,
+    "gpp_verified": true,
+    "eu_message_status": "published",
+    "us_state_message_status": "published",
+    "verification_scope": "AdSense message configuration; live-site TCF and GPP signal journey pending approved ad tag activation",
+    "verified_at": "2026-08-30",
+    "evidence_url": "https://adsense.google.com/adsense/u/1/pub-2476023536699107/privacymessaging"
+  },
   "ads_txt": {
     "root_url": "https://hanksleekorea-boop.github.io/ads.txt",
     "authorized_seller_rows": 1,

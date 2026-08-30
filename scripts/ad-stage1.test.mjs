@@ -10,7 +10,7 @@ const memory = () => { const map = new Map(); return { getItem: (key) => map.get
 test('공개 기본 설정은 광고를 끄고 확인된 게시자만 기록한다', () => {
   assert.equal(config.enabled, false);
   assert.equal(config.publisher_id, 'ca-pub-2476023536699107');
-  assert.equal(config.certified_cmp_ready, false);
+  assert.equal(config.certified_cmp_ready, true);
   assert.equal(config.operator_identity_confirmed, false);
 });
 
@@ -20,9 +20,9 @@ test('비활성 설정은 어떤 동의가 있어도 광고를 차단한다', ()
   assert.equal(result.reason, 'ADS_DISABLED');
 });
 
-test('켜진 설정은 확인된 게시자 외에 CMP·운영자 신원을 요구한다', () => {
+test('켜진 설정은 확인된 게시자·CMP 외에 운영자 신원을 요구한다', () => {
   const enabled = { ...config, enabled: true };
-  assert.deepEqual(validateAdvertisingConfig(enabled).errors, ['CMP_NOT_READY', 'OPERATOR_IDENTITY_NOT_CONFIRMED']);
+  assert.deepEqual(validateAdvertisingConfig(enabled).errors, ['OPERATOR_IDENTITY_NOT_CONFIRMED']);
 });
 
 test('광고 활성화는 유효한 게시자·슬롯·문맥형 동의·CMP 신호가 모두 필요하다', () => {

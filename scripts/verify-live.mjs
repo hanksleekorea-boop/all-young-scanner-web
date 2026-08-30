@@ -46,9 +46,9 @@ assert(index.includes('data-ad-slot="home-context"') && index.includes('assets/a
 assert(readiness.release_id === free.release_id && free.release_id === plus.release_id && free.code.total === 16 && plus.code.total === 12 && plus.payment.included === false, '공개 HTML과 readiness 릴리스가 다름');
 assert(readiness.commercial?.claim === 'blocked', '외부 조건 없이 상용 완료를 주장함');
 assert(free.operations.done === 0, '외부 운영 증거 없이 완료를 주장함');
-assert(adConfig.enabled === false && adConfig.publisher_id === 'ca-pub-2476023536699107' && adReadiness.code.verified === 16 && adReadiness.external_activation.done === 1, '광고 코드 준비와 확인된 게시자·ads.txt 상태 대조 실패');
-assert(adConfig.schema_version === 3 && adConfig.stage_two.enabled === false && adStageTwo.code.verified === 24 && adStageTwo.code.live === 24 && adStageTwo.external_activation.done === 1 && adStageTwo.active_providers.external === 0, '광고 2단계 코드·ads.txt와 실제 다중 제공자 운영을 섞음');
-assert(adConfig.stage_three.enabled === false && adConfig.stage_three.mode === 'shadow-only' && adStageThree.code.verified === 32 && adStageThree.code.live === 32 && adStageThree.external_activation.done === 1 && adStageThree.supply_chain.done === 1 && adStageThree.active_operations.live_allocation_percent === 0, '광고 3단계 코드·ads.txt와 실제 고급 광고 운영을 섞음');
+assert(adConfig.enabled === false && adConfig.publisher_id === 'ca-pub-2476023536699107' && adConfig.certified_cmp_ready === true && adReadiness.code.verified === 16 && adReadiness.external_activation.done === 2, '광고 코드 준비와 확인된 게시자·ads.txt·CMP 상태 대조 실패');
+assert(adConfig.schema_version === 3 && adConfig.stage_two.enabled === false && adStageTwo.code.verified === 24 && adStageTwo.code.live === 24 && adStageTwo.external_activation.done === 2 && adStageTwo.active_providers.external === 0, '광고 2단계 코드·ads.txt·CMP와 실제 다중 제공자 운영을 섞음');
+assert(adConfig.stage_three.enabled === false && adConfig.stage_three.mode === 'shadow-only' && adStageThree.code.verified === 32 && adStageThree.code.live === 32 && adStageThree.external_activation.done === 2 && adStageThree.supply_chain.done === 1 && adStageThree.active_operations.live_allocation_percent === 0, '광고 3단계 코드·ads.txt·CMP와 실제 고급 광고 운영을 섞음');
 assert(Boolean(headers.headers.get('strict-transport-security')), '공개 호스트 HSTS 누락');
 
 console.log(JSON.stringify({

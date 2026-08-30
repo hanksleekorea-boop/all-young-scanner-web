@@ -55,7 +55,7 @@
   "ios": {"status": "not_run", "device_count": 0},
   "advertising_stage_three": {
     "code": "verified_32_of_32",
-    "external_activation": "blocked_1_of_14",
+    "external_activation": "blocked_2_of_14",
     "supply_chain": "partially_verified_1_of_4",
     "active_external_providers": 0,
     "active_direct_campaigns": 0,

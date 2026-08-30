@@ -4,7 +4,7 @@
   "provider": "google-adsense",
   "enabled": false,
   "publisher_id": "ca-pub-2476023536699107",
-  "certified_cmp_ready": false,
+  "certified_cmp_ready": true,
   "operator_identity_confirmed": false,
   "default_mode": "off",
   "allowed_page_kinds": ["home", "guide-index", "guide-detail"],

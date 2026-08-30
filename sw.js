@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'ays-service-';
-const CACHE = 'ays-service-v0.32';
+const CACHE = 'ays-service-v0.32-cmp';
 const RELEASE_VERSION = '2026-08-30-service-v0.32';
 const CORE = [
   './', './index.html', './progress.html', './offline.html',
