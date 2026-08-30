@@ -1,0 +1,34 @@
+{
+  "release_id": "2026-08-30-service-v0.29",
+  "verified_at": "2026-08-30",
+  "product": "advanced free service plus all non-payment Plus functions",
+  "automatic": {
+    "free_advanced_unit_tests": 8,
+    "plus_unit_tests": 14,
+    "virtual_personas": 1000,
+    "service_worker_tests": 7,
+    "content_page_tests": 6,
+    "published_usage_guides": 24,
+    "connected_content_sources": 7,
+    "layout_widths": [360, 390, 1440],
+    "payment_paths": 0,
+    "external_scripts": 0,
+    "account_required": false,
+    "server_side_personal_data": false
+  },
+  "browser": {
+    "status":"local_automated_pass",
+    "views":12,
+    "widths":[360,390,1440],
+    "horizontal_overflow":0,
+    "small_or_clipped_controls":0,
+    "journeys":["routine_to_save_to_checkin_to_delete_pass","plus_save_compare_collection_pass"],
+    "limitation":"Local automated Edge; current-release Android test follows publication; iOS not available."
+  },
+  "server": { "status":"pending_public_verification", "pages":"pending", "codeql":"pending", "public_verify":"pending", "public_http":"pending" },
+  "android": {"status":"not_run","approved_target":"A56_only"},
+  "ios": {"status":"not_run","device_count":0},
+  "human_editorial_signoff": "not_run",
+  "operator_identity": "not_confirmed",
+  "commercial_operation": "blocked_external_evidence"
+}

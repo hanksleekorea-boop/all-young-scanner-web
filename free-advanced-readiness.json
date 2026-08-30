@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-29-service-v0.28",
-  "updated_at": "2026-08-29",
+  "release_id": "2026-08-30-service-v0.29",
+  "updated_at": "2026-08-30",
   "scope": "advanced free content, routine and local record PWA",
   "calculation": "LIVE code cards / 16; operational evidence is separate",
   "code": {
     "total": 16,
-    "live": 16,
+    "live": 0,
     "verified": 16,
     "percent": 100,
     "cards": [
-      {"id":"AFS-01","status":"LIVE"},{"id":"AFS-02","status":"LIVE"},{"id":"AFS-03","status":"LIVE"},{"id":"AFS-04","status":"LIVE"},
-      {"id":"AFS-05","status":"LIVE"},{"id":"AFS-06","status":"LIVE"},{"id":"AFS-07","status":"LIVE"},{"id":"AFS-08","status":"LIVE"},
-      {"id":"AFS-09","status":"LIVE"},{"id":"AFS-10","status":"LIVE"},{"id":"AFS-11","status":"LIVE"},{"id":"AFS-12","status":"LIVE"},
-      {"id":"AFS-13","status":"LIVE"},{"id":"AFS-14","status":"LIVE"},{"id":"AFS-15","status":"LIVE"},{"id":"AFS-16","status":"LIVE"}
+      {"id":"AFS-01","status":"VERIFIED"},{"id":"AFS-02","status":"VERIFIED"},{"id":"AFS-03","status":"VERIFIED"},{"id":"AFS-04","status":"VERIFIED"},
+      {"id":"AFS-05","status":"VERIFIED"},{"id":"AFS-06","status":"VERIFIED"},{"id":"AFS-07","status":"VERIFIED"},{"id":"AFS-08","status":"VERIFIED"},
+      {"id":"AFS-09","status":"VERIFIED"},{"id":"AFS-10","status":"VERIFIED"},{"id":"AFS-11","status":"VERIFIED"},{"id":"AFS-12","status":"VERIFIED"},
+      {"id":"AFS-13","status":"VERIFIED"},{"id":"AFS-14","status":"VERIFIED"},{"id":"AFS-15","status":"VERIFIED"},{"id":"AFS-16","status":"VERIFIED"}
     ]
   },
   "operations": {

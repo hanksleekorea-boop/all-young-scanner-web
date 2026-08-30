@@ -1,13 +1,13 @@
 const CACHE_PREFIX = 'ays-service-';
-const CACHE = 'ays-service-v0.28';
-const RELEASE_VERSION = '2026-08-29-service-v0.28';
+const CACHE = 'ays-service-v0.29';
+const RELEASE_VERSION = '2026-08-30-service-v0.29';
 const CORE = [
   './', './index.html', './progress.html', './offline.html',
   './privacy.html', './terms.html', './support.html', './.well-known/security.txt',
   './manifest.webmanifest', './icon.svg', './icon-192.svg', './icon-512.svg',
-  './readiness.json', './free-advanced-readiness.json', './stage2-readiness.json', './catalog-governance.json',
+  './readiness.json', './free-advanced-readiness.json', './plus-readiness.json', './stage2-readiness.json', './catalog-governance.json',
   './guides/index.html', './content/usage-guides.json',
-  './assets/free-advanced-app.mjs', './assets/free-advanced-bootstrap.mjs', './evidence-v028.json',
+  './assets/free-advanced-app.mjs', './assets/free-advanced-bootstrap.mjs', './evidence-v029.json',
 ];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE)));

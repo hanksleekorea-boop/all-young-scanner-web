@@ -98,7 +98,7 @@ try {
   await send('Page.enable'); await send('Runtime.enable');
   const results = [];
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/#home')) });
-  for (const view of ['routine','guides','records']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
+  for (const view of ['routine','guides','records','plus']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/')) });
   for (const width of [360, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/morning-three-step-start/')) });
   assert.ok(results.filter((row) => row.cards === 24).length === 3, '가이드 목록 24개가 모든 폭에서 유지되지 않음');
@@ -131,12 +131,31 @@ try {
   assert.ok(journey.result.value.saved >= 2, '루틴 가이드 저장 실패');
   assert.equal(journey.result.value.checkins, 1, '오늘 점검 저장 실패');
   assert.equal(journey.result.value.deleted, true, '기기 기록 전체 삭제 실패');
+  const plusJourney = await send('Runtime.evaluate', {
+    expression: `(async()=>{
+      document.querySelector('[data-view-target="routine"]').click();
+      for(const [name,value] of Object.entries({time:'morning',context:'dry',pace:'minimal'})){const input=document.querySelector('input[name="'+name+'"][value="'+value+'"]');input.checked=true}
+      document.querySelector('#routine-form').requestSubmit();await new Promise(r=>setTimeout(r,30));document.querySelector('[data-save-routine]').click();
+      document.querySelector('[data-view-target="plus"]').click();document.querySelector('#plus-routine-name').value='아침 루틴';document.querySelector('#plus-routine-form').requestSubmit();await new Promise(r=>setTimeout(r,30));
+      document.querySelector('[data-view-target="routine"]').click();
+      for(const [name,value] of Object.entries({time:'evening',context:'humid',pace:'balanced'})){const input=document.querySelector('input[name="'+name+'"][value="'+value+'"]');input.checked=true}
+      document.querySelector('#routine-form').requestSubmit();await new Promise(r=>setTimeout(r,30));
+      document.querySelector('[data-view-target="plus"]').click();document.querySelector('#plus-routine-name').value='저녁 루틴';document.querySelector('#plus-routine-form').requestSubmit();await new Promise(r=>setTimeout(r,30));
+      const options=document.querySelectorAll('#compare-left option');document.querySelector('#compare-left').value=options[1].value;document.querySelector('#compare-right').value=options[2].value;document.querySelector('#compare-routines').click();
+      document.querySelector('#collection-name').value='안전 모음';document.querySelector('#collection-guides input')?.click();document.querySelector('#collection-form').requestSubmit();await new Promise(r=>setTimeout(r,30));
+      return {routines:document.querySelectorAll('#plus-routine-list li:not(.empty-copy)').length,comparison:document.querySelector('#compare-result').innerText,collections:document.querySelectorAll('#collection-list li:not(.empty-copy)').length,plusVisible:!document.querySelector('[data-view="plus"]').hidden};
+    })()`, awaitPromise: true, returnByValue: true,
+  });
+  assert.equal(plusJourney.result.value.routines, 2, 'Plus 저장 루틴 2개 만들기 실패');
+  assert.match(plusJourney.result.value.comparison, /다른 조건/, 'Plus 루틴 비교 실패');
+  assert.equal(plusJourney.result.value.collections, 1, 'Plus 가이드 모음 만들기 실패');
+  assert.equal(plusJourney.result.value.plusVisible, true, 'Plus 화면 표시 실패');
   await new Promise((resolve) => {
     const timeout = setTimeout(resolve, 1000);
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
     socket.close();
   });
-  console.log(`[layout-verify] PASS — ${results.length}개 화면과 루틴→저장→점검→삭제 여정, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
+  console.log(`[layout-verify] PASS — ${results.length}개 화면과 무료 여정·Plus 저장→비교→모음 여정, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
 } finally {
   if (child.exitCode === null) {
     const exited = new Promise((resolve) => child.once('exit', resolve));

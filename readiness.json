@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-29-service-v0.28",
-  "updated_at": "2026-08-29",
+  "release_id": "2026-08-30-service-v0.29",
+  "updated_at": "2026-08-30",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
   "scope": "KR/ko-KR/KRW",
@@ -33,12 +33,12 @@
   "mobile": {
     "claim": "not_99",
     "current_release_device_test": "not_run",
-    "reason": "v0.27 자동 검사는 통과했으나 현재판 실제 기기 시험은 공개 후 별도 확인이 필요함; v0.26 지정 A56 한 대의 360px·가로 넘침·터치 크기·manifest·서비스 워커 확인은 역사 증거로만 보존",
+    "reason": "v0.29 자동 검사는 통과했으나 현재판 실제 A56 시험은 공개 후 별도 확인이 필요함; iOS 기기는 없음",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "partial",
-    "browser_evidence_scope": "v0.27 automatic static content, metadata, source linkage, PWA cache boundary, sanitized DOM output and local Edge rendering of guide index/detail at 360/390/1440px with zero horizontal overflow or clipped controls; deployed live journey, real login and real catalog journey not run",
+    "browser_evidence_scope": "v0.29 local Edge rendered 12 views at 360/390/1440px with zero horizontal overflow or clipped controls; free journey and Plus save/compare/collection journey pass; public live and device evidence remain separate",
     "tested_widths": [
       360,
       390,
@@ -60,13 +60,22 @@
   "free_advanced": {
     "status_file": "free-advanced-readiness.json",
     "code_total": 16,
-    "code_live": 16,
+    "code_live": 0,
     "code_verified": 16,
     "code_percent": 100,
     "operations_total": 4,
     "operations_done": 0,
     "operations_percent": 0,
     "claim": "code_complete_operations_blocked"
+  },
+  "plus_no_payment": {
+    "status_file": "plus-readiness.json",
+    "code_total": 12,
+    "code_verified": 12,
+    "code_live": 0,
+    "code_percent": 100,
+    "payment_included": false,
+    "claim": "code_verified_public_pending"
   },
   "content": {
     "published_usage_guides": 24,
@@ -86,7 +95,7 @@
     "claim": "blocked",
     "reason": "1단계 출시 관문, 실상품 2,000개, 판매처 5곳, 실제 후기 5,000건, 영어 사람 검토, 실기기·실사용자·운영 증거가 없음"
   },
-  "evidence_file": "evidence-v028.json",
+  "evidence_file": "evidence-v029.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",
