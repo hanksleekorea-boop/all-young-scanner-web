@@ -6,7 +6,7 @@
   "code": {
     "total": 24,
     "verified": 24,
-    "live": 0,
+    "live": 24,
     "percent": 100,
     "cards": [
       "regional policy groups", "trusted region sources", "unknown region fail closed", "TCF signal gate", "GPP signal and opt-out gate", "contextual choice gate", "provider registry", "bundled adapter allowlist", "contract-required providers disabled", "placement format filter", "provider region filter", "minimum CPM floor", "priority and yield score", "provider health circuit", "one provider per slot", "request timeout budget", "zero automatic retry", "CLS and LCP budgets", "local bounded metrics", "metric field redaction", "deterministic experiment allocation", "experiment kill switch", "automatic stop loss", "two sets of 1,000 regional personas"

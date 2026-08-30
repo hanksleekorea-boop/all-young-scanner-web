@@ -33,12 +33,12 @@
   "mobile": {
     "claim": "previous_android_verified_current_release_not_run_ios_not_run",
     "current_release_device_test": "not_run",
-    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.30 광고 기본 차단판은 실기기 재시험 미실시; iOS 기기는 없음",
+    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.31 광고 2단계판은 실기기 재시험 미실시; iOS 기기는 없음",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "live_verified",
-    "browser_evidence_scope": "v0.30 local Edge rendered 12 views at 360/390/1440px with zero horizontal overflow or clipped controls; free journey, Plus journey and advertising house-fallback pass; public live and device evidence remain separate",
+    "browser_evidence_scope": "v0.31 local Edge rendered 13 views at 360/390/1440px with zero horizontal overflow or clipped controls; free journey, Plus journey, advertising house-fallback and external ad request zero pass; public live and device evidence remain separate",
     "tested_widths": [
       360,
       390,
@@ -92,7 +92,7 @@
     "status_file": "ad-stage2-readiness.json",
     "code_total": 24,
     "code_verified": 24,
-    "code_live": 0,
+    "code_live": 24,
     "code_percent": 100,
     "external_total": 9,
     "external_done": 0,
