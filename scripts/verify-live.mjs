@@ -1,7 +1,7 @@
 const base = process.env.AYS_PUBLIC_BASE ?? 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
-const expectedRelease = '2026-08-30-service-v0.31';
-const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'privacy-choices.html', 'ads.txt', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'advertising-config.json', 'evidence-v031.json'];
+const expectedRelease = '2026-08-30-service-v0.32';
+const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'evidence-v032.json'];
 const results = [];
 const freshUrl = (path = '') => { const url = new URL(path, base); url.searchParams.set('ays_verify', `${Date.now()}-${Math.random()}`); return url; };
 
@@ -36,6 +36,7 @@ const plus = await (await fetch(freshUrl('plus-readiness.json'), { cache: 'no-st
 const adConfig = await (await fetch(freshUrl('advertising-config.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
 const adReadiness = await (await fetch(freshUrl('ad-stage1-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
 const adStageTwo = await (await fetch(freshUrl('ad-stage2-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
+const adStageThree = await (await fetch(freshUrl('ad-stage3-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
 const headers = await fetch(base, { method: 'HEAD', signal: AbortSignal.timeout(15_000) });
 
 assert(index.includes('올영스캐너') && !/ShoppingScanner|쇼핑스캐너/.test(index), '다른 제품 또는 옛 이름이 공개됨');
@@ -46,7 +47,8 @@ assert(readiness.release_id === free.release_id && free.release_id === plus.rele
 assert(readiness.commercial?.claim === 'blocked', '외부 조건 없이 상용 완료를 주장함');
 assert(free.operations.done === 0, '외부 운영 증거 없이 완료를 주장함');
 assert(adConfig.enabled === false && adConfig.publisher_id === '' && adReadiness.code.verified === 16 && adReadiness.external_activation.done === 0, '광고 코드 준비와 외부 광고 승인을 섞음');
-assert(adConfig.schema_version === 2 && adConfig.stage_two.enabled === false && adStageTwo.code.verified === 24 && adStageTwo.code.live === 24 && adStageTwo.external_activation.done === 0 && adStageTwo.active_providers.external === 0, '광고 2단계 코드 공개와 실제 다중 제공자 운영을 섞음');
+assert(adConfig.schema_version === 3 && adConfig.stage_two.enabled === false && adStageTwo.code.verified === 24 && adStageTwo.code.live === 24 && adStageTwo.external_activation.done === 0 && adStageTwo.active_providers.external === 0, '광고 2단계 코드 공개와 실제 다중 제공자 운영을 섞음');
+assert(adConfig.stage_three.enabled === false && adConfig.stage_three.mode === 'shadow-only' && adStageThree.code.verified === 32 && adStageThree.code.live === 32 && adStageThree.external_activation.done === 0 && adStageThree.supply_chain.done === 0 && adStageThree.active_operations.live_allocation_percent === 0, '광고 3단계 코드 공개와 실제 고급 광고 운영을 섞음');
 assert(Boolean(headers.headers.get('strict-transport-security')), '공개 호스트 HSTS 누락');
 
 console.log(JSON.stringify({

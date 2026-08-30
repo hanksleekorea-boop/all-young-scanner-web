@@ -1,11 +1,11 @@
 {
   "name": "all-young-scanner-web",
   "private": true,
-  "version": "0.31.0",
+  "version": "0.32.0",
   "type": "module",
   "scripts": {
     "content:build": "node scripts/build-content-pages.mjs",
-    "verify": "npm run content:build && node scripts/verify-public.mjs && node --test scripts/free-advanced.test.mjs scripts/plus.test.mjs scripts/plus-personas.test.mjs scripts/service-worker.test.mjs scripts/content-pages.test.mjs scripts/ad-stage1.test.mjs scripts/ad-personas.test.mjs scripts/ad-stage2.test.mjs scripts/ad-stage2-personas.test.mjs",
+    "verify": "npm run content:build && node scripts/verify-public.mjs && node --test scripts/free-advanced.test.mjs scripts/plus.test.mjs scripts/plus-personas.test.mjs scripts/service-worker.test.mjs scripts/content-pages.test.mjs scripts/ad-stage1.test.mjs scripts/ad-personas.test.mjs scripts/ad-stage2.test.mjs scripts/ad-stage2-personas.test.mjs scripts/ad-stage3.test.mjs scripts/ad-stage3-personas.test.mjs",
     "verify:layout": "node scripts/verify-layout.mjs",
     "verify:a56": "node scripts/verify-a56-live.mjs",
     "verify:live": "node scripts/verify-live.mjs",

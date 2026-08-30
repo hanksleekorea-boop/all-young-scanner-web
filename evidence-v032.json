@@ -1,0 +1,63 @@
+{
+  "release_id": "2026-08-30-service-v0.32",
+  "verified_at": "2026-08-30",
+  "product": "advanced free service, no-payment Plus, advertising stages one through three with advanced operations disabled by default",
+  "automatic": {
+    "total_tests": 78,
+    "free_advanced_unit_tests": 8,
+    "plus_unit_tests": 14,
+    "virtual_personas": 1000,
+    "ad_safety_personas": 1000,
+    "ad_stage2_regional_personas": 2000,
+    "ad_stage3_advanced_scenarios": 20000,
+    "ad_stage1_unit_tests": 8,
+    "ad_stage2_unit_tests": 12,
+    "ad_stage3_unit_tests": 18,
+    "service_worker_tests": 7,
+    "content_page_tests": 6,
+    "published_usage_guides": 24,
+    "connected_content_sources": 7,
+    "layout_widths": [360, 390, 1440],
+    "payment_paths": 0,
+    "external_scripts_at_default": 0,
+    "external_ad_requests_at_default": 0,
+    "account_required": false,
+    "server_side_personal_data": false
+  },
+  "browser": {
+    "status": "local_automated_pass",
+    "views": 14,
+    "widths": [360, 390, 1440],
+    "horizontal_overflow": 0,
+    "small_or_clipped_controls": 0,
+    "external_ad_requests": 0,
+    "limitation": "External providers and direct campaigns remain disabled."
+  },
+  "server": {
+    "status": "pending",
+    "functional_commit": null,
+    "release_state_commit": null,
+    "pages_run": null,
+    "pages": "pending",
+    "codeql_run": null,
+    "codeql": "pending",
+    "public_verify_run": null,
+    "public_verify": "pending",
+    "public_http": "pending"
+  },
+  "android": {"status": "not_run_current_release", "previous_release": "v0.29 A56 pass"},
+  "ios": {"status": "not_run", "device_count": 0},
+  "advertising_stage_three": {
+    "code": "verified_32_of_32",
+    "external_activation": "blocked_0_of_13",
+    "supply_chain": "unverified_0_of_4",
+    "active_external_providers": 0,
+    "active_direct_campaigns": 0,
+    "live_allocation_percent": 0,
+    "personalized_advertising": false,
+    "default_external_requests": 0
+  },
+  "human_editorial_signoff": "not_run",
+  "operator_identity": "not_confirmed",
+  "commercial_operation": "blocked_external_evidence"
+}

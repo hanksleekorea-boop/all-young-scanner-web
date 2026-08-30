@@ -2,6 +2,7 @@ import { canActivateAdvertising, inferPageKind } from './ad-policy.mjs';
 import { resolveAdvertisingConsent } from './consent-gate.mjs';
 import { selectProvider } from './ad-router.mjs';
 import { recordAdMetric } from './ad-metrics.mjs';
+import { selectMonetizationCandidate } from './ad-optimizer.mjs';
 
 const CONFIG_URL = new URL('../advertising-config.json', import.meta.url);
 
@@ -31,6 +32,26 @@ function trustedRegionContext() {
   const regionGroup = document.documentElement.dataset.adRegionGroup || 'UNKNOWN';
   const regionSource = document.documentElement.dataset.adRegionSource || 'untrusted';
   return { regionGroup, regionSource };
+}
+
+function advancedSessionState(placementId) {
+  try {
+    const state = JSON.parse(sessionStorage.getItem('ays-ad-frequency-v1') || '{}');
+    const last = Number(state.last_impression_at || 0);
+    return {
+      total_impressions: Number(state.total_impressions || 0),
+      placement_impressions: Number(state.placements?.[placementId] || 0),
+      minutes_since_last_impression: last ? (Date.now() - last) / 60_000 : Number.POSITIVE_INFINITY,
+    };
+  } catch { return { total_impressions: Number.MAX_SAFE_INTEGER, placement_impressions: Number.MAX_SAFE_INTEGER, minutes_since_last_impression: 0 }; }
+}
+
+function recordAdvancedImpression(placementId) {
+  try {
+    const state = JSON.parse(sessionStorage.getItem('ays-ad-frequency-v1') || '{}');
+    const placements = state.placements && typeof state.placements === 'object' ? state.placements : {};
+    sessionStorage.setItem('ays-ad-frequency-v1', JSON.stringify({ total_impressions: Number(state.total_impressions || 0) + 1, placements: { ...placements, [placementId]: Number(placements[placementId] || 0) + 1 }, last_impression_at: Date.now() }));
+  } catch { /* A blocked session store must not enable extra requests. */ }
 }
 
 function waitUntilNearViewport(slot, timeoutMs) {
@@ -64,6 +85,19 @@ export async function mountAdvertising() {
     const pageKind = slot.dataset.pageKind || inferPageKind(location.pathname, location.hash);
     const route = selectProvider({ config, regionGroup: region.regionGroup, regionSource: region.regionSource, consent, placementId: slot.dataset.adSlot });
     if (!route.allowed) { showFallback(slot, route.reason); continue; }
+    if (config.stage_three?.enabled) {
+      const advanced = selectMonetizationCandidate({
+        config,
+        context: { day: new Date().toISOString().slice(0, 10), region_group: region.regionGroup, placement_id: slot.dataset.adSlot, format: config.stage_two?.placements?.[slot.dataset.adSlot]?.format || 'responsive-display' },
+        traffic: { automation: document.documentElement.dataset.adTrafficSource !== 'operator-server' || document.documentElement.dataset.adTrafficClass !== 'human', test_traffic: document.documentElement.dataset.adTrafficClass === 'test', event_sequence_valid: true },
+        session: advancedSessionState(slot.dataset.adSlot),
+        programmatic: [{ ...route.provider, approved: route.provider.approved === true, contract_verified: route.provider.contract_verified === true }],
+        health: {},
+        seed: document.documentElement.dataset.adRolloutSeed || '',
+      });
+      if (!advanced.serve) { showFallback(slot, advanced.reason); continue; }
+      if (advanced.candidate?.type === 'direct') { showFallback(slot, 'DIRECT_CREATIVE_ADAPTER_REQUIRED'); continue; }
+    }
     if (route.provider.id !== 'google-adsense') { showFallback(slot, 'PROVIDER_ADAPTER_UNAVAILABLE'); continue; }
     const result = canActivateAdvertising({ config, pageKind, slotName: slot.dataset.adSlot, consent: { ...consent, regional_ready: true } });
     if (!result.allowed) { showFallback(slot, result.reason); continue; }
@@ -81,6 +115,7 @@ export async function mountAdvertising() {
     slot.dataset.adState = 'provider';
     slot.dataset.adProvider = route.provider.id;
     recordAdMetric({ event: 'request', provider_id: route.provider.id, placement_id: slot.dataset.adSlot, region_group: region.regionGroup, device_class: innerWidth < 700 ? 'mobile' : 'desktop', release_id: config.release_id });
+    recordAdvancedImpression(slot.dataset.adSlot);
     active += 1;
   }
   if (active) {

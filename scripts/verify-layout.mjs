@@ -116,6 +116,17 @@ try {
   assert.ok(operations.result.value.scrollWidth <= operations.result.value.width, '광고 투명성 현황 가로 넘침');
   assert.ok(operations.result.value.buttonHeight >= 44, '광고 운영 기록 삭제 조작 영역 44px 미만');
   assert.equal(operations.result.value.internal, false, '광고 투명성 현황에 내부 개발 문구 노출');
+  await send('Page.navigate', { url: 'http://127.0.0.1:4179/ad-governance.html' });
+  await ready(send); await wait(150);
+  const governance = await send('Runtime.evaluate', { expression: `(() => { const links=[...document.querySelectorAll('a')]; return {ready:document.documentElement.dataset.adGovernanceReady,scrollWidth:document.documentElement.scrollWidth,width:innerWidth,mode:document.querySelector('#optimization-mode')?.textContent,direct:document.querySelector('#direct-campaign-count')?.textContent,supply:document.querySelector('#supply-chain-count')?.textContent,conditions:document.querySelector('#stage-three-condition-count')?.textContent,smallLinks:links.filter(node=>{const b=node.getBoundingClientRect();return b.width>0&&(b.width<44||b.height<44)}).length,internal:/개발 진척|LAUNCH CHECK/.test(document.body.innerText)} })()`, returnByValue: true });
+  assert.equal(governance.result.value.ready, 'true', '광고 공급망·안전 운영 시작 실패');
+  assert.equal(governance.result.value.mode, '그림자 전용', '광고 3단계 기본 운영 방식 오류');
+  assert.equal(governance.result.value.direct, '0', '직접 캠페인을 실제보다 크게 표시함');
+  assert.equal(governance.result.value.supply, '0/4', '공급망 확인을 실제보다 크게 표시함');
+  assert.equal(governance.result.value.conditions, '0/13', '광고 3단계 외부 조건을 실제보다 크게 표시함');
+  assert.ok(governance.result.value.scrollWidth <= governance.result.value.width, '광고 공급망·안전 운영 가로 넘침');
+  assert.equal(governance.result.value.smallLinks, 0, '광고 공급망·안전 운영 44px 미만 링크');
+  assert.equal(governance.result.value.internal, false, '광고 공급망·안전 운영에 내부 개발 문구 노출');
   assert.ok(results.filter((row) => row.cards === 24).length === 3, '가이드 목록 24개가 모든 폭에서 유지되지 않음');
   for (const row of results.filter((item) => item.adSlots > 0)) {
     assert.equal(row.houseSlots, row.adSlots, '기본 비활성 상태에서 자체 안내 대체 화면 누락');
@@ -179,7 +190,7 @@ try {
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
     socket.close();
   });
-  console.log(`[layout-verify] PASS — ${results.length + 1}개 화면과 무료·Plus·광고 투명성 여정, 외부 광고 네트워크 요청 0, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
+  console.log(`[layout-verify] PASS — ${results.length + 2}개 화면과 무료·Plus·광고 투명성·공급망 여정, 외부 광고 네트워크 요청 0, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
 } finally {
   if (child.exitCode === null) {
     const exited = new Promise((resolve) => child.once('exit', resolve));

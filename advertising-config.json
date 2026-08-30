@@ -1,6 +1,6 @@
 {
-  "schema_version": 2,
-  "release_id": "2026-08-30-service-v0.31",
+  "schema_version": 3,
+  "release_id": "2026-08-30-service-v0.32",
   "provider": "google-adsense",
   "enabled": false,
   "publisher_id": "",
@@ -43,6 +43,67 @@
       "home-context": { "format": "responsive-display", "floor_cpm_micros": 0 },
       "guide-index-context": { "format": "responsive-display", "floor_cpm_micros": 0 },
       "guide-detail-context": { "format": "responsive-display", "floor_cpm_micros": 0 }
+    }
+  },
+  "stage_three": {
+    "enabled": false,
+    "fail_closed": true,
+    "mode": "shadow-only",
+    "activation": {
+      "operator_approved": false,
+      "contract_register_verified": false,
+      "supply_chain_verified": false,
+      "human_policy_reviewed": false,
+      "production_baseline_ready": false
+    },
+    "governance": {
+      "signed_config": false,
+      "required_approvals": 2,
+      "approved_by": [],
+      "rollback_fingerprint": ""
+    },
+    "supply_chain": {
+      "owner_domain": "",
+      "ads_txt_entries": [],
+      "sellers_json_entries": [],
+      "schain_nodes": [],
+      "verified": false
+    },
+    "direct_campaigns": {
+      "enabled": false,
+      "campaigns": []
+    },
+    "traffic_quality": {
+      "automation_block": true,
+      "test_traffic_block": true,
+      "min_viewable_ms": 1000,
+      "max_repeat_burst": 4
+    },
+    "frequency_caps": {
+      "max_impressions_per_session": 3,
+      "max_impressions_per_placement": 1,
+      "minimum_interval_minutes": 10
+    },
+    "optimization": {
+      "enabled": false,
+      "max_live_allocation_percent": 5,
+      "holdout_percent": 10,
+      "min_sample_size": 1000,
+      "confidence_percent": 95
+    },
+    "stop_loss": {
+      "max_invalid_traffic_rate": 0.01,
+      "max_user_complaint_rate": 0.001,
+      "max_revenue_drop_rate": 0.1,
+      "min_core_journey_success_rate": 0.99,
+      "max_supply_chain_mismatches": 0,
+      "max_policy_violations": 0
+    },
+    "aggregate_reporting": {
+      "local_only": true,
+      "max_rows": 500,
+      "max_days": 30,
+      "forbidden_fields": ["name", "email", "phone", "birthdate", "exact_location", "ip_address", "user_id", "session_id", "search_query", "skin_condition", "routine", "checkin", "collection"]
     }
   }
 }

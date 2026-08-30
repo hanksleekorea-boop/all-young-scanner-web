@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.32",
+  "updated_at": "2026-08-30",
+  "claim": "code_complete_advanced_operations_activation_blocked",
+  "code": {
+    "total": 32,
+    "verified": 32,
+    "live": 0,
+    "percent": 100,
+    "cards": [
+      "shadow-only default", "fail-closed activation", "two-person approval gate", "signed configuration gate", "rollback fingerprint", "ads.txt parser", "owner domain directive", "sellers.json cross-check", "SupplyChain node cross-check", "direct campaign registry", "contract and approval gate", "campaign date gate", "region placement and format gate", "daily impression and spend pacing", "session frequency cap", "placement frequency cap", "minimum interval cap", "automation traffic exclusion", "test traffic exclusion", "event sequence validation", "repeat burst detection", "minimum viewability gate", "portfolio value score", "ten-percent holdout", "five-percent live ceiling", "one-thousand sample floor", "core journey guardrail", "revenue and complaint stop loss", "sanitized aggregate rows", "thirty-day five-hundred-row retention", "operator governance page", "twenty-thousand advanced scenarios"
+    ]
+  },
+  "supply_chain": { "total": 4, "done": 0, "percent": 0, "items": ["owner domain", "authorized seller rows", "sellers.json match", "SupplyChain node match"] },
+  "active_operations": { "external_providers": 0, "direct_campaigns": 0, "live_allocation_percent": 0, "shadow_decisions": 0 },
+  "external_activation": {
+    "total": 13,
+    "done": 0,
+    "percent": 0,
+    "blocked": [
+      "operator legal identity and responsible contact", "AdSense approval and identifiers", "secondary provider contract", "third provider contract", "certified consent management platform", "trusted coarse region service", "root ads.txt authorized seller rows", "sellers.json seller identity match", "SupplyChain object validation", "two named human approvers", "human privacy and advertising review", "production traffic quality baseline", "production revenue performance and device baseline"
+    ]
+  },
+  "personalized_advertising": false,
+  "default_external_requests": 0
+}

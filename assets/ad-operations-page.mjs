@@ -28,4 +28,12 @@ document.querySelector('#clear-ad-operations')?.addEventListener('click', () => 
   clearAdMetrics(); renderLocalSummary(); text('#operations-status', '이 기기의 광고 운영 기록을 삭제했습니다.');
 });
 
+const navigation = document.querySelector('main .wrap > p:last-child');
+if (navigation) {
+  const governance = document.createElement('a');
+  governance.href = 'ad-governance.html';
+  governance.textContent = '광고 공급망·안전 운영';
+  navigation.prepend(governance, document.createTextNode(' · '));
+}
+
 loadStatus(); renderLocalSummary();

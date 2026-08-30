@@ -5,10 +5,10 @@ const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(resolve(root, path), 'utf8');
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 const required = [
-  'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'privacy-choices.html', 'ads.txt', '.well-known/security.txt', '.nojekyll',
+  'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'ads.txt', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js', 'robots.txt', 'sitemap.xml',
-  'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'stage2-readiness.json', 'catalog-governance.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'advertising-config.json', 'evidence-v031.json',
-  'guides/index.html', 'content/usage-guides.json', 'assets/free-advanced-app.mjs', 'assets/free-advanced-bootstrap.mjs', 'assets/ad-policy.mjs', 'assets/consent-gate.mjs', 'assets/ad-router.mjs', 'assets/ad-metrics.mjs', 'assets/ad-loader.mjs', 'assets/ad-stage1.css', 'assets/ad-operations-page.mjs',
+  'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'stage2-readiness.json', 'catalog-governance.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'evidence-v032.json',
+  'guides/index.html', 'content/usage-guides.json', 'assets/free-advanced-app.mjs', 'assets/free-advanced-bootstrap.mjs', 'assets/ad-policy.mjs', 'assets/consent-gate.mjs', 'assets/ad-router.mjs', 'assets/ad-metrics.mjs', 'assets/ad-optimizer.mjs', 'assets/ad-loader.mjs', 'assets/ad-stage1.css', 'assets/privacy-choices-page.mjs', 'assets/ad-operations-page.mjs', 'assets/ad-governance-page.mjs',
 ];
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
 
@@ -31,12 +31,15 @@ const sitemap = read('sitemap.xml');
 const adConfig = JSON.parse(read('advertising-config.json'));
 const adReadiness = JSON.parse(read('ad-stage1-readiness.json'));
 const adStageTwo = JSON.parse(read('ad-stage2-readiness.json'));
+const adStageThree = JSON.parse(read('ad-stage3-readiness.json'));
 const adPolicy = read('assets/ad-policy.mjs');
 const adRouter = read('assets/ad-router.mjs');
 const adMetrics = read('assets/ad-metrics.mjs');
+const adOptimizer = read('assets/ad-optimizer.mjs');
 const adLoader = read('assets/ad-loader.mjs');
 const advertising = read('advertising.html');
 const adOperations = read('ad-operations.html');
+const adGovernance = read('ad-governance.html');
 
 assert(html.includes('<link rel="manifest" href="manifest.webmanifest">') && html.includes('free-advanced-bootstrap.mjs'), '무료 고급 앱 또는 PWA 연결 누락');
 assert((html.match(/data-view="(?:home|routine|guides|records|plus)"/g) || []).length === 5, '모바일·PC 5개 핵심 화면 누락');
@@ -51,7 +54,7 @@ assert(['selectRoutineSlugs', 'filterGuides', 'upsertCheckin', 'makeBackup', 'pa
 assert(html.includes('결제 없이 전체 공개') && !/stripe|checkout|paymentIntent|subscription/i.test(app) && !/₩|구매하기/.test(html), '결제 제외·무료 권리 경계 오류');
 assert(bootstrap.includes('serviceWorker.register') && bootstrap.includes('mountFreeAdvancedApp'), '앱 시작 또는 서비스 워커 등록 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.start_url === './#home' && manifest.shortcuts.length === 3, '무료 고급 PWA 정보 불일치');
-assert(sw.includes("const RELEASE_VERSION = '2026-08-30-service-v0.31'") && readiness.release_id === '2026-08-30-service-v0.31', '공개 판번호 불일치');
+assert(sw.includes("const RELEASE_VERSION = '2026-08-30-service-v0.32'") && readiness.release_id === '2026-08-30-service-v0.32', '공개 판번호 불일치');
 assert(required.filter((path) => !['robots.txt', 'sitemap.xml', '.nojekyll', 'sw.js'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['progress.html'].includes(path)), '오프라인 핵심 파일 누락');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href) && !isGuidePage) return'), '다른 앱·API 임시 저장 보호 누락');
 assert(content.counts.guides === 24 && content.counts.sources === 7 && content.guides.every((guide) => guide.steps.length > 0 && guide.source_refs.length > 0), '완결 콘텐츠 수 또는 출처 연결 오류');
@@ -61,21 +64,27 @@ assert(free.operations.total === 4 && free.operations.done === 0 && free.operati
 assert(readiness.free_advanced.code_verified === free.code.verified && readiness.free_advanced.code_live === free.code.live && readiness.free_advanced.code_percent === free.code.percent, '전체 진척과 무료 고급 현황 대조 실패');
 assert(plus.code.total === 12 && plus.code.verified === 12 && plus.code.percent === 100 && plus.payment.included === false && plus.payment.checkout_paths === 0 && plus.code.cards.every((card) => ['VERIFIED','LIVE'].includes(card.status)), '결제 제외 Plus 코드 12/12 상태 오류');
 assert(readiness.plus_no_payment.code_verified === plus.code.verified && readiness.plus_no_payment.code_live === plus.code.live && readiness.plus_no_payment.payment_included === false, '전체 진척과 Plus 현황 대조 실패');
-assert(evidence.release_id === readiness.release_id && evidence.automatic.total_tests === 60 && evidence.automatic.free_advanced_unit_tests === 8 && evidence.automatic.plus_unit_tests === 14 && evidence.automatic.virtual_personas === 1000 && evidence.automatic.ad_safety_personas === 1000 && evidence.automatic.ad_stage2_regional_personas === 2000 && evidence.automatic.account_required === false, '현재판 자동 증거 불일치');
+assert(evidence.release_id === readiness.release_id && evidence.automatic.total_tests === 78 && evidence.automatic.free_advanced_unit_tests === 8 && evidence.automatic.plus_unit_tests === 14 && evidence.automatic.virtual_personas === 1000 && evidence.automatic.ad_safety_personas === 1000 && evidence.automatic.ad_stage2_regional_personas === 2000 && evidence.automatic.ad_stage3_advanced_scenarios === 20000 && evidence.automatic.account_required === false, '현재판 자동 증거 불일치');
 assert(['pending','success'].includes(evidence.server.pages) && ['pending','success'].includes(evidence.server.codeql) && ['pending','success'].includes(evidence.server.public_verify), '현재판 공개 증거 상태 오류');
 assert(privacy.includes('계정 로그인·분석 추적·서버 기록 저장을 제공하지 않으며') && privacy.includes('이름·이메일·전화번호·생년월일·자유서술은 받지 않습니다'), '현재 개인정보 처리 상태 누락');
 assert(terms.includes('송출 중인 외부 광고') && terms.includes('제품 추천·실시간 가격·평점·인기 순위를 제공하지 않습니다'), '현재 무료판 수익·상품 경계 누락');
 assert(support.includes('이 기기 기록 전체 삭제') && support.includes('다른 기기로 기록 옮기기'), '삭제·이동 안내 누락');
-assert(progress.includes('고급 무료 1.0 코드') && progress.includes('광고 2단계 코드') && progress.includes('Plus 결제 제외 코드') && progress.includes('운영 상용화 증거') && progress.includes('실기기'), '코드와 운영 증거 분리 대시보드 누락');
+assert(progress.includes('고급 무료 1.0 코드') && progress.includes('광고 2단계 코드') && progress.includes('광고 3단계 코드') && progress.includes('Plus 결제 제외 코드') && progress.includes('운영 상용화 증거') && progress.includes('실기기'), '코드와 운영 증거 분리 대시보드 누락');
 assert(progress.includes('noindex,nofollow') && !sitemap.includes('progress.html'), '운영 대시보드 검색 제외 실패');
 assert(adConfig.enabled === false && adConfig.publisher_id === '' && adConfig.certified_cmp_ready === false && adConfig.operator_identity_confirmed === false, '확인되지 않은 광고 계정 또는 운영 조건을 활성화함');
 assert(adReadiness.code.verified === 16 && adReadiness.code.live === 16 && adReadiness.code.percent === 100 && adReadiness.external_activation.done === 0, '광고 코드 준비와 외부 승인을 섞음');
 assert(adStageTwo.code.verified === 24 && [0,24].includes(adStageTwo.code.live) && adStageTwo.code.percent === 100 && adStageTwo.external_activation.done === 0 && adStageTwo.active_providers.external === 0, '광고 2단계 코드와 실제 다중 제공자 운영을 섞음');
 assert(readiness.advertising_stage_two.code_verified === adStageTwo.code.verified && readiness.advertising_stage_two.external_done === 0, '전체 진척과 광고 2단계 현황 대조 실패');
-assert(adConfig.schema_version === 2 && adConfig.stage_two.enabled === false && adConfig.stage_two.fail_closed === true && adConfig.stage_two.providers.filter((provider) => provider.external && provider.enabled).length === 0, '광고 2단계 기본 차단 설정 오류');
+assert(adStageThree.code.verified === 32 && [0,32].includes(adStageThree.code.live) && adStageThree.code.percent === 100 && adStageThree.external_activation.done === 0 && adStageThree.supply_chain.done === 0 && adStageThree.active_operations.live_allocation_percent === 0, '광고 3단계 코드와 실제 고급 운영을 섞음');
+assert(readiness.advertising_stage_three.code_verified === adStageThree.code.verified && readiness.advertising_stage_three.external_done === 0 && readiness.advertising_stage_three.supply_chain_done === 0, '전체 진척과 광고 3단계 현황 대조 실패');
+assert(adConfig.schema_version === 3 && adConfig.stage_two.enabled === false && adConfig.stage_two.fail_closed === true && adConfig.stage_two.providers.filter((provider) => provider.external && provider.enabled).length === 0, '광고 2단계 기본 차단 설정 오류');
+assert(adConfig.stage_three.enabled === false && adConfig.stage_three.mode === 'shadow-only' && adConfig.stage_three.optimization.enabled === false && adConfig.stage_three.governance.approved_by.length === 0 && adConfig.stage_three.direct_campaigns.campaigns.length === 0, '광고 3단계 기본 차단 설정 오류');
 assert(adPolicy.includes('forbidden_page_kinds') && adPolicy.includes('sanitizeAdContext') && adLoader.includes('showFallback') && adLoader.includes('canActivateAdvertising'), '광고 허용표·민감 문맥 제거·대체 화면 관문 누락');
 assert(adRouter.includes('resolveRegionalPolicy') && adRouter.includes('selectProvider') && adRouter.includes('evaluateStopLoss') && adMetrics.includes('MAX_EVENTS = 200'), '지역·제공자 선택·자동 중단·제한 기록 누락');
+assert(['parseAdsTxt', 'validateSupplyChain', 'evaluateTrafficQuality', 'enforceFrequencyCaps', 'selectDirectCampaign', 'selectMonetizationCandidate', 'evaluateAdvancedStopLoss', 'sanitizeAggregateRow', 'pruneAggregateRows', 'createRollbackFingerprint'].every((name) => adOptimizer.includes(`function ${name}`)), '공급망·부정 트래픽·캠페인·제한 공개·복구 함수 누락');
+assert(adLoader.includes('selectMonetizationCandidate') && adLoader.includes("adTrafficSource !== 'operator-server'") && adLoader.includes('DIRECT_CREATIVE_ADAPTER_REQUIRED'), '광고 3단계 로더 연결 또는 외부 신뢰·직접 소재 차단 누락');
 assert(advertising.includes('현재 상태: 외부 광고·제휴 링크 꺼짐') && advertising.includes('지역·종류·단가별 선택') && privacy.includes('광고 네트워크로 정보를 보내지 않습니다'), '광고·개인정보 현재 상태 고지 누락');
 assert(adOperations.includes('noindex,nofollow') && adOperations.includes('이 기기 광고 운영 기록 삭제') && !sitemap.includes('ad-operations.html'), '광고 투명성 화면 검색 제외 또는 삭제 경로 누락');
+assert(adGovernance.includes('noindex,nofollow') && adGovernance.includes('공급망 확인') && adGovernance.includes('최대 5%') && !sitemap.includes('ad-governance.html'), '광고 공급망·제한 공개 화면 검색 제외 또는 현재 상태 누락');
 
-console.log(`[public-verify] PASS — 필수 ${required.length}파일, 광고 1단계 16/16·2단계 24/24, 지역·제공자·단가·중단 관문과 외부 활성화 분리`);
+console.log(`[public-verify] PASS — 필수 ${required.length}파일, 광고 1단계 16/16·2단계 24/24·3단계 32/32, 공급망·부정 트래픽·캠페인·제한 공개와 외부 운영 분리`);
