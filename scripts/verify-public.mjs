@@ -65,7 +65,7 @@ assert(support.includes('이 기기 기록 전체 삭제') && support.includes('
 assert(progress.includes('고급 무료 1.0 코드') && progress.includes('Plus 결제 제외 코드') && progress.includes('운영 상용화 증거') && progress.includes('실기기'), '코드와 운영 증거 분리 대시보드 누락');
 assert(progress.includes('noindex,nofollow') && !sitemap.includes('progress.html'), '운영 대시보드 검색 제외 실패');
 assert(adConfig.enabled === false && adConfig.publisher_id === '' && adConfig.certified_cmp_ready === false && adConfig.operator_identity_confirmed === false, '확인되지 않은 광고 계정 또는 운영 조건을 활성화함');
-assert(adReadiness.code.verified === 16 && adReadiness.code.percent === 100 && adReadiness.external_activation.done === 0, '광고 코드 준비와 외부 승인을 섞음');
+assert(adReadiness.code.verified === 16 && adReadiness.code.live === 16 && adReadiness.code.percent === 100 && adReadiness.external_activation.done === 0, '광고 코드 준비와 외부 승인을 섞음');
 assert(adPolicy.includes('forbidden_page_kinds') && adPolicy.includes('sanitizeAdContext') && adLoader.includes('showFallback') && adLoader.includes('canActivateAdvertising'), '광고 허용표·민감 문맥 제거·대체 화면 관문 누락');
 assert(advertising.includes('현재 상태: 외부 광고·제휴 링크 꺼짐') && privacy.includes('광고 네트워크로 정보를 보내지 않습니다'), '광고·개인정보 현재 상태 고지 누락');
 

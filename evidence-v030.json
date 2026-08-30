@@ -29,15 +29,15 @@
     "limitation": "Local automated Edge; actual provider ads remain disabled and were not rendered."
   },
   "server": {
-    "status": "pending",
-    "functional_commit": null,
-    "pages_run": null,
-    "pages": "pending",
-    "codeql_run": null,
-    "codeql": "pending",
-    "public_verify_run": null,
-    "public_verify": "pending",
-    "public_http": "pending"
+    "status": "deployed",
+    "functional_commit": "3556dc2864d5ab3391872ec4bf5dc96b02de02c2",
+    "pages_run": 33302693810,
+    "pages": "success",
+    "codeql_run": 33302694529,
+    "codeql": "success",
+    "public_verify_run": 33302694542,
+    "public_verify": "success",
+    "public_http": "pass_18_paths"
   },
   "android": {"status": "not_run_current_release", "previous_release": "v0.29 A56 pass"},
   "ios": {"status": "not_run", "device_count": 0},

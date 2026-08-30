@@ -81,6 +81,7 @@
     "status_file": "ad-stage1-readiness.json",
     "code_total": 16,
     "code_verified": 16,
+    "code_live": 16,
     "code_percent": 100,
     "external_total": 5,
     "external_done": 0,

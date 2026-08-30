@@ -6,7 +6,7 @@
   "code": {
     "total": 16,
     "verified": 16,
-    "live": 0,
+    "live": 16,
     "percent": 100,
     "cards": [
       "provider configuration", "default-off gate", "publisher validation", "slot validation", "certified CMP gate", "operator identity gate", "page allowlist", "forbidden page block", "sensitive context stripping", "manual home slot", "manual guide slots", "house fallback", "privacy choice", "advertising disclosure", "cookie disclosure", "ads.txt placeholder"
