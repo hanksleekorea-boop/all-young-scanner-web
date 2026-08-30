@@ -37,6 +37,7 @@ test('가이드 목록은 검색과 24개 상세 링크를 제공한다', () => 
   assert.match(guideIndex, /id="guide-search"/);
   assert.equal((guideIndex.match(/class="guide-card"/g) || []).length, 24);
   for (const guide of content.guides) assert.ok(guideIndex.includes(`./${guide.slug}/`));
+  assert.match(guideIndex, /data-ad-slot="guide-index-context"/);
 });
 
 test('각 상세 페이지에는 검색 메타데이터·검토일·안전 경계가 있다', async () => {
@@ -47,11 +48,14 @@ test('각 상세 페이지에는 검색 메타데이터·검토일·안전 경�
     assert.ok(page.includes('최근 검토 2026-08-29'));
     assert.ok(page.includes('다음 검토 2027-02-25'));
     assert.ok(page.includes('의료 진단이나 치료'));
+    assert.ok(page.includes('data-ad-slot="guide-detail-context"'));
+    assert.ok(page.includes('data-page-kind="guide-detail"'));
   }
 });
 
 test('사이트맵은 앱·정책·가이드 목록·24개 상세 페이지를 모두 포함한다', () => {
-  assert.equal((sitemap.match(/<url>/g) || []).length, 29);
+  assert.equal((sitemap.match(/<url>/g) || []).length, 33);
   assert.ok(sitemap.includes('/guides/'));
+  for (const page of ['about.html', 'cookies.html', 'advertising.html', 'privacy-choices.html']) assert.ok(sitemap.includes(`/${page}`));
   for (const guide of content.guides) assert.ok(sitemap.includes(`/guides/${guide.slug}/`));
 });

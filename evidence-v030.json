@@ -1,0 +1,57 @@
+{
+  "release_id": "2026-08-30-service-v0.30",
+  "verified_at": "2026-08-30",
+  "product": "advanced free service plus no-payment Plus and advertising stage-one safety foundation",
+  "automatic": {
+    "free_advanced_unit_tests": 8,
+    "plus_unit_tests": 14,
+    "virtual_personas": 1000,
+    "ad_safety_personas": 1000,
+    "ad_stage1_unit_tests": 8,
+    "service_worker_tests": 7,
+    "content_page_tests": 6,
+    "published_usage_guides": 24,
+    "connected_content_sources": 7,
+    "layout_widths": [360, 390, 1440],
+    "payment_paths": 0,
+    "external_scripts_at_default": 0,
+    "external_ad_requests_at_default": 0,
+    "account_required": false,
+    "server_side_personal_data": false
+  },
+  "browser": {
+    "status": "local_automated_pass",
+    "views": 12,
+    "widths": [360, 390, 1440],
+    "horizontal_overflow": 0,
+    "small_or_clipped_controls": 0,
+    "journeys": ["home_house_fallback", "privacy_choice_save", "guide_house_fallback"],
+    "limitation": "Local automated Edge; actual provider ads remain disabled and were not rendered."
+  },
+  "server": {
+    "status": "pending",
+    "functional_commit": null,
+    "pages_run": null,
+    "pages": "pending",
+    "codeql_run": null,
+    "codeql": "pending",
+    "public_verify_run": null,
+    "public_verify": "pending",
+    "public_http": "pending"
+  },
+  "android": {"status": "not_run_current_release", "previous_release": "v0.29 A56 pass"},
+  "ios": {"status": "not_run", "device_count": 0},
+  "advertising": {
+    "code": "verified_16_of_16",
+    "external_activation": "blocked_0_of_5",
+    "default_enabled": false,
+    "publisher_id_present": false,
+    "certified_cmp_ready": false,
+    "operator_identity_confirmed": false,
+    "root_ads_txt_verified": false,
+    "provider_approval": false
+  },
+  "human_editorial_signoff": "not_run",
+  "operator_identity": "not_confirmed",
+  "commercial_operation": "blocked_external_evidence"
+}

@@ -50,6 +50,7 @@ async function inspect(send, width, url) {
   await send('Emulation.setDeviceMetricsOverride', { width, height: width < 700 ? 844 : 1000, deviceScaleFactor: 1, mobile: width < 700 });
   await send('Page.navigate', { url });
   await ready(send);
+  await wait(120);
   if (!url.includes('/guides/')) {
     for (let i = 0; i < 100; i += 1) {
       const app = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.appReady === 'true'", returnByValue: true });
@@ -74,7 +75,11 @@ async function inspect(send, width, url) {
       clipped: [...document.querySelectorAll('a,button,input')].filter((node) => {
         const box=node.getBoundingClientRect(); const style=getComputedStyle(node);
         return style.display!=='none' && style.visibility!=='hidden' && box.width>0 && (box.left < -1 || box.right > innerWidth + 1);
-      }).length
+      }).length,
+      adSlots: document.querySelectorAll('.ad-slot').length,
+      houseSlots: document.querySelectorAll('.ad-slot[data-ad-state="house"]').length,
+      providerAds: document.querySelectorAll('.adsbygoogle,script[data-ays-ad-provider]').length,
+      adsStatus: document.documentElement.dataset.adsStatus || ''
     }))()`,
     returnByValue: true,
   });
@@ -102,6 +107,11 @@ try {
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/')) });
   for (const width of [360, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/morning-three-step-start/')) });
   assert.ok(results.filter((row) => row.cards === 24).length === 3, '가이드 목록 24개가 모든 폭에서 유지되지 않음');
+  for (const row of results.filter((item) => item.adSlots > 0)) {
+    assert.equal(row.houseSlots, row.adSlots, '기본 비활성 상태에서 자체 안내 대체 화면 누락');
+    assert.equal(row.providerAds, 0, '기본 비활성 상태에서 외부 광고 요소가 생성됨');
+    assert.equal(row.adsStatus, 'blocked', '광고 기본 차단 상태 표시 누락');
+  }
   await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await send('Page.navigate', { url: 'http://127.0.0.1:4179/#routine' });
   await ready(send);
@@ -157,7 +167,7 @@ try {
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
     socket.close();
   });
-  console.log(`[layout-verify] PASS — ${results.length}개 화면과 무료 여정·Plus 저장→비교→모음 여정, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
+  console.log(`[layout-verify] PASS — ${results.length}개 화면과 무료 여정·Plus 저장→비교→모음 여정, 광고 슬롯 자체 안내·외부 요청 차단, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
 } finally {
   if (child.exitCode === null) {
     const exited = new Promise((resolve) => child.once('exit', resolve));

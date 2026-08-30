@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.30",
+  "provider": "google-adsense",
+  "enabled": false,
+  "publisher_id": "",
+  "certified_cmp_ready": false,
+  "operator_identity_confirmed": false,
+  "default_mode": "off",
+  "allowed_page_kinds": ["home", "guide-index", "guide-detail"],
+  "forbidden_page_kinds": ["routine", "records", "plus", "privacy", "terms", "cookies", "advertising", "privacy-choices", "support", "offline", "progress"],
+  "forbidden_context_fields": ["name", "email", "phone", "birthdate", "exact_location", "skin_condition", "avoided_ingredients", "disease_guess", "search_query", "decision_record", "routine", "checkin", "collection"],
+  "slots": {
+    "home-context": "",
+    "guide-index-context": "",
+    "guide-detail-context": ""
+  }
+}

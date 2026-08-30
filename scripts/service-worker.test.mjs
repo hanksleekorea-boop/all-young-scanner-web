@@ -37,7 +37,7 @@ function harness({offline=false,quota=false}={}){
 }
 test('API, query strings, other apps, and POST are not intercepted',async()=>{
   const h=harness();
-  for(const path of ['api/decision','index.html?private=1','/other-app/','https://other.example/'])assert.equal(await h.request(path),null);
+  for(const path of ['api/decision','index.html?private=1','/other-app/','https://other.example/','https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'])assert.equal(await h.request(path),null);
   assert.equal(await h.request('index.html',{method:'POST'}),null);
   assert.equal(h.fetched,0);assert.equal(h.writes.length,0);
 });

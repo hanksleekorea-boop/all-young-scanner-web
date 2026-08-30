@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.30",
+  "updated_at": "2026-08-30",
+  "claim": "code_complete_external_activation_blocked",
+  "code": {
+    "total": 16,
+    "verified": 16,
+    "live": 0,
+    "percent": 100,
+    "cards": [
+      "provider configuration", "default-off gate", "publisher validation", "slot validation", "certified CMP gate", "operator identity gate", "page allowlist", "forbidden page block", "sensitive context stripping", "manual home slot", "manual guide slots", "house fallback", "privacy choice", "advertising disclosure", "cookie disclosure", "ads.txt placeholder"
+    ]
+  },
+  "external_activation": {
+    "total": 5,
+    "done": 0,
+    "percent": 0,
+    "blocked": ["verified publisher and slot IDs", "certified CMP configuration", "operator legal identity and responsible contact", "root-domain ads.txt seller record", "Google review and approval"]
+  },
+  "data_boundary": {
+    "personalized_ads": false,
+    "sensitive_fields_sent": 0,
+    "forbidden_views": 11,
+    "default_network_requests": 0
+  }
+}
