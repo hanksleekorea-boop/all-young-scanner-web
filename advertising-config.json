@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "release_id": "2026-08-30-service-v0.30",
+  "schema_version": 2,
+  "release_id": "2026-08-30-service-v0.31",
   "provider": "google-adsense",
   "enabled": false,
   "publisher_id": "",
@@ -14,5 +14,35 @@
     "home-context": "",
     "guide-index-context": "",
     "guide-detail-context": ""
+  },
+  "stage_two": {
+    "enabled": false,
+    "fail_closed": true,
+    "routing_strategy": "privacy-first-waterfall",
+    "trusted_region_sources": ["certified-cmp", "operator-server"],
+    "default_region_group": "UNKNOWN",
+    "request_budget": { "providers_per_slot": 1, "timeout_ms": 1200, "retries": 0 },
+    "performance_budget": { "max_cls_delta": 0.05, "max_lcp_delta_ms": 300, "max_external_scripts": 1 },
+    "stop_loss": { "max_error_rate": 0.03, "max_timeout_rate": 0.05, "max_policy_violations": 0 },
+    "experiments": { "enabled": false, "allocation_percent": 0, "kill_switch": true },
+    "regional_policies": {
+      "UNKNOWN": { "operator_reviewed": false, "ads_allowed": false, "required_signal": "none" },
+      "EEA_UK_CH": { "operator_reviewed": false, "ads_allowed": false, "required_signal": "tcf-certified" },
+      "US_STATE": { "operator_reviewed": false, "ads_allowed": false, "required_signal": "gpp-valid-no-opt-out" },
+      "KR": { "operator_reviewed": false, "ads_allowed": false, "required_signal": "contextual-choice" },
+      "JP": { "operator_reviewed": false, "ads_allowed": false, "required_signal": "contextual-choice" },
+      "ROW": { "operator_reviewed": false, "ads_allowed": false, "required_signal": "contextual-choice" }
+    },
+    "providers": [
+      { "id": "house", "adapter": "house", "enabled": true, "bundled": true, "external": false, "priority": 0, "expected_cpm_micros": 0, "supported_regions": ["UNKNOWN", "EEA_UK_CH", "US_STATE", "KR", "JP", "ROW"], "formats": ["responsive-display"] },
+      { "id": "google-adsense", "adapter": "google-adsense", "enabled": false, "bundled": true, "external": true, "priority": 100, "expected_cpm_micros": 0, "supported_regions": [], "formats": ["responsive-display"], "integration_status": "publisher_contract_required" },
+      { "id": "media-net", "adapter": "contract-required", "enabled": false, "bundled": false, "external": true, "priority": 80, "expected_cpm_micros": 0, "supported_regions": [], "formats": ["responsive-display"], "integration_status": "publisher_contract_and_official_spec_required" },
+      { "id": "amazon-publisher-services", "adapter": "contract-required", "enabled": false, "bundled": false, "external": true, "priority": 70, "expected_cpm_micros": 0, "supported_regions": [], "formats": ["responsive-display"], "integration_status": "publisher_contract_and_official_spec_required" }
+    ],
+    "placements": {
+      "home-context": { "format": "responsive-display", "floor_cpm_micros": 0 },
+      "guide-index-context": { "format": "responsive-display", "floor_cpm_micros": 0 },
+      "guide-detail-context": { "format": "responsive-display", "floor_cpm_micros": 0 }
+    }
   }
 }

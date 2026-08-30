@@ -22,16 +22,32 @@ function readTcf(timeoutMs = 400) {
     const timer = setTimeout(() => resolve({ cmp: 'timeout' }), timeoutMs);
     globalThis.__tcfapi('getTCData', 2, (data, success) => {
       clearTimeout(timer);
-      resolve(success && data?.cmpStatus === 'loaded' ? { cmp: 'certified', tcString: Boolean(data.tcString) } : { cmp: 'invalid' });
+      resolve(success && data?.cmpStatus === 'loaded' ? { cmp: 'certified', tcString: Boolean(data.tcString) } : { cmp: 'invalid', tcString: false });
     });
+  });
+}
+
+function readGpp(timeoutMs = 400) {
+  return new Promise((resolve) => {
+    if (typeof globalThis.__gpp !== 'function') return resolve({ gpp: 'missing', optOut: null });
+    const timer = setTimeout(() => resolve({ gpp: 'timeout', optOut: null }), timeoutMs);
+    try {
+      globalThis.__gpp('getGPPData', (data, success) => {
+        clearTimeout(timer);
+        const optOut = typeof data?.optOut === 'boolean' ? data.optOut : null;
+        resolve(success && typeof data?.gppString === 'string' && data.gppString.length > 0 && optOut !== null
+          ? { gpp: 'valid', optOut }
+          : { gpp: 'invalid', optOut: null });
+      });
+    } catch { clearTimeout(timer); resolve({ gpp: 'invalid', optOut: null }); }
   });
 }
 
 export async function resolveAdvertisingConsent(storage = globalThis.localStorage) {
   const choice = readPrivacyChoice(storage);
-  if (choice.mode !== 'contextual') return { mode: 'off', cmp: 'not_required' };
-  const tcf = await readTcf();
-  return { mode: 'contextual', cmp: tcf.cmp };
+  if (choice.mode !== 'contextual') return { mode: 'off', cmp: 'not_required', tcf: 'not_requested', tc_string: false, gpp: 'not_requested', opt_out: null };
+  const [tcf, gpp] = await Promise.all([readTcf(), readGpp()]);
+  return { mode: 'contextual', cmp: tcf.cmp, tcf: tcf.cmp, tc_string: tcf.tcString, gpp: gpp.gpp, opt_out: gpp.optOut };
 }
 
 export const privacyChoiceKey = KEY;

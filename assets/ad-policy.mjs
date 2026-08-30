@@ -30,7 +30,9 @@ export function canActivateAdvertising({ config = {}, pageKind = '', slotName = 
   const slotId = config.slots?.[slotName] || '';
   if (!SLOT_PATTERN.test(slotId)) return { allowed: false, reason: 'SLOT_ID_INVALID' };
   if (consent.mode !== 'contextual') return { allowed: false, reason: 'CONSENT_NOT_GRANTED' };
-  if (consent.cmp !== 'certified') return { allowed: false, reason: 'CMP_SIGNAL_MISSING' };
+  if (config.schema_version >= 2 && config.stage_two?.enabled) {
+    if (consent.regional_ready !== true) return { allowed: false, reason: 'REGIONAL_POLICY_NOT_READY' };
+  } else if (consent.cmp !== 'certified') return { allowed: false, reason: 'CMP_SIGNAL_MISSING' };
   return { allowed: true, reason: 'READY', slotId };
 }
 

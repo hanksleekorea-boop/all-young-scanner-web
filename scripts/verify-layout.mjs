@@ -24,17 +24,18 @@ async function connectPage(port, url) {
   await new Promise((resolve, reject) => { socket.addEventListener('open', resolve, { once: true }); socket.addEventListener('error', reject, { once: true }); });
   let id = 0;
   const pending = new Map();
+  const events = [];
   socket.addEventListener('message', (event) => {
     const message = JSON.parse(event.data);
     const request = pending.get(message.id);
-    if (!request) return;
+    if (!request) { events.push(message); return; }
     pending.delete(message.id);
     if (message.error) request.reject(new Error(message.error.message)); else request.resolve(message.result);
   });
   const send = (method, params = {}) => new Promise((resolve, reject) => {
     id += 1; pending.set(id, { resolve, reject }); socket.send(JSON.stringify({ id, method, params }));
   });
-  return { socket, send };
+  return { socket, send, events };
 }
 
 async function ready(send) {
@@ -99,13 +100,22 @@ async function inspect(send, width, url) {
 
 try {
   const port = await devtoolsPort();
-  const { socket, send } = await connectPage(port, 'http://127.0.0.1:4179/');
-  await send('Page.enable'); await send('Runtime.enable');
+  const { socket, send, events } = await connectPage(port, 'http://127.0.0.1:4179/');
+  await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
   const results = [];
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/#home')) });
   for (const view of ['routine','guides','records','plus']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/')) });
   for (const width of [360, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/morning-three-step-start/')) });
+  await send('Emulation.setDeviceMetricsOverride', { width: 360, height: 844, deviceScaleFactor: 1, mobile: true });
+  await send('Page.navigate', { url: 'http://127.0.0.1:4179/ad-operations.html' });
+  await ready(send); await wait(150);
+  const operations = await send('Runtime.evaluate', { expression: `(() => { const button=document.querySelector('#clear-ad-operations'); const box=button?.getBoundingClientRect(); return {ready:document.documentElement.dataset.adOperationsReady,scrollWidth:document.documentElement.scrollWidth,width:innerWidth,external:document.querySelector('#external-provider-count')?.textContent,buttonHeight:box?.height||0,internal:/개발 진척|LAUNCH CHECK/.test(document.body.innerText)} })()`, returnByValue: true });
+  assert.equal(operations.result.value.ready, 'true', '광고 투명성 현황 시작 실패');
+  assert.equal(operations.result.value.external, '0', '외부 광고 제공자를 실제보다 크게 표시함');
+  assert.ok(operations.result.value.scrollWidth <= operations.result.value.width, '광고 투명성 현황 가로 넘침');
+  assert.ok(operations.result.value.buttonHeight >= 44, '광고 운영 기록 삭제 조작 영역 44px 미만');
+  assert.equal(operations.result.value.internal, false, '광고 투명성 현황에 내부 개발 문구 노출');
   assert.ok(results.filter((row) => row.cards === 24).length === 3, '가이드 목록 24개가 모든 폭에서 유지되지 않음');
   for (const row of results.filter((item) => item.adSlots > 0)) {
     assert.equal(row.houseSlots, row.adSlots, '기본 비활성 상태에서 자체 안내 대체 화면 누락');
@@ -162,12 +172,14 @@ try {
   assert.equal(plusJourney.result.value.collections, 1, 'Plus 가이드 모음 만들기 실패');
   assert.equal(plusJourney.result.value.plusVisible, true, 'Plus 화면 표시 실패');
   assert.equal(plusJourney.result.value.smallTargets, 0, `Plus 동적 조작 요소 44px 미달 ${plusJourney.result.value.smallTargets}개`);
+  const advertisingRequests = events.filter((event) => event.method === 'Network.requestWillBeSent' && /googlesyndication|doubleclick|amazon-adsystem|media\.net/i.test(event.params?.request?.url || ''));
+  assert.equal(advertisingRequests.length, 0, `기본 차단 상태에서 외부 광고 요청 ${advertisingRequests.length}건 발생`);
   await new Promise((resolve) => {
     const timeout = setTimeout(resolve, 1000);
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
     socket.close();
   });
-  console.log(`[layout-verify] PASS — ${results.length}개 화면과 무료 여정·Plus 저장→비교→모음 여정, 광고 슬롯 자체 안내·외부 요청 차단, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
+  console.log(`[layout-verify] PASS — ${results.length + 1}개 화면과 무료·Plus·광고 투명성 여정, 외부 광고 네트워크 요청 0, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
 } finally {
   if (child.exitCode === null) {
     const exited = new Promise((resolve) => child.once('exit', resolve));

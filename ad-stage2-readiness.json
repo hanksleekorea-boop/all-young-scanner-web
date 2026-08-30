@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "release_id": "2026-08-30-service-v0.31",
+  "updated_at": "2026-08-30",
+  "claim": "code_complete_multi_provider_activation_blocked",
+  "code": {
+    "total": 24,
+    "verified": 24,
+    "live": 0,
+    "percent": 100,
+    "cards": [
+      "regional policy groups", "trusted region sources", "unknown region fail closed", "TCF signal gate", "GPP signal and opt-out gate", "contextual choice gate", "provider registry", "bundled adapter allowlist", "contract-required providers disabled", "placement format filter", "provider region filter", "minimum CPM floor", "priority and yield score", "provider health circuit", "one provider per slot", "request timeout budget", "zero automatic retry", "CLS and LCP budgets", "local bounded metrics", "metric field redaction", "deterministic experiment allocation", "experiment kill switch", "automatic stop loss", "two sets of 1,000 regional personas"
+    ]
+  },
+  "external_activation": {
+    "total": 9,
+    "done": 0,
+    "percent": 0,
+    "blocked": [
+      "operator legal identity and responsible contact", "AdSense publisher approval and identifiers", "secondary provider contract and official integration specification", "third provider contract and official integration specification", "certified CMP with normalized TCF and GPP signals", "trusted coarse region resolver", "root ads.txt verified seller rows", "human privacy and advertising policy review", "production revenue and performance monitoring baseline"
+    ]
+  },
+  "active_providers": { "external": 0, "house": 1 },
+  "default_external_requests": 0,
+  "personalized_advertising": false
+}

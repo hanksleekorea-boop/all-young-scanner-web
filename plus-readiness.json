@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-30-service-v0.30",
+  "release_id": "2026-08-30-service-v0.31",
   "updated_at": "2026-08-30",
   "scope": "all Plus product functions excluding payment, price and subscription",
   "calculation": "VERIFIED code cards / 12; public LIVE and external operations are separate",

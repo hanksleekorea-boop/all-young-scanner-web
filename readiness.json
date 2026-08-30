@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-30-service-v0.30",
+  "release_id": "2026-08-30-service-v0.31",
   "updated_at": "2026-08-30",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v3.md",
@@ -88,6 +88,17 @@
     "external_percent": 0,
     "claim": "code_complete_external_activation_blocked"
   },
+  "advertising_stage_two": {
+    "status_file": "ad-stage2-readiness.json",
+    "code_total": 24,
+    "code_verified": 24,
+    "code_live": 0,
+    "code_percent": 100,
+    "external_total": 9,
+    "external_done": 0,
+    "external_percent": 0,
+    "claim": "code_complete_multi_provider_activation_blocked"
+  },
   "content": {
     "published_usage_guides": 24,
     "connected_sources": 7,
@@ -106,7 +117,7 @@
     "claim": "blocked",
     "reason": "1단계 출시 관문, 실상품 2,000개, 판매처 5곳, 실제 후기 5,000건, 영어 사람 검토, 실기기·실사용자·운영 증거가 없음"
   },
-  "evidence_file": "evidence-v030.json",
+  "evidence_file": "evidence-v031.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",
