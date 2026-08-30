@@ -101,9 +101,25 @@ async function inspect(send, width, url) {
 try {
   const port = await devtoolsPort();
   const { socket, send, events } = await connectPage(port, 'http://127.0.0.1:4179/');
-  await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
+  await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable'); await send('Accessibility.enable');
   const results = [];
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/#home')) });
+  const reflow = await inspect(send, 640, 'http://127.0.0.1:4179/#home');
+  assert.ok(reflow.scrollWidth <= 640, '1280px 화면의 200% 확대에 해당하는 640px 재배치 실패');
+  const axTree = await send('Accessibility.getFullAXTree');
+  const namedRoles = new Set(['button', 'link', 'textbox', 'combobox', 'radio']);
+  const unnamed = axTree.nodes.filter((node) => namedRoles.has(node.role?.value) && !(node.name?.value ?? '').trim());
+  assert.equal(unnamed.length, 0, `접근 가능한 이름이 없는 조작 요소 ${unnamed.length}개`);
+  assert.ok(axTree.nodes.some((node) => node.role?.value === 'main'), '본문 접근성 영역 없음');
+  await send('Runtime.evaluate', { expression: 'document.activeElement?.blur(); true', returnByValue: true });
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+  await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9 });
+  const firstFocus = await send('Runtime.evaluate', { expression: `({text:document.activeElement?.textContent?.trim(),href:document.activeElement?.getAttribute?.('href')})`, returnByValue: true });
+  assert.equal(firstFocus.result.value.href, '#main', '첫 Tab에서 본문 바로가기 링크로 이동하지 않음');
+  await send('Emulation.setEmulatedMedia', { media: 'screen', features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  const reducedMotion = await send('Runtime.evaluate', { expression: "getComputedStyle(document.documentElement).scrollBehavior", returnByValue: true });
+  assert.equal(reducedMotion.result.value, 'auto', '움직임 줄이기 설정에서 부드러운 스크롤이 유지됨');
+  await send('Emulation.setEmulatedMedia', { media: 'screen', features: [] });
   for (const view of ['routine','guides','records','plus']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/')) });
   for (const width of [360, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/morning-three-step-start/')) });
@@ -190,7 +206,7 @@ try {
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
     socket.close();
   });
-  console.log(`[layout-verify] PASS — ${results.length + 2}개 화면과 무료·Plus·광고 투명성·공급망 여정, 외부 광고 네트워크 요청 0, 360·390·1440px, 가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
+  console.log(`[layout-verify] PASS — ${results.length + 3}개 화면과 무료·Plus·광고 투명성·공급망 여정, 외부 광고 네트워크 요청 0, 360·390·640(200% 재배치)·1440px, 접근 가능한 이름·첫 Tab·움직임 줄이기·가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
 } finally {
   if (child.exitCode === null) {
     const exited = new Promise((resolve) => child.once('exit', resolve));

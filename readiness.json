@@ -38,7 +38,7 @@
   },
   "pc_web": {
     "claim": "live_verified",
-    "browser_evidence_scope": "v0.32 local Edge rendered 14 views at 360/390/1440px with zero horizontal overflow, clipped controls or external ad network requests; free, Plus, advertising transparency and supply-chain journeys pass; public live and device evidence remain separate",
+    "browser_evidence_scope": "v0.32 local Edge rendered 15 views at 360/390/640(200% reflow)/1440px with zero horizontal overflow, clipped or unnamed controls or external ad network requests; first Tab skip link, reduced motion, free, Plus, advertising transparency and supply-chain journeys pass; public live and device evidence remain separate",
     "tested_widths": [
       360,
       390,
