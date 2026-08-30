@@ -31,14 +31,14 @@
     ]
   },
   "mobile": {
-    "claim": "android_verified_ios_not_run",
-    "current_release_device_test": "A56_pass",
-    "reason": "v0.29 공개판을 A56 360px에서 실제 시험: 홈·루틴·Plus 저장 2개·비교·모음, PWA, 가로 넘침 0, 작은/잘린 조작 0; iOS 기기는 없음",
+    "claim": "previous_android_verified_current_release_not_run_ios_not_run",
+    "current_release_device_test": "not_run",
+    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.30 광고 기본 차단판은 실기기 재시험 미실시; iOS 기기는 없음",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "live_verified",
-    "browser_evidence_scope": "v0.29 local Edge rendered 12 views at 360/390/1440px with zero horizontal overflow or clipped controls; free journey and Plus save/compare/collection journey pass; public live and device evidence remain separate",
+    "browser_evidence_scope": "v0.30 local Edge rendered 12 views at 360/390/1440px with zero horizontal overflow or clipped controls; free journey, Plus journey and advertising house-fallback pass; public live and device evidence remain separate",
     "tested_widths": [
       360,
       390,

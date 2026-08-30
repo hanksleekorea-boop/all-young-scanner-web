@@ -3,13 +3,14 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
 const expectedRelease = '2026-08-30-service-v0.30';
 const paths = ['', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'privacy-choices.html', 'ads.txt', 'manifest.webmanifest', 'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'ad-stage1-readiness.json', 'advertising-config.json', 'evidence-v030.json'];
 const results = [];
+const freshUrl = (path = '') => { const url = new URL(path, base); url.searchParams.set('ays_verify', `${Date.now()}-${Math.random()}`); return url; };
 
 for (let attempt = 0; attempt < 20; attempt += 1) {
   try {
     const [readinessResponse, freeResponse, plusResponse] = await Promise.all([
-      fetch(new URL('readiness.json', base), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
-      fetch(new URL('free-advanced-readiness.json', base), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
-      fetch(new URL('plus-readiness.json', base), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
+      fetch(freshUrl('readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
+      fetch(freshUrl('free-advanced-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
+      fetch(freshUrl('plus-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) }),
     ]);
     const [candidateReadiness, candidateFree, candidatePlus] = await Promise.all([readinessResponse.json(), freeResponse.json(), plusResponse.json()]);
     if (readinessResponse.ok && freeResponse.ok && plusResponse.ok && candidateReadiness.release_id === expectedRelease && candidateFree.release_id === expectedRelease && candidatePlus.release_id === expectedRelease) break;
@@ -19,7 +20,7 @@ for (let attempt = 0; attempt < 20; attempt += 1) {
 }
 
 for (const path of paths) {
-  const url = new URL(path, base);
+  const url = freshUrl(path);
   assert(url.protocol === 'https:', `HTTPS가 아님: ${url}`);
   const response = await fetch(url, { redirect: 'error', signal: AbortSignal.timeout(15_000) });
   const body = await response.text();
@@ -28,12 +29,12 @@ for (const path of paths) {
   results.push({ path: path || 'index.html', status: response.status, contentType: response.headers.get('content-type') });
 }
 
-const index = await (await fetch(base, { signal: AbortSignal.timeout(15_000) })).text();
-const readiness = await (await fetch(new URL('readiness.json', base), { signal: AbortSignal.timeout(15_000) })).json();
-const free = await (await fetch(new URL('free-advanced-readiness.json', base), { signal: AbortSignal.timeout(15_000) })).json();
-const plus = await (await fetch(new URL('plus-readiness.json', base), { signal: AbortSignal.timeout(15_000) })).json();
-const adConfig = await (await fetch(new URL('advertising-config.json', base), { signal: AbortSignal.timeout(15_000) })).json();
-const adReadiness = await (await fetch(new URL('ad-stage1-readiness.json', base), { signal: AbortSignal.timeout(15_000) })).json();
+const index = await (await fetch(freshUrl(), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).text();
+const readiness = await (await fetch(freshUrl('readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
+const free = await (await fetch(freshUrl('free-advanced-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
+const plus = await (await fetch(freshUrl('plus-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
+const adConfig = await (await fetch(freshUrl('advertising-config.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
+const adReadiness = await (await fetch(freshUrl('ad-stage1-readiness.json'), { cache: 'no-store', signal: AbortSignal.timeout(15_000) })).json();
 const headers = await fetch(base, { method: 'HEAD', signal: AbortSignal.timeout(15_000) });
 
 assert(index.includes('올영스캐너') && !/ShoppingScanner|쇼핑스캐너/.test(index), '다른 제품 또는 옛 이름이 공개됨');
