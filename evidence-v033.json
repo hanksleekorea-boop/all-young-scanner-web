@@ -47,18 +47,18 @@
     "limitation": "External providers and direct campaigns remain disabled; English summaries await human language review."
   },
   "server": {
-    "status": "pending_public_release_verification",
-    "functional_commit": "pending",
-    "release_state_commit": "pending",
-    "pages_run": 0,
-    "pages": "pending",
-    "codeql_run": 0,
-    "codeql": "pending",
-    "public_verify_run": 0,
-    "public_verify": "pending",
-    "public_http": "pending_28_https_paths"
+    "status": "verified_public_release",
+    "functional_commit": "435011df573b47520d8cd2b1ee0630360568d228",
+    "release_state_commit": "435011df573b47520d8cd2b1ee0630360568d228",
+    "pages_run": 33318321513,
+    "pages": "success",
+    "codeql_run": 33318322253,
+    "codeql": "success",
+    "public_verify_run": 33318322225,
+    "public_verify": "success",
+    "public_http": "pass_29_https_paths"
   },
-  "android": {"status": "not_run_current_release", "previous_release": "v0.29 A56 pass"},
+  "android": {"status": "not_run_current_release", "checked_at": "2026-08-30", "adb_devices": 0, "previous_release": "v0.29 A56 pass"},
   "ios": {"status": "not_run", "device_count": 0},
   "advertising_stage_three": {
     "code": "verified_32_of_32",
