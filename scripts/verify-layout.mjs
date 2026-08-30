@@ -123,7 +123,7 @@ try {
   assert.equal(governance.result.value.mode, '그림자 전용', '광고 3단계 기본 운영 방식 오류');
   assert.equal(governance.result.value.direct, '0', '직접 캠페인을 실제보다 크게 표시함');
   assert.equal(governance.result.value.supply, '0/4', '공급망 확인을 실제보다 크게 표시함');
-  assert.equal(governance.result.value.conditions, '0/13', '광고 3단계 외부 조건을 실제보다 크게 표시함');
+  assert.equal(governance.result.value.conditions, '0/14', '광고 3단계 외부 조건을 실제보다 크게 표시함');
   assert.ok(governance.result.value.scrollWidth <= governance.result.value.width, '광고 공급망·안전 운영 가로 넘침');
   assert.equal(governance.result.value.smallLinks, 0, '광고 공급망·안전 운영 44px 미만 링크');
   assert.equal(governance.result.value.internal, false, '광고 공급망·안전 운영에 내부 개발 문구 노출');

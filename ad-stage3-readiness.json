@@ -15,11 +15,11 @@
   "supply_chain": { "total": 4, "done": 0, "percent": 0, "items": ["owner domain", "authorized seller rows", "sellers.json match", "SupplyChain node match"] },
   "active_operations": { "external_providers": 0, "direct_campaigns": 0, "live_allocation_percent": 0, "shadow_decisions": 0 },
   "external_activation": {
-    "total": 13,
+    "total": 14,
     "done": 0,
     "percent": 0,
     "blocked": [
-      "operator legal identity and responsible contact", "AdSense approval and identifiers", "secondary provider contract", "third provider contract", "certified consent management platform", "trusted coarse region service", "root ads.txt authorized seller rows", "sellers.json seller identity match", "SupplyChain object validation", "two named human approvers", "human privacy and advertising review", "production traffic quality baseline", "production revenue performance and device baseline"
+      "operator legal identity and responsible contact", "AdSense approval and identifiers", "secondary provider contract", "third provider contract", "direct campaign contract, approved creative and official rendering adapter", "certified consent management platform", "trusted coarse region service", "root ads.txt authorized seller rows", "sellers.json seller identity match", "SupplyChain object validation", "two named human approvers", "human privacy and advertising review", "production traffic quality baseline", "production revenue performance and device baseline"
     ]
   },
   "personalized_advertising": false,

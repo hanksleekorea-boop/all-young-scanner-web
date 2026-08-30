@@ -1,1 +1,61 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>광고 공급망·안전 운영 | 올영스캐너</title><meta name="description" content="올영스캐너의 광고 공급망, 직접 캠페인, 부정 트래픽 차단, 제한 공개와 긴급 중단 원칙을 설명합니다."><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="strict-origin-when-cross-origin"><style>:root{--ink:#1d2433;--muted:#667085;--line:#e6e9ef;--safe:#176744}*{box-sizing:border-box}body{margin:0;background:#fafbfc;color:var(--ink);font-family:system-ui,sans-serif;line-height:1.65}.wrap{width:min(920px,calc(100% - 32px));margin:auto}header,footer{padding:22px 0;background:#fff;border-bottom:1px solid var(--line)}footer{border-top:1px solid var(--line);border-bottom:0;color:var(--muted)}main{padding:42px 0 72px}.status{padding:16px;border-radius:14px;background:#eefbf5;color:var(--safe);font-weight:800}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card{padding:20px;background:#fff;border:1px solid var(--line);border-radius:18px;margin:16px 0}.grid .card{margin:0}.card strong{display:block;font-size:1.7rem}.card span,.muted{color:var(--muted)}li+li{margin-top:7px}a{display:inline-flex;align-items:center;min-height:44px;color:inherit;margin-right:12px}@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:420px){.grid{grid-template-columns:1fr}}</style></head><body><header><div class="wrap"><strong>올영스캐너</strong></div></header><main><div class="wrap"><h1>광고 공급망·안전 운영</h1><p id="governance-status" class="status">현재 고급 광고 운영: 확인 중</p><div class="grid"><article class="card"><span>운영 방식</span><strong id="optimization-mode">확인 중</strong></article><article class="card"><span>실행 중 직접 캠페인</span><strong id="direct-campaign-count">0</strong></article><article class="card"><span>공급망 확인</span><strong id="supply-chain-count">0/4</strong></article><article class="card"><span>외부 운영 조건</span><strong id="stage-three-condition-count">0/13</strong></article></div><section class="card"><h2>공급망 확인</h2><p>실제 판매자 행이 생기면 최상위 ads.txt, 광고회사의 sellers.json, 광고 요청의 공급 경로가 같은 판매자 계정을 가리키는지 대조합니다. 하나라도 다르면 외부 광고를 중단합니다.</p></section><section class="card"><h2>수익과 사용자 경험의 공동 기준</h2><ul><li>예상 단가뿐 아니라 표시 가능성, 채움, 오류, 속도와 정책 위험을 함께 평가합니다.</li><li>세션당 최대 3회, 같은 위치 최대 1회, 광고 사이 최소 10분을 적용합니다.</li><li>새 선택 규칙은 실제 송출 없이 먼저 결과만 계산하고, 이후에도 최대 5%에서만 비교합니다.</li><li>핵심 루틴·검색·기록 성공률이 99% 아래로 내려가면 광고를 중단합니다.</li></ul></section><section class="card"><h2>부정 트래픽과 직접 캠페인</h2><p>자동화 도구·시험 트래픽·잘못된 사건 순서·반복 폭주·짧은 표시를 수익 자료에서 제외합니다. 직접 캠페인은 계약, 사람 승인, 기간, 지역, 위치, 광고 종류, 일일 노출·금액 한도를 모두 통과해야 합니다.</p></section><section class="card"><h2>현재 안전 상태</h2><p>외부 광고, 직접 캠페인, 수익 최적화는 모두 꺼져 있습니다. 운영자 두 명의 승인, 되돌리기 지문, 공급망 확인과 실제 기준값이 없으면 설정만 바꿔도 실행되지 않습니다.</p></section><p><a href="ad-operations.html">광고 투명성 현황</a><a href="advertising.html">광고 운영 원칙</a><a href="./">서비스로 돌아가기</a></p></div></main><footer><div class="wrap">최근 갱신 2026-08-30 · 외부 광고회사 승인이나 수익 발생을 의미하지 않습니다.</div></footer><script type="module" src="assets/ad-governance-page.mjs"></script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>광고 공급망·안전 운영 | 올영스캐너</title>
+  <meta name="description" content="올영스캐너의 광고 공급망, 직접 캠페인, 부정 트래픽 차단, 제한 공개와 긴급 중단 원칙을 설명합니다.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <style>
+    :root{--ink:#1d2433;--muted:#667085;--line:#e6e9ef;--safe:#176744}
+    *{box-sizing:border-box}body{margin:0;background:#fafbfc;color:var(--ink);font-family:system-ui,sans-serif;line-height:1.65}
+    .wrap{width:min(920px,calc(100% - 32px));margin:auto}header,footer{padding:22px 0;background:#fff;border-bottom:1px solid var(--line)}
+    footer{border-top:1px solid var(--line);border-bottom:0;color:var(--muted)}main{padding:42px 0 72px}
+    .status{padding:16px;border-radius:14px;background:#eefbf5;color:var(--safe);font-weight:800}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}
+    .card{padding:20px;background:#fff;border:1px solid var(--line);border-radius:18px;margin:16px 0}.grid .card{margin:0}
+    .card strong{display:block;font-size:1.7rem}.card span,.muted{color:var(--muted)}li+li{margin-top:7px}
+    a{display:inline-flex;align-items:center;min-height:44px;color:inherit;margin-right:12px}
+    @media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:420px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><strong>올영스캐너</strong></div></header>
+  <main><div class="wrap">
+    <h1>광고 공급망·안전 운영</h1>
+    <p id="governance-status" class="status">현재 고급 광고 운영: 확인 중</p>
+    <div class="grid">
+      <article class="card"><span>운영 방식</span><strong id="optimization-mode">확인 중</strong></article>
+      <article class="card"><span>실행 중 직접 캠페인</span><strong id="direct-campaign-count">0</strong></article>
+      <article class="card"><span>공급망 확인</span><strong id="supply-chain-count">0/4</strong></article>
+      <article class="card"><span>외부 운영 조건</span><strong id="stage-three-condition-count">0/14</strong></article>
+    </div>
+    <section class="card">
+      <h2>공급망 확인</h2>
+      <p>실제 판매자 행이 생기면 최상위 ads.txt, 광고회사의 sellers.json, 광고 요청의 공급 경로가 같은 판매자 계정을 가리키는지 대조합니다. 하나라도 다르면 외부 광고를 중단합니다.</p>
+    </section>
+    <section class="card">
+      <h2>수익과 사용자 경험의 공동 기준</h2>
+      <ul>
+        <li>예상 단가뿐 아니라 표시 가능성, 채움, 오류, 속도와 정책 위험을 함께 평가합니다.</li>
+        <li>세션당 최대 3회, 같은 위치 최대 1회, 광고 사이 최소 10분을 적용합니다.</li>
+        <li>새 선택 규칙은 실제 송출 없이 먼저 결과만 계산하고, 이후에도 최대 5%에서만 비교합니다.</li>
+        <li>핵심 루틴·검색·기록 성공률이 99% 아래로 내려가면 광고를 중단합니다.</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>부정 트래픽과 직접 캠페인</h2>
+      <p>자동화 도구·시험 트래픽·잘못된 사건 순서·반복 폭주·짧은 표시를 수익 자료에서 제외합니다. 직접 캠페인은 계약, 사람 승인, 기간, 지역, 위치, 광고 종류, 일일 노출·금액 한도를 모두 통과해야 합니다.</p>
+    </section>
+    <section class="card">
+      <h2>현재 안전 상태</h2>
+      <p>외부 광고, 직접 캠페인, 수익 최적화는 모두 꺼져 있습니다. 운영자 두 명의 승인, 되돌리기 지문, 공급망 확인과 실제 기준값이 없으면 설정만 바꿔도 실행되지 않습니다.</p>
+    </section>
+    <p><a href="ad-operations.html">광고 투명성 현황</a><a href="advertising.html">광고 운영 원칙</a><a href="./">서비스로 돌아가기</a></p>
+  </div></main>
+  <footer><div class="wrap">최근 갱신 2026-08-30 · 외부 광고회사 승인이나 수익 발생을 의미하지 않습니다.</div></footer>
+  <script type="module" src="assets/ad-governance-page.mjs"></script>
+</body>
+</html>
