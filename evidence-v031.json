@@ -32,15 +32,16 @@
     "limitation": "Local automated Edge; external providers remain disabled and no real provider creative was rendered."
   },
   "server": {
-    "status": "functional_release_published_verification_pending",
+    "status": "pass",
     "functional_commit": "852fd614fba2eff65cf44b28c0dfeca7164ae8e2",
-    "pages_run": 33303610870,
+    "release_state_commit": "c86230fbacd2855d98b82a1f347088a629d14c6a",
+    "pages_run": 33303711121,
     "pages": "success",
-    "codeql_run": 33303611264,
+    "codeql_run": 33303711565,
     "codeql": "success",
-    "public_verify_run": null,
-    "public_verify": "pending",
-    "public_http": "pending"
+    "public_verify_run": 33303771619,
+    "public_verify": "success",
+    "public_http": "pass_20_https_paths"
   },
   "android": {"status": "not_run_current_release", "previous_release": "v0.29 A56 pass"},
   "ios": {"status": "not_run", "device_count": 0},
