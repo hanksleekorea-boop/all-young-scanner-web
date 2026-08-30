@@ -143,13 +143,15 @@ try {
       document.querySelector('[data-view-target="plus"]').click();document.querySelector('#plus-routine-name').value='저녁 루틴';document.querySelector('#plus-routine-form').requestSubmit();await new Promise(r=>setTimeout(r,30));
       const options=document.querySelectorAll('#compare-left option');document.querySelector('#compare-left').value=options[1].value;document.querySelector('#compare-right').value=options[2].value;document.querySelector('#compare-routines').click();
       document.querySelector('#collection-name').value='안전 모음';document.querySelector('#collection-guides input')?.click();document.querySelector('#collection-form').requestSubmit();await new Promise(r=>setTimeout(r,30));
-      return {routines:document.querySelectorAll('#plus-routine-list li:not(.empty-copy)').length,comparison:document.querySelector('#compare-result').innerText,collections:document.querySelectorAll('#collection-list li:not(.empty-copy)').length,plusVisible:!document.querySelector('[data-view="plus"]').hidden};
+      const smallTargets=[...document.querySelectorAll('[data-view="plus"] button,[data-view="plus"] a,[data-view="plus"] input,[data-view="plus"] select')].filter(node=>{const b=node.getBoundingClientRect(),s=getComputedStyle(node),label=node.closest('label'),lb=label?.getBoundingClientRect();if(s.display==='none'||s.visibility==='hidden'||b.width===0)return false;if(['checkbox','radio'].includes(node.type)&&lb?.width>=44&&lb?.height>=44)return false;return b.width<44||b.height<44}).length;
+      return {routines:document.querySelectorAll('#plus-routine-list li:not(.empty-copy)').length,comparison:document.querySelector('#compare-result').innerText,collections:document.querySelectorAll('#collection-list li:not(.empty-copy)').length,plusVisible:!document.querySelector('[data-view="plus"]').hidden,smallTargets};
     })()`, awaitPromise: true, returnByValue: true,
   });
   assert.equal(plusJourney.result.value.routines, 2, 'Plus 저장 루틴 2개 만들기 실패');
   assert.match(plusJourney.result.value.comparison, /다른 조건/, 'Plus 루틴 비교 실패');
   assert.equal(plusJourney.result.value.collections, 1, 'Plus 가이드 모음 만들기 실패');
   assert.equal(plusJourney.result.value.plusVisible, true, 'Plus 화면 표시 실패');
+  assert.equal(plusJourney.result.value.smallTargets, 0, `Plus 동적 조작 요소 44px 미달 ${plusJourney.result.value.smallTargets}개`);
   await new Promise((resolve) => {
     const timeout = setTimeout(resolve, 1000);
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
