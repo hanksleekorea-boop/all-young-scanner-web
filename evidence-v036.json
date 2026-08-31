@@ -55,16 +55,16 @@
     "limitation": "Camera decoding, install/update and offline restart still require the designated physical Android device; iOS and assistive-technology human runs are not complete."
   },
   "server": {
-    "status": "pending_public_release",
-    "functional_commit": null,
-    "release_state_commit": null,
-    "pages_run": null,
-    "pages": "pending",
-    "codeql_run": null,
-    "codeql": "pending",
-    "public_verify_run": null,
-    "public_verify": "pending",
-    "public_http": "pending"
+    "status": "verified_public_release",
+    "functional_commit": "a536052194e9060cbff1e7a13995a8982d82843b",
+    "release_state_commit": "a536052194e9060cbff1e7a13995a8982d82843b",
+    "pages_run": 33412067517,
+    "pages": "success",
+    "codeql_run": 33412069485,
+    "codeql": "success",
+    "public_verify_run": 33412069670,
+    "public_verify": "success",
+    "public_http": "pass_36_paths"
   },
   "android": {"status": "not_run_current_release", "checked_at": "2026-08-31", "adb_devices": 0, "previous_release": "v0.29 A56 pass"},
   "ios": {"status": "not_run", "device_count": 0},
