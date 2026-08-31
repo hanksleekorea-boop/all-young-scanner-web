@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-30-service-v0.33",
-  "updated_at": "2026-08-30",
+  "release_id": "2026-08-31-service-v0.34",
+  "updated_at": "2026-08-31",
   "claim": "code_complete_external_activation_blocked",
   "code": {
     "total": 16,

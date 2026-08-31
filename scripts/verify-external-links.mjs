@@ -17,7 +17,7 @@ async function probe(item) {
       redirect: 'follow',
       signal: controller.signal,
       headers: {
-        'user-agent': 'AllYoungScanner-PublisherQuality/0.33 (+https://hanksleekorea-boop.github.io/all-young-scanner-web/)'
+        'user-agent': 'AllYoungScanner-PublisherQuality/0.34 (+https://hanksleekorea-boop.github.io/all-young-scanner-web/)'
       }
     });
     return {

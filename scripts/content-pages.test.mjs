@@ -37,7 +37,7 @@ test('가이드 목록은 검색과 24개 상세 링크를 제공한다', () => 
   assert.match(guideIndex, /id="guide-search"/);
   assert.equal((guideIndex.match(/class="guide-card"/g) || []).length, 24);
   for (const guide of content.guides) assert.ok(guideIndex.includes(`./${guide.slug}/`));
-  assert.match(guideIndex, /data-ad-slot="guide-index-context"/);
+  assert.match(guideIndex, /data-ad-slot="guide-index-context" data-ad-format-kind="multiplex"/);
 });
 
 test('각 상세 페이지에는 검색 메타데이터·검토일·안전 경계가 있다', async () => {
@@ -45,10 +45,10 @@ test('각 상세 페이지에는 검색 메타데이터·검토일·안전 경�
     const page = await readFile(path.join(root, 'guides', guide.slug, 'index.html'), 'utf8');
     assert.ok(page.includes(`<link rel="canonical" href="https://hanksleekorea-boop.github.io/all-young-scanner-web/guides/${guide.slug}/">`));
     assert.ok(page.includes('<meta name="description"'));
-    assert.ok(page.includes('최근 검토 2026-08-30'));
+    assert.ok(page.includes('최근 검토 2026-08-31'));
     assert.ok(page.includes('다음 검토 2027-02-26'));
     assert.ok(page.includes('의료 진단이나 치료'));
-    assert.ok(page.includes('data-ad-slot="guide-detail-context"'));
+    assert.ok(page.includes('data-ad-slot="guide-detail-context" data-ad-format-kind="in-article"'));
     assert.ok(page.includes('data-page-kind="guide-detail"'));
     assert.ok(page.includes('함께 읽기'));
     assert.ok(page.includes('application/ld+json'));

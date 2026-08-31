@@ -3,6 +3,7 @@ import { resolveAdvertisingConsent } from './consent-gate.mjs';
 import { selectProvider } from './ad-router.mjs';
 import { recordAdMetric } from './ad-metrics.mjs';
 import { selectMonetizationCandidate } from './ad-optimizer.mjs';
+import { validatePlacementFormat } from './adsense-formats.mjs';
 
 const CONFIG_URL = new URL('../advertising-config.json', import.meta.url);
 
@@ -101,16 +102,18 @@ export async function mountAdvertising() {
     if (route.provider.id !== 'google-adsense') { showFallback(slot, 'PROVIDER_ADAPTER_UNAVAILABLE'); continue; }
     const result = canActivateAdvertising({ config, pageKind, slotName: slot.dataset.adSlot, consent: { ...consent, regional_ready: true } });
     if (!result.allowed) { showFallback(slot, result.reason); continue; }
+    const format = validatePlacementFormat({ placementId: slot.dataset.adSlot, declaredFormat: slot.dataset.adFormatKind, config });
+    if (!format.valid) { showFallback(slot, format.reason); continue; }
     showFallback(slot, 'WAITING_FOR_VIEWPORT');
     const visibility = await waitUntilNearViewport(slot, route.timeout_ms);
     if (visibility === 'timeout') { slot.dataset.adReason = 'VIEWPORT_TIMEOUT'; continue; }
     const ad = document.createElement('ins');
-    ad.className = 'adsbygoogle';
+    ad.className = format.className;
     ad.style.display = 'block';
+    ad.style.minHeight = `${format.minHeight}px`;
     ad.dataset.adClient = config.publisher_id;
     ad.dataset.adSlot = result.slotId;
-    ad.dataset.adFormat = 'auto';
-    ad.dataset.fullWidthResponsive = 'true';
+    for (const [name, value] of Object.entries(format.attributes)) ad.setAttribute(name, value);
     slot.replaceChildren(ad);
     slot.dataset.adState = 'provider';
     slot.dataset.adProvider = route.provider.id;

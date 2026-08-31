@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-30-service-v0.33",
+  "release_id": "2026-08-31-service-v0.34",
   "operator": { "legal_name": "", "public_contact": "", "privacy_contact": "", "verified_at": "", "evidence_url": "" },
   "editorial": { "approved_guides": 0, "reviewer": "", "approved_at": "", "evidence_url": "" },
   "android": { "release_id": "", "device_model": "", "journeys_passed": 0, "completed_at": "", "evidence_url": "" },
@@ -18,6 +18,9 @@
   },
   "adsense": {
     "account_approved": false,
+    "current_browser_account_access": false,
+    "access_check_result": "all_signed_in_google_accounts_denied_for_recorded_publisher",
+    "access_checked_at": "2026-08-31",
     "site_approved": false,
     "site_status": "getting_ready",
     "publisher_id": "ca-pub-2476023536699107",
