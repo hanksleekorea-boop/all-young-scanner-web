@@ -72,6 +72,20 @@ async function inspect(send, width, url) {
         await wait(50);
       }
     }
+    if (targetUrl.hash === '#more') {
+      for (let i = 0; i < 100; i += 1) {
+        const stage2 = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.stage2Ready === 'true'", returnByValue: true });
+        if (stage2.result.value) break;
+        await wait(50);
+      }
+    }
+  }
+  if (targetUrl.pathname === '/en/explorer.html') {
+    for (let i = 0; i < 200; i += 1) {
+      const catalog = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.englishCatalogReady === 'true'", returnByValue: true });
+      if (catalog.result.value) break;
+      await wait(50);
+    }
   }
   for (let i = 0; i < 100; i += 1) {
     const ads = await send('Runtime.evaluate', { expression: "[...document.querySelectorAll('.ad-slot')].every((slot) => Boolean(slot.dataset.adState))", returnByValue: true });
@@ -87,6 +101,8 @@ async function inspect(send, width, url) {
       h1: document.querySelector('h1')?.textContent?.trim() || '',
       cards: document.querySelectorAll('.guide-card').length,
       appReady: document.documentElement.dataset.appReady || '',
+      stage2Ready: document.documentElement.dataset.stage2Ready || '',
+      englishCatalogReady: document.documentElement.dataset.englishCatalogReady || '',
       visibleViews: [...document.querySelectorAll('[data-view]')].filter((node)=>!node.hidden).length,
       smallTargets: [...document.querySelectorAll('button,a,input,select')].filter((node) => {
         const box=node.getBoundingClientRect(); const style=getComputedStyle(node);
@@ -154,6 +170,23 @@ try {
   assert.equal(englishDesktop.lang, 'en', '영문 정보판 PC 언어 선언 오류');
   assert.equal(englishMobile.smallTargets, 0, `영문 정보판 44px 미만 조작 요소 ${JSON.stringify(englishMobile.smallTargetDetails)}`);
   assert.equal(englishDesktop.smallTargets, 0, `영문 정보판 PC 44px 미만 조작 요소 ${JSON.stringify(englishDesktop.smallTargetDetails)}`);
+  const explorerMobile = await inspect(send, 360, 'http://127.0.0.1:4179/en/explorer.html');
+  const explorerDesktop = await inspect(send, 1440, 'http://127.0.0.1:4179/en/explorer.html');
+  results.push({ width: 360, ...explorerMobile }, { width: 1440, ...explorerDesktop });
+  assert.equal(explorerMobile.lang, 'en', '영문 상품 탐색기 언어 선언 오류');
+  assert.equal(explorerMobile.englishCatalogReady, 'true', '영문 상품 탐색기 시작 실패');
+  assert.equal(explorerMobile.smallTargets, 0, `영문 상품 탐색기 44px 미만 조작 요소 ${JSON.stringify(explorerMobile.smallTargetDetails)}`);
+  assert.equal(explorerDesktop.smallTargets, 0, `영문 상품 탐색기 PC 44px 미만 조작 요소 ${JSON.stringify(explorerDesktop.smallTargetDetails)}`);
+  const explorerJourney = await send('Runtime.evaluate', { expression: `(()=>{document.querySelector('#explorer-query').value='COSRX';document.querySelector('#explorer-form').requestSubmit();return {results:document.querySelectorAll('#explorer-results .product-card').length,status:document.querySelector('#explorer-status').textContent}})()`, returnByValue: true });
+  assert.ok(explorerJourney.result.value.results > 0, '영문 상품 검색 결과 없음');
+  assert.match(explorerJourney.result.value.status, /2,000 product fact records/, '영문 상품 전체 수량 고지 오류');
+  await send('Page.navigate', { url: 'http://127.0.0.1:4179/#more' }); await ready(send);
+  for (let i = 0; i < 100; i += 1) { const readyState = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.stage2Ready === 'true'", returnByValue: true }); if (readyState.result.value) break; await wait(50); }
+  const stage2Journey = await send('Runtime.evaluate', { expression: `(()=>{document.querySelector('#add-stage2-observation').click();return {panels:document.querySelectorAll('#stage2-local-panel,#stage2-country-panel').length,summary:document.querySelector('#stage2-observation-summary').textContent,saved:JSON.parse(localStorage.getItem('ays.stage2.observations.v1')||'[]').length,network:performance.getEntriesByType('resource').filter(row=>/stage2-observation|sync|aggregate/i.test(row.name)).length}})()`, returnByValue: true });
+  assert.equal(stage2Journey.result.value.panels, 2, '2단계 변화·국가 패널 누락');
+  assert.equal(stage2Journey.result.value.saved, 1, '2단계 로컬 변화 기록 저장 실패');
+  assert.match(stage2Journey.result.value.summary, /원인|판단하지 않습니다/, '2단계 비인과 안내 누락');
+  assert.equal(stage2Journey.result.value.network, 0, '2단계 개인 기록이 네트워크 요청을 만듦');
   await send('Emulation.setDeviceMetricsOverride', { width: 360, height: 844, deviceScaleFactor: 1, mobile: true });
   await send('Page.navigate', { url: 'http://127.0.0.1:4179/ad-operations.html' });
   await ready(send); await wait(150);

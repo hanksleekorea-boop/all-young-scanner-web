@@ -1,7 +1,8 @@
 import { mountFreeAdvancedApp } from './free-advanced-app.mjs';
 import { mountCatalogV4 } from './catalog-v4.mjs';
+import { mountStage2V4 } from './stage2-v4.mjs';
 
-Promise.all([mountFreeAdvancedApp(), mountCatalogV4()]).catch(() => {
+Promise.all([mountFreeAdvancedApp(), mountCatalogV4(), mountStage2V4()]).catch(() => {
   const status = document.querySelector('#app-status');
   if (status) status.textContent = '서비스 자료를 불러오지 못했습니다. 잠시 후 다시 시도하거나 가이드 목록을 이용해 주세요.';
 });

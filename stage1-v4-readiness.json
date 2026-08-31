@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-31-service-v0.35",
+  "release_id": "2026-08-31-service-v0.36",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v4.md",
   "calculation": "DONE / 18 equally counted stage-one cards; VERIFYING and BLOCKED_EXTERNAL are not DONE",
   "summary": {"total": 18, "done": 1, "verifying": 9, "blocked_external": 8, "strict_percent": 5.6},
@@ -10,11 +10,11 @@
     "percent": 100,
     "paths": ["catalog_import", "name_brand_gtin_search", "camera_barcode_path", "manual_photo_fallback", "offline_lookup_queue", "three_product_fact_comparison", "comparison_json_csv_print", "local_product_routine", "product_checkin_open_expiry_cost", "backup_restore_delete"]
   },
-  "facts": {"source_rows_scanned": 74285, "published_product_facts": 500, "korean_relevant_products": 68, "global_context_products": 432, "ingredient_names_indexed": 300, "human_reviewed_products": 0, "human_reviewed_ingredients": 0, "approved_sellers": 0, "android_devices_current_release": 0, "ios_devices": 0, "real_users": 0},
+  "facts": {"source_rows_scanned": 74285, "published_product_facts": 2000, "korean_relevant_products": 68, "global_context_products": 1932, "ingredient_names_indexed": 1000, "human_reviewed_products": 0, "human_reviewed_ingredients": 0, "approved_sellers": 0, "android_devices_current_release": 0, "ios_devices": 0, "real_users": 0},
   "cards": [
     {"id":"S1-01","status":"BLOCKED_EXTERNAL","evidence":"운영자·편집자 입력 구조와 법적 차단 존재","missing":"실제 운영자, 비공개 일반 문의, 한영 편집 책임자"},
-    {"id":"S1-02","status":"VERIFYING","evidence":"ODbL 출처·확인일이 있는 실제 상품 사실 500개, 중복 0","missing":"500개 사람 표본 대조와 K-뷰티 목표 범위 승인"},
-    {"id":"S1-03","status":"BLOCKED_EXTERNAL","evidence":"표시 성분명 300개 색인","missing":"기능·주의·맥락·근거를 포함한 사람 감수 300개"},
+    {"id":"S1-02","status":"VERIFYING","evidence":"ODbL 출처·확인일이 있는 실제 상품 사실 2,000개, 중복 0","missing":"500개 이상 사람 표본 대조와 K-뷰티 목표 범위 승인"},
+    {"id":"S1-03","status":"BLOCKED_EXTERNAL","evidence":"표시 성분명 1,000개 색인","missing":"기능·주의·맥락·근거를 포함한 사람 감수 300개 이상"},
     {"id":"S1-04","status":"VERIFYING","evidence":"출처 원문·검수 대기·공개 오류/비공개 보안 경로","missing":"실제 담당자·처리 기한·정정 훈련"},
     {"id":"S1-05","status":"BLOCKED_EXTERNAL","evidence":"가격·판매처 없을 때 구매 버튼 차단","missing":"승인 판매처 2곳과 실제 가격·배송·반품 대조"},
     {"id":"S1-06","status":"VERIFYING","evidence":"BarcodeDetector 카메라 경로와 수동 복구","missing":"실기기 200개 표본·Android·iOS"},
@@ -29,6 +29,6 @@
     {"id":"S1-15","status":"BLOCKED_EXTERNAL","evidence":"광고 금지 화면·동의·중립성 코드, 기본 외부 요청 0","missing":"실제 승인 광고 단위·신호·노출·CLS"},
     {"id":"S1-16","status":"BLOCKED_EXTERNAL","evidence":"오류·보안 신고 경로와 사고 절차 기반","missing":"실제 담당자 4종 훈련"},
     {"id":"S1-17","status":"BLOCKED_EXTERNAL","evidence":"자동 접근성 21화면 통과","missing":"Android 2·iPhone 1·NVDA·VoiceOver·실사용자 10명"},
-    {"id":"S1-18","status":"BLOCKED_EXTERNAL","evidence":"v0.35 로컬 출시·복구 묶음 준비","missing":"S1-01~17 완료와 공개 URL 재검증"}
+    {"id":"S1-18","status":"BLOCKED_EXTERNAL","evidence":"v0.36 1·2단계 통합 출시·복구 묶음 준비","missing":"S1-01~17 완료와 공개 URL 재검증"}
   ]
 }

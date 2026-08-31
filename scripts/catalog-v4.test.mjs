@@ -6,10 +6,10 @@ import { buildProductComparison, emptyCatalogState, makeCatalogBackup, normalize
 const catalog = JSON.parse(await readFile(new URL('../content/catalog-v4.json', import.meta.url), 'utf8'));
 const ingredients = JSON.parse(await readFile(new URL('../content/ingredients-v4.json', import.meta.url), 'utf8'));
 
-test('공개 원장은 실제 상품 500개와 대기 성분명 300개를 정확히 분리한다', () => {
-  assert.equal(catalog.products.length, 500); assert.equal(new Set(catalog.products.map((row) => row.gtin)).size, 500);
-  assert.equal(catalog.counts.human_reviewed_products, 0); assert.equal(ingredients.ingredients.length, 300); assert.equal(ingredients.human_editorial_complete, false);
-  for (const row of catalog.products) { assert.match(row.gtin, /^\d{8,14}$/); assert.equal(row.rights_state, 'approved_open_database'); assert.equal(row.editorial_status, 'pending_human_review'); assert.equal(row.image_url, null); assert.equal(row.price, null); assert.match(row.source_url, /^https:\/\/world\.openbeautyfacts\.org\/product\//); }
+test('공개 원장은 실제 상품 2,000개와 대기 성분명 1,000개를 정확히 분리한다', () => {
+  assert.equal(catalog.products.length, 2000); assert.equal(new Set(catalog.products.map((row) => row.gtin)).size, 2000);
+  assert.equal(catalog.counts.human_reviewed_products, 0); assert.equal(ingredients.ingredients.length, 1000); assert.equal(ingredients.human_editorial_complete, false);
+  for (const row of catalog.products) { assert.match(row.gtin, /^\d{8,14}$/); assert.equal(row.rights_state, 'approved_open_database'); assert.equal(row.editorial_status, 'pending_human_review'); assert.equal(row.image_url, null); assert.equal(row.price, null); assert.match(row.source_url, /^https:\/\/world\.openbeautyfacts\.org\/product\//); assert.equal(row.formulation_versions.length, 1); assert.match(row.formulation_versions[0].ingredient_fingerprint_sha256, /^[a-f0-9]{64}$/); }
 });
 
 test('검색은 GTIN 완전 일치와 한국 연관 상품을 우선하고 비공개 합성을 만들지 않는다', () => {

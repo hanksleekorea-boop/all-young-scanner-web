@@ -56,9 +56,10 @@ test('각 상세 페이지에는 검색 메타데이터·검토일·안전 경�
 });
 
 test('사이트맵은 앱·영문·정책·가이드 목록·24개 상세 페이지를 모두 포함한다', () => {
-  assert.equal((sitemap.match(/<url>/g) || []).length, 35);
+  assert.equal((sitemap.match(/<url>/g) || []).length, 36);
   assert.ok(sitemap.includes('/guides/'));
   assert.ok(sitemap.includes('/en/'));
+  assert.ok(sitemap.includes('/en/explorer.html'));
   for (const page of ['about.html', 'cookies.html', 'advertising.html', 'privacy-choices.html', 'catalog-license.html']) assert.ok(sitemap.includes(`/${page}`));
   for (const guide of content.guides) assert.ok(sitemap.includes(`/guides/${guide.slug}/`));
 });

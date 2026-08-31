@@ -135,6 +135,7 @@ const sitemapUrls = [
   baseUrl,
   `${baseUrl}guides/`,
   `${baseUrl}en/`,
+  `${baseUrl}en/explorer.html`,
   `${baseUrl}privacy.html`,
   `${baseUrl}terms.html`,
   `${baseUrl}support.html`,

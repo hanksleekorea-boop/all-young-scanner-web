@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "release_id": "2026-08-31-service-v0.35",
+  "release_id": "2026-08-31-service-v0.36",
   "updated_at": "2026-08-31",
   "source_baseline_commit": "76c7f3751e7b7ba6a176372f18cd7a37c85cb476",
   "plan": "DETAILED_DEVELOPMENT_PLAN_v4.md",
@@ -33,12 +33,12 @@
   "mobile": {
     "claim": "previous_android_verified_current_release_not_run_ios_not_run",
     "current_release_device_test": "not_run",
-    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.35 실제 상품판은 실기기 재시험 미실시; 현재 ADB 연결 0대, iOS 기기는 없음",
+    "reason": "v0.29 공개판은 A56 360px에서 통과했지만 v0.36 1·2단계 통합판은 실기기 재시험 미실시; 현재 ADB 연결 0대, iOS 기기는 없음",
     "ios_devices_verified": 0
   },
   "pc_web": {
     "claim": "live_verified",
-    "browser_evidence_scope": "v0.35 local Edge passed 21 views and actual-product search, 2-product comparison, offline lookup queue, product routine/check-in at 360/390/640(200% reflow)/1440px with zero overflow, clipped/small/unnamed controls or external ad requests; physical camera/device evidence remains separate",
+    "browser_evidence_scope": "v0.36 local Edge passed 23 views plus product search, two-product comparison, offline queue, product check-in, stage-two local observation, English product search, advertising transparency and governance journeys at 360/390/640(200% reflow)/1440px with zero overflow, clipped/small/unnamed controls or external ad requests; physical camera/device evidence remains separate",
     "tested_widths": [
       360,
       390,
@@ -47,7 +47,7 @@
   },
   "commercial": {
     "claim": "blocked",
-    "real_products": 500,
+    "real_products": 2000,
     "human_reviewed_products": 0,
     "real_sellers": 0,
     "real_users": 0,
@@ -130,22 +130,23 @@
     "searchable_guide_index": true,
     "independent_guide_pages": 24,
     "human_editorial_signoff": "not_run",
-    "rights_cleared_real_products": 500,
+    "rights_cleared_real_products": 2000,
     "korean_relevant_products": 68,
-    "global_context_products": 432,
+    "global_context_products": 1932,
     "human_reviewed_products": 0,
-    "ingredient_names_indexed": 300,
+    "ingredient_names_indexed": 1000,
     "human_reviewed_ingredients": 0
   },
   "stage_two": {
-    "total": 12,
-    "done": 0,
-    "percent": 0,
-    "foundation_ready": 11,
-    "foundation_percent": 91.7,
+    "strict_total": 12,
+    "strict_done": 0,
+    "strict_percent": 0,
+    "development_total": 12,
+    "development_implemented": 12,
+    "development_percent": 100,
     "status_file": "stage2-readiness.json",
-    "claim": "blocked",
-    "reason": "1단계 출시 관문, 실상품 2,000개, 판매처 5곳, 실제 후기 5,000건, 영어 사람 검토, 실기기·실사용자·운영 증거가 없음"
+    "claim": "development_contract_complete_strict_completion_blocked_external",
+    "reason": "2,000개 상품·1,000개 성분명·로컬 개인 결과·암호화 이관·KR/US 정보판·후기 격리·익명 집계 안전 계약은 구현했으나 사람 감수, 승인 판매처, 실제 후기, 실기기·실사용자·운영 증거가 없음"
   },
   "v4_stage_one": {
     "status_file": "stage1-v4-readiness.json",
@@ -159,7 +160,7 @@
     "implemented_user_paths_percent": 100,
     "claim": "all_currently_ai_executable_user_paths_implemented_but_stage_one_not_complete"
   },
-  "evidence_file": "evidence-v035.json",
+  "evidence_file": "evidence-v036.json",
   "historical_evidence": "evidence-v013.json",
   "evidence_separation": [
     "automatic",

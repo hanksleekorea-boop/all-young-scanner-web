@@ -1,44 +1,26 @@
 {
-  "schema_version": 1,
-  "updated_at": "2026-08-29",
+  "schema_version": 2,
+  "release_id": "2026-08-31-service-v0.36",
+  "updated_at": "2026-08-31",
   "stage": 2,
-  "official_status": "BLOCKED_BY_STAGE_ONE_AND_EXTERNAL_EVIDENCE",
-  "calculation": "DONE / 12 official P2 cards; foundation readiness is separate",
-  "minimums": {
-    "real_products": 2000,
-    "approved_sellers": 5,
-    "real_reviews": 5000,
-    "category_hubs": 15,
-    "concern_guides": 40,
-    "usage_routines": 60,
-    "ingredient_explainers": 150,
-    "direct_comparisons": 100
-  },
-  "current_actual": {
-    "real_products": 0,
-    "approved_sellers": 0,
-    "real_reviews": 0,
-    "human_reviewed_english": 0,
-    "stage_one_release_gate_done": false
-  },
-  "official": {"total": 12, "done": 0, "percent": 0},
-  "foundation": {"total": 12, "ready": 11, "percent": 91.7},
-  "foundation_evidence": {
-    "input_templates": 4,
-    "node_tests": 8,
-    "load_fixture_products": 2000,
-    "load_fixture_sellers": 5,
-    "load_fixture_reviews": 5000,
-    "operation_drills_prepared": 5,
-    "warning": "Load fixtures are generated test data and are never counted as real products, sellers or reviews."
-  },
-  "blockers": [
-    "P1-16 stage-one release gate",
-    "2,000 rights-approved real products",
-    "five approved sellers with price history",
-    "5,000 rights-approved real reviews",
-    "human-reviewed English information content",
-    "real Android and iOS account-alert journeys",
-    "real operators and users"
-  ]
+  "strict": {"total": 12, "done": 0, "percent": 0, "calculation": "DONE / 12; real people, devices, contracts and operating evidence required"},
+  "development_contract": {"total": 12, "implemented": 12, "percent": 100, "calculation": "implemented code/data/safe-default contracts / 12; not commercial completion"},
+  "actual_data": {"source_rows_scanned": 74285, "published_product_facts": 2000, "ingredient_label_names": 1000, "formulation_observations": 2000, "verified_formulation_changes": 0, "human_reviewed_products": 0, "human_reviewed_ingredients": 0, "approved_sellers": 0, "real_reviews": 0, "real_users": 0},
+  "safe_defaults": {"raw_photo_persisted": false, "personal_analysis_network_requests": 0, "account_sync_enabled": false, "anonymous_signal_upload_enabled": false, "review_publication_enabled": false, "country_purchasing_enabled": false, "advertising_enabled": false},
+  "cards": [
+    {"id":"S2-01","status":"VERIFYING","implemented":true,"evidence":"2,000 source facts, 1,000 label names, 2,000 single-source formulation fingerprints","missing":"human review and at least one verified formulation change"},
+    {"id":"S2-02","status":"VERIFYING","implemented":true,"evidence":"local sleep/cycle/environment/comfort/discomfort and photo-metadata contract; raw photo not stored","missing":"real device and user evidence"},
+    {"id":"S2-03","status":"VERIFYING","implemented":true,"evidence":"label-overlap comparison and non-causal personal introduction analysis","missing":"human editorial and real-user evidence"},
+    {"id":"S2-04","status":"BLOCKED_EXTERNAL","implemented":true,"evidence":"English explorer and KR/US information-only country matrix","missing":"human-reviewed English, country operator and approved sellers"},
+    {"id":"S2-05","status":"VERIFYING","implemented":true,"evidence":"PBKDF2 210,000 + AES-GCM encrypted explicit transfer, conflict preview and rollback","missing":"account provider and real device round-trip; account sync remains off"},
+    {"id":"S2-06","status":"BLOCKED_EXTERNAL","implemented":true,"evidence":"advertising disclosure, density, provider and fail-closed controls remain public","missing":"actual advertising approval and consent-signal operation"},
+    {"id":"S2-07","status":"VERIFYING","implemented":true,"evidence":"Korean product/ingredient facts and English product explorer are indexable","missing":"human-reviewed concern and ingredient editorial pages"},
+    {"id":"S2-08","status":"BLOCKED_EXTERNAL","implemented":true,"evidence":"duplicate/promotional/medical/compensated review quarantine contract","missing":"rights-approved real reviews and human moderation"},
+    {"id":"S2-09","status":"VERIFYING","implemented":true,"evidence":"decision card preserves product/formulation/source and refuses recommendation score","missing":"real longitudinal user evidence"},
+    {"id":"S2-10","status":"BLOCKED_EXTERNAL","implemented":true,"evidence":"explicit consent, 20-person threshold, no raw record or identifier aggregate contract","missing":"consenting real cohort and privacy review; upload remains off"},
+    {"id":"S2-11","status":"BLOCKED_EXTERNAL","implemented":true,"evidence":"13 dedicated tests plus full public suite and browser gates","missing":"real devices, users, editorial, seller, security and operations evidence"},
+    {"id":"S2-12","status":"BLOCKED_EXTERNAL","implemented":true,"evidence":"v0.36 release, recovery and evidence files prepared","missing":"all S2-01..11 strict DONE evidence"}
+  ],
+  "external_gate_file": "stage2-external-evidence.template.json",
+  "claim": "Stage-two development contract is implemented 12/12 (100%); strict stage-two completion is 0/12 until external evidence exists."
 }

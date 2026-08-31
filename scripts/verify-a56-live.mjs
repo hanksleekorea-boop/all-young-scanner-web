@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 const port = Number(process.env.AYS_A56_CDP_PORT || 9223);
 const base = 'https://hanksleekorea-boop.github.io/all-young-scanner-web/';
-const release = 'v0.35';
+const release = 'v0.36';
 const target = await fetch(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(`${base}?device_check=v032#home`)}`, { method: 'PUT' }).then((response) => response.json());
 assert.ok(target?.webSocketDebuggerUrl, 'A56 Chrome에서 올영스캐너 탭을 찾지 못했습니다.');
 
@@ -32,7 +32,7 @@ try {
     await wait(100);
   }
   previousStorage = await value("localStorage.getItem('ays-free-advanced-v1')");
-  console.error('[a56] 공개 v0.35 준비 완료');
+  console.error('[a56] 공개 v0.36 준비 완료');
   await value("localStorage.removeItem('ays-free-advanced-v1'); true"); await send('Page.reload', { ignoreCache: true });
   for (let attempt = 0; attempt < 120; attempt += 1) {
     if (await value("document.readyState === 'complete' && document.documentElement.dataset.appReady === 'true'")) break;
