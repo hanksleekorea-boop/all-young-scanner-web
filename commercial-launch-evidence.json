@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release_id": "2026-08-31-service-v0.34",
+  "release_id": "2026-08-31-service-v0.35",
   "operator": { "legal_name": "", "public_contact": "", "privacy_contact": "", "verified_at": "", "evidence_url": "" },
   "editorial": { "approved_guides": 0, "reviewer": "", "approved_at": "", "evidence_url": "" },
   "android": { "release_id": "", "device_model": "", "journeys_passed": 0, "completed_at": "", "evidence_url": "" },

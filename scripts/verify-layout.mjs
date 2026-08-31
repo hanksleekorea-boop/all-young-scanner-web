@@ -65,6 +65,13 @@ async function inspect(send, width, url) {
       if (app.result.value) break;
       await wait(50);
     }
+    if (['#catalog','#compare','#more'].includes(targetUrl.hash)) {
+      for (let i = 0; i < 100; i += 1) {
+        const catalog = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.catalogReady === 'true'", returnByValue: true });
+        if (catalog.result.value) break;
+        await wait(50);
+      }
+    }
   }
   for (let i = 0; i < 100; i += 1) {
     const ads = await send('Runtime.evaluate', { expression: "[...document.querySelectorAll('.ad-slot')].every((slot) => Boolean(slot.dataset.adState))", returnByValue: true });
@@ -137,7 +144,7 @@ try {
   const reducedMotion = await send('Runtime.evaluate', { expression: "getComputedStyle(document.documentElement).scrollBehavior", returnByValue: true });
   assert.equal(reducedMotion.result.value, 'auto', '움직임 줄이기 설정에서 부드러운 스크롤이 유지됨');
   await send('Emulation.setEmulatedMedia', { media: 'screen', features: [] });
-  for (const view of ['routine','guides','records','plus']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
+  for (const view of ['catalog','compare','routine','more','guides','records','plus']) results.push({ width:390, ...(await inspect(send, 390, `http://127.0.0.1:4179/#${view}`)) });
   for (const width of [360, 390, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/')) });
   for (const width of [360, 1440]) results.push({ width, ...(await inspect(send, width, 'http://127.0.0.1:4179/guides/morning-three-step-start/')) });
   const englishMobile = await inspect(send, 360, 'http://127.0.0.1:4179/en/');
@@ -223,6 +230,31 @@ try {
   assert.equal(plusJourney.result.value.collections, 1, 'Plus 가이드 모음 만들기 실패');
   assert.equal(plusJourney.result.value.plusVisible, true, 'Plus 화면 표시 실패');
   assert.equal(plusJourney.result.value.smallTargets, 0, `Plus 동적 조작 요소 44px 미달 ${plusJourney.result.value.smallTargets}개`);
+  await send('Page.navigate', { url: 'http://127.0.0.1:4179/#catalog' }); await ready(send);
+  for (let i = 0; i < 100; i += 1) { const readyState = await send('Runtime.evaluate', { expression: "document.documentElement.dataset.catalogReady === 'true'", returnByValue: true }); if (readyState.result.value) break; await wait(50); }
+  const catalogJourney = await send('Runtime.evaluate', {
+    expression: `(async()=>{
+      const initial=document.querySelectorAll('#catalog-results .catalog-card').length;
+      const first=document.querySelector('#catalog-results .catalog-card input[type="checkbox"]');first.click();document.querySelector('#catalog-results .catalog-card button').click();
+      const second=document.querySelectorAll('#catalog-results .catalog-card input[type="checkbox"]')[1];second.click();
+      document.querySelector('#catalog-query').value='없는상품검색어';document.querySelector('#catalog-search-form').requestSubmit();await new Promise(r=>setTimeout(r,50));
+      document.querySelector('#queue-current-search').click();
+      document.querySelector('[data-view-target="compare"]').click();await new Promise(r=>setTimeout(r,50));
+      const compared=document.querySelectorAll('#comparison-products .comparison-card').length;
+      const queued=JSON.parse(localStorage.getItem('ays-catalog-v4-local')||'{}').pending_lookups?.length||0;
+      document.querySelector('[data-view-target="routine"]').click();await new Promise(r=>setTimeout(r,50));
+      document.querySelector('#product-checkin-id').selectedIndex=1;document.querySelector('#product-checkin-comfort').value='4';document.querySelector('#product-checkin-discomfort').checked=false;document.querySelector('#product-checkin-form').requestSubmit();await new Promise(r=>setTimeout(r,50));
+      const productRecords=document.querySelectorAll('#product-checkin-history li:not(.empty-copy)').length;
+      const mobileTabs=document.querySelectorAll('.bottom-nav [data-view-target]').length;
+      return {initial,compared,queued,productRecords,mobileTabs,catalogReady:document.documentElement.dataset.catalogReady};
+    })()`, awaitPromise: true, returnByValue: true,
+  });
+  assert.equal(catalogJourney.result.value.initial, 30, '실제 상품 기본 검색 결과 30개가 표시되지 않음');
+  assert.equal(catalogJourney.result.value.compared, 2, '선택한 실제 상품 2개 비교 실패');
+  assert.equal(catalogJourney.result.value.queued, 1, '0건 검색의 오프라인 대기 저장 실패');
+  assert.equal(catalogJourney.result.value.productRecords, 1, '실제 상품 루틴·제품 기록 저장 실패');
+  assert.equal(catalogJourney.result.value.mobileTabs, 5, '모바일 핵심 탭이 5개가 아님');
+  assert.equal(catalogJourney.result.value.catalogReady, 'true', '상품 카탈로그 시작 실패');
   const advertisingRequests = events.filter((event) => event.method === 'Network.requestWillBeSent' && /googlesyndication|doubleclick|amazon-adsystem|media\.net/i.test(event.params?.request?.url || ''));
   assert.equal(advertisingRequests.length, 0, `기본 차단 상태에서 외부 광고 요청 ${advertisingRequests.length}건 발생`);
   await new Promise((resolve) => {
@@ -230,7 +262,7 @@ try {
     socket.addEventListener('close', () => { clearTimeout(timeout); resolve(); }, { once: true });
     socket.close();
   });
-  console.log(`[layout-verify] PASS — ${results.length + 3}개 화면과 무료·Plus·광고 투명성·공급망 여정, 외부 광고 네트워크 요청 0, 360·390·640(200% 재배치)·1440px, 접근 가능한 이름·첫 Tab·움직임 줄이기·가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
+  console.log(`[layout-verify] PASS — ${results.length + 4}개 화면과 실제 상품 검색·비교·오프라인 대기·무료·Plus·광고 투명성·공급망 여정, 외부 광고 네트워크 요청 0, 360·390·640(200% 재배치)·1440px, 접근 가능한 이름·첫 Tab·움직임 줄이기·가로 넘침·작은/잘린 조작 요소·내부 문구 0`);
 } finally {
   if (child.exitCode === null) {
     const exited = new Promise((resolve) => child.once('exit', resolve));

@@ -142,6 +142,7 @@ const sitemapUrls = [
   `${baseUrl}cookies.html`,
   `${baseUrl}advertising.html`,
   `${baseUrl}privacy-choices.html`,
+  `${baseUrl}catalog-license.html`,
   ...usage.cards.map((card) => `${baseUrl}guides/${card.slug}/`),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map((url) => `  <url><loc>${url}</loc><lastmod>${reviewedAt}</lastmod></url>`).join('\n')}\n</urlset>\n`;

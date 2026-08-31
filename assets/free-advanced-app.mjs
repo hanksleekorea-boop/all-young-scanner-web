@@ -355,7 +355,7 @@ export async function mountFreeAdvancedApp({ root = document, storage = localSto
   }
 
   function showView(name, pushHash = true) {
-    const allowed = ['home', 'routine', 'guides', 'records', 'plus'];
+    const allowed = ['home', 'catalog', 'compare', 'routine', 'guides', 'records', 'plus', 'more'];
     const next = allowed.includes(name) ? name : 'home';
     root.querySelectorAll('[data-view]').forEach((section) => { section.hidden = section.dataset.view !== next; });
     root.querySelectorAll('[data-view-target]').forEach((button) => {

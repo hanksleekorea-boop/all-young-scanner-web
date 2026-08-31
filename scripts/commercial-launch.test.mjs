@@ -7,11 +7,11 @@ const blank = JSON.parse(readFileSync(new URL('../commercial-launch-evidence.tem
 const proof = (name) => `https://evidence.example/${name}`;
 const complete = () => ({
   schema_version: 1,
-  release_id: '2026-08-31-service-v0.34',
+  release_id: '2026-08-31-service-v0.35',
   operator: { legal_name: 'Example Operator', public_contact: 'support@example.com', privacy_contact: 'privacy@example.com', verified_at: '2026-08-30', evidence_url: proof('operator') },
   editorial: { approved_guides: 24, reviewer: 'editor', approved_at: '2026-08-30', evidence_url: proof('editorial') },
-  android: { release_id: '2026-08-31-service-v0.34', device_model: 'A56', journeys_passed: 3, completed_at: '2026-08-30', evidence_url: proof('android') },
-  ios: { release_id: '2026-08-31-service-v0.34', device_model: 'iPhone', journeys_passed: 3, completed_at: '2026-08-30', evidence_url: proof('ios') },
+  android: { release_id: '2026-08-31-service-v0.35', device_model: 'A56', journeys_passed: 3, completed_at: '2026-08-30', evidence_url: proof('android') },
+  ios: { release_id: '2026-08-31-service-v0.35', device_model: 'iPhone', journeys_passed: 3, completed_at: '2026-08-30', evidence_url: proof('ios') },
   users: { consenting_users: 5, core_task_success_percent: 90, critical_defects: 0, brand_confusion_cases: 0, completed_at: '2026-08-30', evidence_url: proof('users') },
   site: { hostname: 'example.com', operator_controlled: true, html_editable: true, https_verified: true, adsense_registered: true, verified_at: '2026-08-30', evidence_url: proof('site') },
   adsense: { account_approved: true, site_approved: true, publisher_id: 'ca-pub-1234567890123456', slot_ids: { 'home-context': '123456', 'guide-index-context': '234567', 'guide-detail-context': '345678' }, approved_at: '2026-08-30', evidence_url: proof('adsense') },

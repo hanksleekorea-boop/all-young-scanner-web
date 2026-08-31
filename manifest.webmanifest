@@ -18,8 +18,8 @@
     { "src": "icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
   ],
   "shortcuts": [
-    { "name": "내 루틴 만들기", "short_name": "내 루틴", "url": "./#routine" },
-    { "name": "사용 가이드", "short_name": "가이드", "url": "./#guides" },
-    { "name": "내 기록", "short_name": "내 기록", "url": "./#records" }
+    { "name": "상품 스캔과 검색", "short_name": "스캔·검색", "url": "./#catalog" },
+    { "name": "상품 비교", "short_name": "비교", "url": "./#compare" },
+    { "name": "내 루틴 만들기", "short_name": "내 루틴", "url": "./#routine" }
   ]
 }
