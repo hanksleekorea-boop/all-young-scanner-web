@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "status": "AUTOMATION_READY_EXTERNAL_EVIDENCE_REQUIRED",
+  "as_of": "2026-09-04",
+  "content": {
+    "total_cards": 29,
+    "strict_done": 0,
+    "strict_percent": 0,
+    "automation_ready": 19,
+    "automation_ready_percent": 65.5,
+    "external_evidence_ready": 0,
+    "strict_complete": false
+  },
+  "launch": {
+    "total_gates": 10,
+    "passed_gates": 0,
+    "passed_percent": 0,
+    "strict_complete": false,
+    "evidence_file_complete": false
+  },
+  "mobile": {
+    "selected_device": "SM-G996N",
+    "core_navigation_verified": true,
+    "scope": "CORE_NAVIGATION_ONLY",
+    "install_verified": false,
+    "installability_verified": true,
+    "offline_verified": false,
+    "browser_offline_cache_verified": true,
+    "backup_roundtrips_verified": 0,
+    "release_gate_evidence": false,
+    "exclusions": [
+      "installed_pwa_actual",
+      "device_network_offline",
+      "backup_roundtrips",
+      "google_login",
+      "account_save_and_delete",
+      "screen_reader",
+      "ios",
+      "real_user_task"
+    ]
+  },
+  "claims": {
+    "automation_is_not_strict_completion": true,
+    "synthetic_personas_are_not_real_users": true,
+    "strict_content_complete": false,
+    "strict_launch_complete": false
+  },
+  "blockers": [
+    {
+      "kind": "content_card",
+      "id": "C1-01",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "template_only"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-02",
+      "state": "VERIFYING",
+      "evidence": "500 product queue; 0 approved"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-03",
+      "state": "VERIFYING",
+      "evidence": "500 queued; category gap remains"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-04",
+      "state": "VERIFYING",
+      "evidence": "300 ingredient queue; 0 approved"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-05",
+      "state": "VERIFYING",
+      "evidence": "24 Korean guides queued; 0 approved"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-06",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "24 complete English drafts; 0 English guides approved"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-07",
+      "state": "VERIFYING",
+      "evidence": "empty authoring slots prepared; authored content not counted"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-08",
+      "state": "VERIFYING",
+      "evidence": "approved-only contracts ready; approved source content absent"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-09",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "0/2 approved sellers"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-10",
+      "state": "VERIFYING",
+      "evidence": "mechanical search audit ready; representative human queries pending"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-11",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "real devices and users absent"
+    },
+    {
+      "kind": "content_card",
+      "id": "C1-12",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "depends on C1-01 through C1-11"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-01",
+      "state": "VERIFYING",
+      "evidence": "2000/2000 queued; 0 approved"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-02",
+      "state": "VERIFYING",
+      "evidence": "650/1000 unique queued; 0 approved"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-03",
+      "state": "VERIFYING",
+      "evidence": "96 empty bilingual slots"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-04",
+      "state": "VERIFYING",
+      "evidence": "hub, concern, routine and comparison slots prepared"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-05",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "approved product and ingredient sources absent"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-06",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "0/5 approved sellers; 0/2 verified markets"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-07",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "0/5000 approved real reviews"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-08",
+      "state": "VERIFYING",
+      "evidence": "single-source observations exist; verified changes absent"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-09",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "approved relationship graph absent"
+    },
+    {
+      "kind": "content_card",
+      "id": "C2-10",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "depends on C2-01 through C2-09"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-01",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_BY_C2_APPROVALS"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-02",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_EXTERNAL"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-03",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_EXTERNAL"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-04",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_EXTERNAL"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-05",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_EXTERNAL"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-06",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_EXTERNAL"
+    },
+    {
+      "kind": "content_card",
+      "id": "C3-07",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "BLOCKED_EXTERNAL"
+    },
+    {
+      "kind": "launch_gate",
+      "id": "operator",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "법적 운영자 이름, 실제 문의 채널, 개인정보 담당과 확인 자료가 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "editorial",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "24개 공개 가이드의 사람 편집 승인과 검토 기록이 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "android",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "현재판 Android에서 설치·오프라인·백업 3회 왕복을 통과한 증거가 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "ios",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "현재판 iOS에서 설치·오프라인·백업 3회 왕복을 통과한 증거가 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "users",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "동의한 실제 사용자 5명 이상, 핵심 과업 90% 이상, 중대 결함·브랜드 혼동 0건의 기록이 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "catalog",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "공개 권리와 출처가 확인된 실상품 500개 및 24시간 이내 신선도 검증이 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "sellers",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "승인 판매처 2곳 이상의 실제 가격·재고·배송·반품 연결 증거가 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "auth",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "Google 로그인과 저장·불러오기·삭제 왕복 증거가 필요합니다. Apple 로그인은 현재 꺼짐이어야 합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "hosting",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "HTTPS·HSTS·응답 CSP·콘텐츠 유형 보호·참조 주소 정책을 제어한 운영 호스팅 증거가 필요합니다."
+    },
+    {
+      "kind": "launch_gate",
+      "id": "advertising",
+      "state": "BLOCKED_EXTERNAL",
+      "evidence": "광고 외부 14조건, 공급망 4조건, 승인자 2명, 사람 정책 검토와 제한 공개 관찰이 필요합니다."
+    }
+  ],
+  "consistency_failures": [],
+  "sources": {
+    "content_audit": "docs/content-stage-audit-v5.json",
+    "content_execution": "docs/content-execution-status.json",
+    "launch_evidence": "docs/launch-evidence.template.json",
+    "android_core_navigation": "docs/device-evidence/android-sm-g996n-core-navigation-20260904.json"
+  }
+}
