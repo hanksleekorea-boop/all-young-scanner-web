@@ -87,7 +87,7 @@ assert(['pending','success'].includes(evidence.server.pages) && ['pending','succ
 assert(privacy.includes('계정 로그인·분석 추적·서버 기록 저장을 제공하지 않으며') && privacy.includes('이름·이메일·전화번호·생년월일·자유서술은 받지 않습니다'), '현재 개인정보 처리 상태 누락');
 assert(terms.includes('송출 중인 외부 광고') && terms.includes('제품 추천·실시간 가격·평점·인기 순위를 제공하지 않습니다'), '현재 무료판 수익·상품 경계 누락');
 assert(support.includes('이 기기 기록 전체 삭제') && support.includes('다른 기기로 기록 옮기기'), '삭제·이동 안내 누락');
-assert(progress.includes('고급 무료 1.0 코드') && progress.includes('광고 2단계 코드') && progress.includes('광고 3단계 코드') && progress.includes('Plus 결제 제외 코드') && progress.includes('운영 상용화 증거') && progress.includes('실기기'), '코드와 운영 증거 분리 대시보드 누락');
+assert(progress.includes('개발 진척 대시보드') && progress.includes('콘텐츠 엄격 완료') && progress.includes('콘텐츠 자동 준비') && progress.includes('출시 외부 관문') && progress.includes('선택 Android 실제 확인'), '자동 준비와 외부 증거 분리 대시보드 누락');
 assert(progress.includes('noindex,nofollow') && !sitemap.includes('progress.html'), '운영 대시보드 검색 제외 실패');
 assert(adConfig.enabled === false && adConfig.publisher_id === 'ca-pub-2476023536699107' && adConfig.certified_cmp_ready === true && adConfig.operator_identity_confirmed === false, '확인되지 않은 광고 계정 또는 운영 조건을 활성화함');
 assert(adReadiness.code.verified === 16 && adReadiness.code.live === 16 && adReadiness.code.percent === 100 && adReadiness.external_activation.done === 2, '광고 코드 준비와 확인된 ads.txt·CMP 증거 대조 실패');
