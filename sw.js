@@ -1,5 +1,5 @@
-const VERSION = 'ays-shopping-v039';
-const CORE = ['./','./en/','./index.html','./offline.html','./assets/storefront.mjs','./assets/shopping-core.mjs','./assets/storefront.css','./manifest.webmanifest','./icon.svg','./content/shop-index-v2.json','./content/usage-guides.json','./content/usage-guides.en.json','./content/shopping-guides.json','./content/store-links.json'];
+const VERSION = 'ays-shopping-v039-backup-preservation';
+const CORE = ['./','./en/','./index.html','./offline.html','./assets/storefront.mjs','./assets/shopping-core.mjs','./assets/shopping-core.mjs?v=backup-preservation-20260905','./assets/storefront.css','./manifest.webmanifest','./icon.svg','./content/shop-index-v2.json','./content/usage-guides.json','./content/usage-guides.en.json','./content/shopping-guides.json','./content/store-links.json'];
 const base = new URL(self.registration.scope);
 const allowed = new Set(CORE.map(p=>new URL(p,base).href));
 self.addEventListener('install', event=>event.waitUntil((async()=>{
@@ -22,7 +22,7 @@ self.addEventListener('fetch',event=>{
   event.respondWith((async()=>{
     const cache=await caches.open(VERSION);
     try{
-      const response=await fetch(event.request);
+      const response=await fetch(event.request,{cache:'no-store'});
       if(response.ok&&response.type!=='opaque')await cache.put(key,response.clone()).catch(()=>{});
       return response;
     }catch{

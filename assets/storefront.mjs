@@ -1,4 +1,4 @@
-import {STORAGE_KEY,CATEGORIES,BRAND_ALIASES,escapeHtml as esc,searchProducts,readState,writeState,validateState,mergeBackups,toggleComparison,storeLinks,sourceLink,validateOffer} from './shopping-core.mjs';
+import {STORAGE_KEY,CATEGORIES,BRAND_ALIASES,escapeHtml as esc,searchProducts,readState,writeState,validateState,mergeBackups,toggleComparison,storeLinks,sourceLink,validateOffer} from './shopping-core.mjs?v=backup-preservation-20260905';
 const root = new URL('../', import.meta.url);
 const locale = document.documentElement.lang.startsWith('en')?'en':'ko';
 const t = (ko,en) => locale==='en'?en:ko;
