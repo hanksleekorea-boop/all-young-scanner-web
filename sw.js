@@ -1,45 +1,32 @@
-const CACHE_PREFIX = 'ays-service-';
-const CACHE = 'ays-service-v0.38-shopping-marketplace';
-const RELEASE_VERSION = '2026-09-05-service-v0.38-shopping-marketplace';
-const CORE = [
-  './', './index.html', './progress.html', './offline.html',
-  './privacy.html', './terms.html', './support.html', './about.html', './cookies.html', './advertising.html', './ad-operations.html', './ad-governance.html', './privacy-choices.html', './catalog-license.html', './ads.txt', './.well-known/security.txt',
-  './manifest.webmanifest', './icon.svg', './icon-192.svg', './icon-512.svg',
-  './readiness.json', './free-advanced-readiness.json', './plus-readiness.json', './stage1-v4-readiness.json', './stage2-readiness.json', './stage2-external-evidence.template.json', './catalog-governance.json', './ad-stage1-readiness.json', './ad-stage2-readiness.json', './ad-stage3-readiness.json', './advertising-config.json', './commercial-launch-readiness.json', './commercial-launch-evidence.json',
-  './guides/index.html', './en/', './en/index.html', './en/explorer.html', './content/usage-guides.json', './content/usage-guides.en.json', './content/catalog-v4.json', './content/ingredients-v4.json',
-  './assets/shopping-discovery-hero-v1.png', './content/shop-index-v1.json', './assets/shopping-discovery-hero-v1.png', './content/shop-index-v1.json', './assets/shopping-discovery-hero-v1.png', './content/shop-index-v1.json', './assets/shopping-discovery-hero-v1.png', './content/shop-index-v1.json', './assets/free-advanced-app.mjs', './assets/free-advanced-bootstrap.mjs', './assets/catalog-v4.mjs', './assets/stage2-v4.mjs', './assets/catalog-en.mjs', './assets/ad-policy.mjs', './assets/consent-gate.mjs', './assets/ad-router.mjs', './assets/ad-metrics.mjs', './assets/ad-optimizer.mjs', './assets/adsense-formats.mjs', './assets/ad-loader.mjs', './assets/ad-stage1.css', './assets/privacy-choices-page.mjs', './assets/ad-operations-page.mjs', './assets/ad-governance-page.mjs', './evidence-v036.json',
-];
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE)));
-  self.skipWaiting();
-});
-self.addEventListener('activate', (event) => {
-  event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE).map((key) => caches.delete(key)))).then(() => self.clients.matchAll({ type:'window', includeUncontrolled:true })).then((clients) => clients.forEach((client) => client.postMessage({ type:'AYS_RELEASE_READY', version:RELEASE_VERSION }))));
-  self.clients.claim();
-});
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  const requested = new URL(event.request.url);
-  const allowed = CORE.map((path) => new URL(path, self.registration.scope).href);
-  const scope = new URL(self.registration.scope);
-  const guideRoot = new URL('./guides/', self.registration.scope).pathname;
-  const isGuidePage = requested.origin === scope.origin && requested.pathname.startsWith(guideRoot) && requested.pathname.endsWith('/') && !requested.search;
-  // Do not cache API responses, query strings, credentials or other applications on this origin.
-  if (!allowed.includes(requested.href) && !isGuidePage) return;
-  const fallback = event.request.mode === 'navigate' ? './offline.html' : undefined;
-  event.respondWith((async () => {
-    try {
-      const response = await fetch(event.request);
-      if (response?.status === 200 && response.type !== 'opaque') {
-        try { const cache = await caches.open(CACHE); await cache.put(event.request,response.clone()); }
-        catch { /* Storage quota or blocked cache must not hide a valid network response. */ }
-      }
+const VERSION = 'ays-shopping-v039';
+const CORE = ['./','./en/','./index.html','./offline.html','./assets/storefront.mjs','./assets/shopping-core.mjs','./assets/storefront.css','./manifest.webmanifest','./icon.svg','./content/shop-index-v2.json','./content/usage-guides.json','./content/usage-guides.en.json','./content/shopping-guides.json','./content/store-links.json'];
+const base = new URL(self.registration.scope);
+const allowed = new Set(CORE.map(p=>new URL(p,base).href));
+self.addEventListener('install', event=>event.waitUntil((async()=>{
+  const cache=await caches.open(VERSION);
+  // One unique URL per entry. Installation fails visibly if essential assets are unavailable.
+  await cache.addAll([...allowed]);
+  await self.skipWaiting();
+})()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{
+  const keys=await caches.keys();
+  await Promise.all(keys.filter(k=>(k.startsWith('ays-service-')||k.startsWith('ays-shopping-'))&&k!==VERSION).map(k=>caches.delete(k)));
+  await self.clients.claim();
+})()));
+self.addEventListener('fetch',event=>{
+  const url=new URL(event.request.url);
+  if(event.request.method!=='GET'||url.origin!==base.origin||!url.pathname.startsWith(base.pathname))return;
+  const shellPath=url.pathname===base.pathname||url.pathname===base.pathname+'index.html'||url.pathname===base.pathname+'en/'||url.pathname===base.pathname+'en/index.html';
+  if(!shellPath&&!allowed.has(url.href))return;
+  const key=shellPath?new URL(url.pathname.includes('/en/')?'./en/':'./',base).href:url.href;
+  event.respondWith((async()=>{
+    const cache=await caches.open(VERSION);
+    try{
+      const response=await fetch(event.request);
+      if(response.ok&&response.type!=='opaque')await cache.put(key,response.clone()).catch(()=>{});
       return response;
-    } catch {
-      try {
-        const cache = await caches.open(CACHE);
-        return await cache.match(event.request) || (fallback ? await cache.match(new URL(fallback,self.registration.scope).href) : undefined) || Response.error();
-      } catch { return Response.error(); }
+    }catch{
+      return await cache.match(key)||(event.request.mode==='navigate'?await cache.match(new URL('./offline.html',base).href):null)||Response.error();
     }
   })());
 });

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "offers": [{
+    "product_id": "obf-8809598454354",
+    "merchant_id": "oliveyoung",
+    "merchant_name": "Olive Young Global · Thailand",
+    "url": "https://global.oliveyoung.com/product/detail?prdtNo=GA210000531&dataSource=search_result",
+    "quantity": "50ml",
+    "market": "TH",
+    "match_status": "name_and_quantity_observed",
+    "checked_at": "2026-09-05T10:38:00Z",
+    "expires_at": "2026-09-12T10:38:00Z",
+    "affiliate_status": "inactive",
+    "evidence": "Browser: COSRX Aloe Soothing Sun Cream SPF50+; Specific Item Info shows Content volume or weight 50ml. Barcode, formulation identity and future availability are not verified.",
+    "price": null,
+    "stock": null,
+    "human_reviewed": false
+  }]
+}

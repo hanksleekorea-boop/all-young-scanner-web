@@ -1,25 +1,56 @@
 {
   "id": "/all-young-scanner-web/",
-  "name": "올영스캐너",
+  "name": "올영스캐너 · All-Young Scanner",
   "short_name": "올영스캐너",
-  "description": "출처가 연결된 K-뷰티 사용 가이드로 내 루틴을 만들고 기기에 기록하는 무료 독립 정보 서비스",
+  "description": "화장품 검색·비교·찜과 외부 스토어 탐색",
   "lang": "ko-KR",
   "dir": "ltr",
-  "start_url": "./#home",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
-  "background_color": "#fbf8fa",
-  "theme_color": "#8f2856",
-  "categories": ["lifestyle", "beauty", "education"],
+  "background_color": "#f5f7f6",
+  "theme_color": "#d0f866",
+  "categories": [
+    "lifestyle",
+    "beauty",
+    "education"
+  ],
   "icons": [
-    { "src": "icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "상품 스캔과 검색", "short_name": "스캔·검색", "url": "./#catalog" },
-    { "name": "상품 비교", "short_name": "비교", "url": "./#compare" },
-    { "name": "내 루틴 만들기", "short_name": "내 루틴", "url": "./#routine" }
+    {
+      "name": "상품 탐색",
+      "url": "./?view=catalog"
+    },
+    {
+      "name": "상품 비교",
+      "url": "./?view=compare"
+    },
+    {
+      "name": "찜한 상품",
+      "url": "./?view=saved"
+    },
+    {
+      "name": "내 데이터",
+      "url": "./?view=data"
+    }
   ]
 }
