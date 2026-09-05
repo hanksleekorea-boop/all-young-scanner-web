@@ -1,6 +1,6 @@
 const CACHE_PREFIX = 'ays-service-';
-const CACHE = 'ays-service-v0.36-stage-two';
-const RELEASE_VERSION = '2026-08-31-service-v0.36';
+const CACHE = 'ays-service-v0.37-content-hub';
+const RELEASE_VERSION = '2026-09-05-service-v0.37-content-hub';
 const CORE = [
   './', './index.html', './progress.html', './offline.html',
   './privacy.html', './terms.html', './support.html', './about.html', './cookies.html', './advertising.html', './ad-operations.html', './ad-governance.html', './privacy-choices.html', './catalog-license.html', './ads.txt', './.well-known/security.txt',
