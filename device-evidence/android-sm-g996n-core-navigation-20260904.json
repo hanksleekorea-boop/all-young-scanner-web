@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "evidence_type": "ANDROID_CORE_NAVIGATION",
+  "scope": "CORE_NAVIGATION_ONLY",
+  "device_model": "SM-G996N",
+  "platform": "Android 15 / Chrome",
+  "tested_at": "2026-09-04",
+  "service_url": "https://hanksleekorea-boop.github.io/all-young-scanner-web/m/",
+  "passed": true,
+  "observations": {
+    "resolved_to_root_pwa": true,
+    "viewport_width_px": 411,
+    "horizontal_overflow": false,
+    "manifest_present": true,
+    "service_worker_controlling": true,
+    "pwa_installability_checked": true,
+    "pwa_installability_passed": true,
+    "routine_cta_passed": true,
+    "five_bottom_tabs_passed": true,
+    "local_storage_key_count_unchanged": true,
+    "browser_offline_cache_checked": true,
+    "browser_offline_cache_passed": true,
+    "browser_offline_cache_scope": "CHROME_DEBUGGER_OFFLINE_CACHE_ONLY"
+  },
+  "release_gate_evidence": false,
+  "exclusions": [
+    "installed_pwa_actual",
+    "device_network_offline",
+    "backup_roundtrips",
+    "google_login",
+    "account_save_and_delete",
+    "screen_reader",
+    "ios",
+    "real_user_task"
+  ],
+  "boundary": "This record supports Android core-navigation evidence only. It cannot satisfy the release Android gate."
+}
