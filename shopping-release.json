@@ -1,6 +1,6 @@
 {
-  "release_id": "2026-09-05-service-v0.39-shopping-repair",
-  "generated_at": "2026-09-05T11:03:12.244Z",
+  "release_id": "2026-09-05-service-v0.40-shopping-trust",
+  "generated_at": "2026-09-05T13:02:21.956Z",
   "catalog_count": 1994,
   "quarantined_count": 6,
   "catalog_sha256": "acf43a915bc33e351ab8ab6aa2ec2af36a7840c4f0e8401c8c210a8feb60440f",
@@ -10,5 +10,6 @@
   "human_reviewed_products": 0,
   "android_current_release": "not_tested",
   "ios_current_release": "not_tested",
-  "real_users_current_release": 0
+  "real_users_current_release": 0,
+  "verified_price_offers": 0
 }

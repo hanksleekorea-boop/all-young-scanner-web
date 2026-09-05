@@ -1,4 +1,5 @@
-import {STORAGE_KEY,CATEGORIES,BRAND_ALIASES,escapeHtml as esc,searchProducts,readState,writeState,validateState,mergeBackups,toggleComparison,storeLinks,sourceLink,validateOffer} from './shopping-core.mjs?v=backup-preservation-20260905';
+import {STORAGE_KEY,CATEGORIES,BRAND_ALIASES,escapeHtml as esc,searchProducts,readState,writeState,validateState,mergeBackups,toggleComparison,storeLinks,sourceLink,validateOffer} from './shopping-core.mjs?v=040';
+import {enhancePage,searchSuggestions,relatedGuides} from './enhancements.mjs?v=040';
 const root = new URL('../', import.meta.url);
 const locale = document.documentElement.lang.startsWith('en')?'en':'ko';
 const t = (ko,en) => locale==='en'?en:ko;
@@ -39,6 +40,7 @@ function updateResults(){
   const result=searchProducts(products,route);
   $('#resultCount').textContent=t(`${result.length.toLocaleString()}개 상품 · ${Math.min(shown,result.length)}개 표시`,`${result.length.toLocaleString()} products · showing ${Math.min(shown,result.length)}`);
   $('#grid').innerHTML=result.length?result.slice(0,shown).map(card).join(''):empty(t('검색 결과가 없습니다','No matching products'));
+  if(!result.length){const suggestions=searchSuggestions(products,route.q);if(suggestions.length){const box=document.createElement('div');box.className='notice';box.innerHTML=`<p>${t('이 브랜드를 찾으셨나요?','Did you mean this brand?')}</p><div class="row">${suggestions.map(brand=>link('catalog',esc(brand),{brand,scope:'global'},'button')).join('')}</div>`;$('#grid').prepend(box);}}
   $('#more').hidden=shown>=result.length;
 }
 function renderCatalog(saved=false){
@@ -50,7 +52,7 @@ function renderCatalog(saved=false){
   $('#searchForm').onsubmit=e=>{e.preventDefault();filterChanged();};
   for(const id of ['category','scope','sort'])$('#'+id).onchange=filterChanged;
 }
-function filterChanged(){route={...route,q:$('#search').value,category:$('#category').value,scope:$('#scope').value,sort:$('#sort').value};shown=24;history.replaceState({},'',pageUrl('catalog',{q:route.q,category:route.category,scope:route.scope,sort:route.sort,brand:route.brand}));updateResults();$('#activeFilters').innerHTML=btn('reset',t('검색·조건 모두 해제','Clear search & filters'));}
+function filterChanged(){route={...route,q:$('#search').value,category:$('#category').value,scope:$('#scope').value,sort:$('#sort').value};shown=24;const url=pageUrl('catalog',{q:route.q,category:route.category,scope:route.scope,sort:route.sort,brand:route.brand});if(url!==location.href)history.pushState({},'',url);updateResults();$('#activeFilters').innerHTML=btn('reset',t('검색·조건 모두 해제','Clear search & filters'));$('#languageLink').href=languageUrl();}
 function validOffers(p){return offers.filter(o=>o.product_id===p.id&&validateOffer(o));}
 function storePanel(p){
   const exact=validOffers(p);
@@ -83,7 +85,7 @@ function languageUrl(){
  for(const [k,v] of Object.entries(route))if(v&&v!=='all'&&v!=='catalog')u.searchParams.set(k,v);
  return u.href;
 }
-function render(){document.title=t('올영스캐너 | 화장품 탐색·비교','All-Young Scanner | Beauty discovery & comparison');const handlers={catalog:()=>renderCatalog(),saved:()=>renderCatalog(true),product:renderProduct,compare:renderCompare,guides:renderGuides,guide:renderGuide,data:renderData,brands:renderBrands,help:renderHelp,document:()=>{main.innerHTML=staticDocument;}};if(!loaded&&['product','compare','brands','saved'].includes(route.view)){renderCatalog();return;}(handlers[route.view]||handlers.catalog)();tray();for(const a of document.querySelectorAll('[data-nav]')){a.href=pageUrl(a.dataset.nav);if(a.dataset.nav===route.view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}$('#languageLink').href=languageUrl();}
+function render(){document.title=t('올영스캐너 | 화장품 탐색·비교','All-Young Scanner | Beauty discovery & comparison');const handlers={catalog:()=>renderCatalog(),saved:()=>renderCatalog(true),product:renderProduct,compare:renderCompare,guides:renderGuides,guide:renderGuide,data:renderData,brands:renderBrands,help:renderHelp,document:()=>{main.innerHTML=staticDocument;}};if(!loaded&&['product','compare','brands','saved','help'].includes(route.view)){renderCatalog();return;}(handlers[route.view]||handlers.catalog)();enhancePage({main,route,products,persisted,locale,pageUrl,card,link,btn,categoryLabel});if(route.view==='product'){const p=productById(route.id),grid=main.querySelector('.guide-grid');if(p&&grid)grid.innerHTML=relatedGuides(guides,p).map(guideCard).join('');}if(route.view==='guides'){const field=main.querySelector('#guideSearch');if(field)field.addEventListener('input',()=>{if(!main.querySelector('#guideGrid .guide-card')){const b=document.createElement('button');b.type='button';b.textContent=t('가이드 검색 지우기','Clear guide search');b.onclick=()=>{field.value='';field.dispatchEvent(new Event('input'));field.focus();};main.querySelector('#guideGrid').append(b);}});}tray();for(const a of document.querySelectorAll('[data-nav]')){a.href=pageUrl(a.dataset.nav);if(a.dataset.nav===route.view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}$('#languageLink').href=languageUrl();}
 function confirmAction(title,message,callback){$('#confirmTitle').textContent=title;$('#confirmMessage').textContent=message;$('#confirmAction').onclick=()=>{try{callback();$('#confirmDialog').close();}catch{notify(t('처리하지 못했습니다. 기록을 확인하세요.','Action failed. Please check your data.'));}};$('#confirmDialog').showModal();}
 document.addEventListener('click',async e=>{
   const a=e.target.closest('a[data-route],a[data-nav]');if(a&&e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&!e.altKey){e.preventDefault();history.pushState({},'',a.href);parseRoute();shown=24;render();window.scrollTo({top:0});main.focus({preventScroll:true});return;}

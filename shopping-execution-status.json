@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "as_of": "2026-09-05T11:03:24.729Z",
-  "release_id": "2026-09-05-service-v0.39-shopping-repair",
-  "status": "PUBLIC_REPAIR_NOT_COMMERCIAL_SIGNOFF",
+  "as_of": "2026-09-05T13:02:21.976Z",
+  "release_id": "2026-09-05-service-v0.40-shopping-trust",
+  "status": "PUBLIC_CANDIDATE_NOT_COMMERCIAL_SIGNOFF",
   "plan": "v7",
   "strict_stage_complete": [
     false,
@@ -31,26 +31,26 @@
     "price_stock_feed": false
   },
   "implemented_priority_scope": [
-    "실행 오류·저장 접근 예외 차단",
-    "올리브영·YesStyle 검색 경로 수정",
-    "한국어 브랜드·상품군 별칭 검색",
-    "전체 우선 정렬과 한국 연관 전용 필터 분리",
-    "0건·마지막 페이지 더보기 제거",
-    "3개 비교 제한과 설명",
-    "비교 개별 제거·전체 비우기",
-    "찜 저장·목록·새로고침 복원",
-    "JSON·CSV 백업",
-    "검증·미리보기 후 백업 합치기",
-    "확인·취소를 갖춘 기록 삭제",
-    "구버전·손상 원본 보존·별도 백업",
-    "내부 분류명 대신 한영 고객 표시명",
-    "세제 의심 자료 6개 격리",
-    "상품별 상세·공유 주소",
-    "출처·수집일·원문 수정일 분리",
-    "한영 실제 메뉴·32개 가이드 연결",
-    "반응형 하단 영역·키보드·확인창",
-    "중복 없는 오프라인 준비·부분 실패 격리",
-    "현재판 검사·공개·증거 동기화"
+    "상품/옵션/판매 정보 원장 분리. 이름만 같은 상품 자동 병합 금지.",
+    "단위·묶음 수량 정규화. 모호한 용량은 계산 제외.",
+    "가격/배송/세금/관세 누락의 합계 계산 차단.",
+    "시장·통화·동일 옵션·권리·사람 검토·만료를 갖춘 판매자료 공개 판정.",
+    "우선 500개 검수 목록과 누락 이유 생성.",
+    "비교 화면의 의미 있는 행/열 구조와 정규화 용량 표시.",
+    "서로 다른 단위·묶음·상품군 비교 경고.",
+    "찜 목록 이름/브랜드 정렬과 검색.",
+    "브랜드 검색·상품 수 표시.",
+    "빈 검색의 실제 상품 기반 별칭 제안.",
+    "검색 주소/뒤로가기 일관성.",
+    "상품군 관련 가이드 연결.",
+    "가이드 검색 빈 상태 복구.",
+    "상품 정정 유형·관찰·근거 입력 양식.",
+    "정정 내용을 로컬에서 미리보기/복사/내려받기.",
+    "공개 제출 전 개인정보 경고·직접 확인. 자동 발송 금지.",
+    "인쇄용 비교 화면과 긴 텍스트 재배치.",
+    "판별·정규화·백업·정정·실패 경계 자동 시험.",
+    "PC·좁은 폭·키보드 사용 확인과 기기 재조회.",
+    "현재 원격 기준 선택 파일 공개·지문·검사·복구 보존."
   ],
   "remaining_priority_20": [
     "운영 주체 신원과 책임 연락처",
@@ -95,5 +95,25 @@
     "허용 파일·비밀값 형태 검사",
     "프로젝트 역사·기획 상태 검사",
     "공개 파일 지문·자동 작업 결과 검사"
-  ]
+  ],
+  "v040_scope": [
+    "Product/Variant/Offer separation",
+    "Strict quantity and offer evidence checks",
+    "Comparison table",
+    "Saved search and sort",
+    "Brand search",
+    "Typo suggestions",
+    "Related guides",
+    "Correction draft and explicit public handoff"
+  ],
+  "commerce": {
+    "release_id": "2026-09-05-service-v0.40-shopping-trust",
+    "total": 1994,
+    "normalized_quantity": 1399,
+    "ambiguous_or_missing_quantity": 595,
+    "priority_review_count": 500,
+    "verified_price_offers": 0,
+    "human_reviews": 0
+  },
+  "android": "NOT_TESTED_DEVICE_NOT_DETECTED"
 }

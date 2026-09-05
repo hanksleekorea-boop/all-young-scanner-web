@@ -1,4 +1,4 @@
-export const RELEASE = '2026-09-05-service-v0.39-shopping-repair';
+export const RELEASE = '2026-09-05-service-v0.40-shopping-trust';
 export const STORAGE_KEY = 'ays-shopping-v2';
 export const CATEGORIES = {
   sunscreen: ['선케어', 'Sun care', '선크림 자외선차단제 썬크림 sunscreen suncream spf'],

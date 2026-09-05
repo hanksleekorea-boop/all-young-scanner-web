@@ -7,7 +7,7 @@ const read=p=>readFile(resolve(base,p),'utf8');
 const release=JSON.parse(await read('shopping-release.json'));
 let checks=0;
 const ok=(condition,message)=>{assert(condition,message);checks++;};
-for(const p of ['assets/storefront.mjs','assets/shopping-core.mjs','sw.js']){
+for(const p of ['assets/storefront.mjs','assets/shopping-core.mjs','assets/enhancements.mjs','assets/commerce.mjs','sw.js']){
  const r=spawnSync(process.execPath,['--check',resolve(base,p)],{encoding:'utf8'});ok(r.status===0,`${p}: ${r.stderr}`);
 }
 const index=JSON.parse(await read('content/shop-index-v2.json'));

@@ -1,11 +1,11 @@
 {
   "name": "all-young-scanner-web",
   "private": true,
-  "version": "0.39.0",
+  "version": "0.40.0",
   "type": "module",
   "scripts": {
     "content:build": "node scripts/build-content-pages.mjs",
-    "verify": "node scripts/verify-shopping.mjs && node --test scripts/shopping.test.mjs",
+    "verify": "node scripts/verify-shopping.mjs && node --test scripts/shopping.test.mjs scripts/commerce.test.mjs",
     "verify:commercial": "node --test scripts/commercial-launch.test.mjs && node scripts/verify-commercial-launch.mjs commercial-launch-evidence.template.json --expect-incomplete",
     "verify:layout": "node scripts/run-layout-verification.mjs",
     "verify:a56": "node scripts/run-a56-live.mjs",
