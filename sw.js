@@ -1,4 +1,4 @@
-const VERSION = 'ays-shopping-v039-backup-preservation';
+const VERSION = 'ays-shopping-v039-backup-preservation:'+self.registration.scope;
 const CORE = ['./','./en/','./index.html','./offline.html','./assets/storefront.mjs','./assets/shopping-core.mjs','./assets/shopping-core.mjs?v=backup-preservation-20260905','./assets/storefront.css','./manifest.webmanifest','./icon.svg','./content/shop-index-v2.json','./content/usage-guides.json','./content/usage-guides.en.json','./content/shopping-guides.json','./content/store-links.json'];
 const base = new URL(self.registration.scope);
 const allowed = new Set(CORE.map(p=>new URL(p,base).href));
@@ -10,7 +10,11 @@ self.addEventListener('install', event=>event.waitUntil((async()=>{
 })()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{
   const keys=await caches.keys();
-  await Promise.all(keys.filter(k=>(k.startsWith('ays-service-')||k.startsWith('ays-shopping-'))&&k!==VERSION).map(k=>caches.delete(k)));
+  await Promise.all(keys.filter(k=>(k.startsWith('ays-service-')||k.startsWith('ays-shopping-'))&&k!==VERSION).map(async k=>{
+    const old=await caches.open(k),requests=await old.keys();
+    const owned=k.endsWith(':'+base.href)||(requests.length>0&&requests.every(r=>{const u=new URL(r.url);return u.origin===base.origin&&u.pathname.startsWith(base.pathname);}));
+    if(owned)await caches.delete(k);
+  }));
   await self.clients.claim();
 })()));
 self.addEventListener('fetch',event=>{

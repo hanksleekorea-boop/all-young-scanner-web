@@ -92,3 +92,10 @@ test('service worker offline shell fallback preserves query and ignores other ap
  assert.equal(await(await pending).text(),'Offline shell');assert.equal(matched,'https://example.test/shop/');
  events.fetch({request:{url:'https://example.test/another-app/',method:'GET'},respondWith:()=>assert.fail('other app intercepted')});
 });
+test('service worker cleanup never removes another app cache on the shared origin',async()=>{
+ const code=await readFile('sw.js','utf8');const events={},deleted=[];
+ const self={registration:{scope:'https://example.test/shop/'},addEventListener:(n,f)=>events[n]=f,clients:{claim:async()=>{}}};
+ const entries={'ays-service-old':['https://example.test/shop/'],'ays-shopping-other':['https://example.test/another-app/'],'unrelated':['https://example.test/shop/']};
+ const caches={keys:async()=>Object.keys(entries),open:async k=>({keys:async()=>entries[k].map(url=>({url}))}),delete:async k=>deleted.push(k)};
+ vm.runInNewContext(code,{self,caches,URL,Set,Response,fetch});let pending;events.activate({waitUntil:p=>pending=p});await pending;assert.deepEqual(deleted,['ays-service-old']);
+});
