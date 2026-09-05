@@ -82,6 +82,10 @@ export function readState(storage) {
   try { const raw = storage.getItem(STORAGE_KEY); return {state:raw ? validateState(JSON.parse(raw)) : {version:2,saved:[],compared:[],locale:'ko'},error:null}; }
   catch { return {state:{version:2,saved:[],compared:[],locale:'ko'},error:'STORAGE_UNAVAILABLE_OR_DAMAGED'}; }
 }
+export function mergeBackups(current,incoming){
+ const existing=validateState(current),added=validateState(incoming);
+ return {...existing,saved:[...new Set([...existing.saved,...added.saved])],compared:[...new Set([...existing.compared,...added.compared])].slice(0,3)};
+}
 export function writeState(storage, state) {
   try { const value = JSON.stringify(validateState(state)); storage.setItem(STORAGE_KEY,value); return storage.getItem(STORAGE_KEY)===value; } catch { return false; }
 }

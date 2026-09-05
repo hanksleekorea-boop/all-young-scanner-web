@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-import {normalize,prepareCatalog,searchProducts,isHousehold,readState,writeState,validateState,toggleComparison,storeLinks,validateOffer,sourceLink,STORAGE_KEY} from '../assets/shopping-core.mjs';
+import {normalize,prepareCatalog,searchProducts,isHousehold,readState,writeState,validateState,mergeBackups,toggleComparison,storeLinks,validateOffer,sourceLink,STORAGE_KEY} from '../assets/shopping-core.mjs';
 const raw=JSON.parse(await readFile('content/catalog-v4.json','utf8'));
 const catalog=prepareCatalog(raw);
 test('known Korean brand/category intent finds real records and GTIN',()=>{
@@ -68,6 +68,14 @@ test('1000 generated state transitions preserve comparison cap and valid backup 
 });
 test('100 deterministic exact barcode searches retain identity',()=>{
  for(let i=0;i<100;i++){const p=catalog.products[(i*19)%catalog.products.length];const rows=searchProducts(catalog.products,{q:p.gtin});assert(rows.some(r=>r.id===p.id));}
+});
+test('import merges without replacing existing comparison selections',()=>{
+ const ids=catalog.products.slice(0,5).map(p=>p.id);
+ const current={version:2,saved:[ids[0]],compared:ids.slice(0,3),locale:'ko'};
+ const incoming={version:2,saved:[ids[4]],compared:ids.slice(3,5),locale:'en'};
+ const merged=mergeBackups(current,incoming);assert.deepEqual(merged.compared,current.compared);assert.deepEqual(merged.saved,[ids[0],ids[4]]);
+ assert.deepEqual(mergeBackups({...current,compared:[ids[0]]},incoming).compared,[ids[0],ids[3],ids[4]]);
+ assert.deepEqual(current.compared,ids.slice(0,3));assert.equal(merged.locale,'ko');
 });
 test('service worker failed installation does not activate a partial cache',async()=>{
  const code=await readFile('sw.js','utf8');let skipped=false,pending;const events={};
