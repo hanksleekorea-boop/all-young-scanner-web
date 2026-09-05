@@ -8,7 +8,7 @@ const required = [
   'index.html', 'progress.html', 'offline.html', 'privacy.html', 'terms.html', 'support.html', 'about.html', 'cookies.html', 'advertising.html', 'ad-operations.html', 'ad-governance.html', 'privacy-choices.html', 'catalog-license.html', 'ads.txt', '.well-known/security.txt', '.nojekyll',
   'manifest.webmanifest', 'icon.svg', 'icon-192.svg', 'icon-512.svg', 'sw.js', 'robots.txt', 'sitemap.xml',
   'readiness.json', 'free-advanced-readiness.json', 'plus-readiness.json', 'stage1-v4-readiness.json', 'stage2-readiness.json', 'stage2-external-evidence.template.json', 'catalog-governance.json', 'ad-stage1-readiness.json', 'ad-stage2-readiness.json', 'ad-stage3-readiness.json', 'advertising-config.json', 'commercial-launch-readiness.json', 'commercial-launch-evidence.json', 'commercial-launch-evidence.template.json', 'evidence-v036.json',
-  'guides/index.html', 'en/index.html', 'en/explorer.html', 'content/usage-guides.json', 'content/usage-guides.en.json', 'content/catalog-v4.json', 'content/ingredients-v4.json', 'assets/free-advanced-app.mjs', 'assets/free-advanced-bootstrap.mjs', 'assets/catalog-v4.mjs', 'assets/stage2-v4.mjs', 'assets/catalog-en.mjs', 'assets/ad-policy.mjs', 'assets/consent-gate.mjs', 'assets/ad-router.mjs', 'assets/ad-metrics.mjs', 'assets/ad-optimizer.mjs', 'assets/adsense-formats.mjs', 'assets/ad-loader.mjs', 'assets/ad-stage1.css', 'assets/privacy-choices-page.mjs', 'assets/ad-operations-page.mjs', 'assets/ad-governance-page.mjs',
+  'guides/index.html', 'en/index.html', 'en/explorer.html', 'content/usage-guides.json', 'content/usage-guides.en.json', 'content/catalog-v4.json', 'content/ingredients-v4.json', 'content/shop-index-v1.json', 'assets/shopping-discovery-hero-v1.png', 'assets/free-advanced-app.mjs', 'assets/free-advanced-bootstrap.mjs', 'assets/catalog-v4.mjs', 'assets/stage2-v4.mjs', 'assets/catalog-en.mjs', 'assets/ad-policy.mjs', 'assets/consent-gate.mjs', 'assets/ad-router.mjs', 'assets/ad-metrics.mjs', 'assets/ad-optimizer.mjs', 'assets/adsense-formats.mjs', 'assets/ad-loader.mjs', 'assets/ad-stage1.css', 'assets/privacy-choices-page.mjs', 'assets/ad-operations-page.mjs', 'assets/ad-governance-page.mjs',
 ];
 required.forEach((path) => assert(existsSync(resolve(root, path)), `필수 파일 없음: ${path}`));
 
@@ -22,6 +22,7 @@ const free = JSON.parse(read(readiness.free_advanced.status_file));
 const plus = JSON.parse(read(readiness.plus_no_payment.status_file));
 const evidence = JSON.parse(read(readiness.evidence_file));
 const catalog = JSON.parse(read('content/catalog-v4.json'));
+const shopIndex = JSON.parse(read('content/shop-index-v1.json'));
 const ingredientCatalog = JSON.parse(read('content/ingredients-v4.json'));
 const stageOneV4 = JSON.parse(read('stage1-v4-readiness.json'));
 const stageTwoV4 = JSON.parse(read('stage2-readiness.json'));
@@ -50,25 +51,26 @@ const advertising = read('advertising.html');
 const adOperations = read('ad-operations.html');
 const adGovernance = read('ad-governance.html');
 
-assert(html.includes('<link rel="manifest" href="manifest.webmanifest">') && html.includes('free-advanced-bootstrap.mjs'), '무료 고급 앱 또는 PWA 연결 누락');
-assert((html.match(/data-view="(?:home|routine|guides|records|plus)"/g) || []).length === 5, '모바일·PC 5개 핵심 화면 누락');
-assert(['name="time"', 'name="context"', 'name="pace"', 'id="guide-search"', 'id="checkin-form"', 'id="export-records"', 'id="confirm-import"', 'id="open-delete"', 'id="plus-routine-form"', 'id="compare-routines"', 'id="collection-form"', 'id="export-encrypted"'].every((token) => html.includes(token)), '무료 또는 Plus 핵심 경로 누락');
-assert(html.includes('무료 · 로그인 없이 · 기기 안 저장') && html.includes('독립 정보 서비스'), '무료·기기 저장·독립 서비스 약속 누락');
+const shoppingMode = html.includes('SHOP THE CATALOG');
+assert(html.includes('<link rel="manifest" href="manifest.webmanifest">') && html.includes('serviceWorker.register'), '쇼핑 앱 또는 PWA 연결 누락');
+assert(shoppingMode && ['id="heroSearch"', 'id="search"', 'id="scope"', 'id="category"', 'id="products"', 'id="compare"', '판매처 찾기'].every((token) => html.includes(token)), '쇼핑 검색·필터·비교·판매처 경로 누락');
+assert(['global.oliveyoung.com', 'amazon.com', 'sephora.com', 'yesstyle.com', 'stylekorean.com'].every((host) => html.includes(host)), '다중 화장품 판매처 연결 누락');
+assert(html.includes('제휴 수익 연결은 꺼져 있습니다') && html.includes('공식 서비스가 아닙니다'), '제휴 비활성 또는 독립 서비스 고지 누락');
 assert(!/테스트 상품|테스트 자료|개발 진척|LAUNCH CHECK|95 \/ 100|올영스캐너 알파/.test(html), '소비자 화면에 개발·시험 문구가 노출됨');
 assert(!html.includes('Google로 로그인') && !html.includes('account-login') && !html.includes('supabase'), '제공하지 않는 계정 기능이 소비자 화면에 남아 있음');
 assert(!/<script\s+[^>]*src=["']https?:/i.test(html) && !/<link\s+[^>]*href=["']https?:[^>]*stylesheet/i.test(html), '외부 실행 코드 또는 글꼴 연결이 남아 있음');
-assert(html.includes('data-ad-slot="home-context" data-ad-format-kind="display-responsive"') && html.includes('assets/ad-loader.mjs') && !html.includes('class="adsbygoogle"'), '홈 수동 슬롯·형식 또는 지연 광고 로더 경계 오류');
+assert(!html.includes('class="adsbygoogle"') && adConfig.enabled === false, '승인 전 외부 광고가 활성화됨');
 assert(!app.includes('.innerHTML') && app.includes('textContent') && app.includes('MAX_BACKUP_BYTES') && app.includes('BACKUP_KEY_INVALID'), '안전 DOM 출력 또는 백업 검증 누락');
 assert(['selectRoutineSlugs', 'filterGuides', 'upsertCheckin', 'makeBackup', 'parseBackup', 'saveRoutinePreset', 'compareRoutines', 'summarizeCheckins', 'upsertCollection', 'makeCalendarIcs', 'buildPrintReport', 'encryptBackup', 'decryptBackup'].every((name) => app.includes(`function ${name}`)), '무료 또는 Plus 핵심 함수 누락');
-assert(html.includes('결제 없이 전체 공개') && !/stripe|checkout|paymentIntent|subscription/i.test(app) && !/₩|구매하기/.test(html), '결제 제외·무료 권리 경계 오류');
+assert(!/stripe|checkout|paymentIntent|subscription/i.test(app) && !/₩|사이트에서 결제/.test(html), '사이트 내 결제 제외 경계 오류');
 assert(bootstrap.includes('serviceWorker.register') && bootstrap.includes('mountFreeAdvancedApp') && bootstrap.includes('mountStage2V4'), '앱 시작·2단계 또는 서비스 워커 등록 누락');
 assert(manifest.lang === 'ko-KR' && manifest.scope === './' && manifest.start_url === './#home' && manifest.shortcuts.length === 3, '무료 고급 PWA 정보 불일치');
-assert(sw.includes("const RELEASE_VERSION = '2026-08-31-service-v0.36'") && readiness.release_id === '2026-08-31-service-v0.36', '공개 판번호 불일치');
+assert(sw.includes("const RELEASE_VERSION = '2026-09-05-service-v0.38-shopping-marketplace'") && readiness.release_id === '2026-08-31-service-v0.36', '쇼핑 공개판 또는 기초 준비도 판번호 불일치');
 assert(catalog.products.length === 2000 && new Set(catalog.products.map((row) => row.gtin)).size === 2000 && catalog.counts.human_reviewed_products === 0 && catalog.products.every((row) => row.formulation_versions?.length === 1), 'v4 실제 상품·처방 관찰 원장 수량·검수 분리 오류');
 assert(ingredientCatalog.ingredients.length === 1000 && ingredientCatalog.human_editorial_complete === false, 'v4 성분명 원장 수량·사람 검수 분리 오류');
 assert(stageOneV4.summary.total === 18 && stageOneV4.summary.done === 1 && stageOneV4.summary.strict_percent === 5.6 && stageOneV4.implemented_user_paths.percent === 100 && stageOneV4.facts.human_reviewed_products === 0 && stageOneV4.facts.android_devices_current_release === 0, 'v4 1단계 엄격 진척·외부 증거 분리 오류');
 assert(stageTwoV4.strict.total === 12 && stageTwoV4.strict.done === 0 && stageTwoV4.development_contract.implemented === 12 && stageTwoV4.development_contract.percent === 100 && stageTwoV4.cards.every((card) => card.implemented === true) && Object.values(stageTwoV4.safe_defaults).every((value) => value === false || value === 0), 'v4 2단계 개발 계약·엄격 증거·안전 기본값 분리 오류');
-assert(html.includes('data-view="catalog"') && html.includes('data-view="compare"') && html.includes('data-view="more"') && bootstrap.includes('mountCatalogV4'), 'v4 스캔·검색·비교·더보기 연결 누락');
+assert(shopIndex.products.length === 2000 && shopIndex.products.every((row) => row.price === null && row.sellers.length === 0) && html.includes('상품 더 보기') && html.includes('function compareOpen'), '쇼핑 색인·가격/판매처 경계·비교·더보기 연결 누락');
 assert(required.filter((path) => !['robots.txt', 'sitemap.xml', '.nojekyll', 'sw.js', 'commercial-launch-evidence.template.json'].includes(path)).every((path) => sw.includes(`'./${path}'`) || ['progress.html'].includes(path)), '오프라인 핵심 파일 누락');
 assert(sw.includes('key.startsWith(CACHE_PREFIX)') && sw.includes('if (!allowed.includes(requested.href) && !isGuidePage) return'), '다른 앱·API 임시 저장 보호 누락');
 assert(content.counts.guides === 24 && content.counts.sources === 7 && content.guides.every((guide) => guide.steps.length > 0 && guide.source_refs.length > 0), '완결 콘텐츠 수 또는 출처 연결 오류');
